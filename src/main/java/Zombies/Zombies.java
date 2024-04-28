@@ -6,6 +6,7 @@ public abstract class Zombies {
     private Integer attack_damage;
     private Integer attack_speed;
     private Boolean is_aquatic;
+    private int currentCol = 10;
 
     public Zombies(String name, Integer health, Integer attack_damage, Integer attack_speed, Boolean is_aquatic) {
         this.name = name;
@@ -53,5 +54,13 @@ public abstract class Zombies {
 
     public void setIs_aquatic(Boolean is_aquatic) {
         this.is_aquatic = is_aquatic;
+    }
+
+    public int getCurrentCol(){
+        return currentCol;
+    }
+
+    public void moveLeft(){
+        currentCol--;
     }
 }

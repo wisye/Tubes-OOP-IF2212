@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    java
+    application
 }
 
 group = "org.example"
@@ -16,4 +17,15 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("Main")
+}
+
+tasks.register<JavaExec>("runInteractive") {
+    group = "application"
+    mainClass.set("Main")
+    classpath = sourceSets["main"].runtimeClasspath
+    standardInput = System.`in`
 }

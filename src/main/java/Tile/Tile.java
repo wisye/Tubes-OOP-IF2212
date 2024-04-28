@@ -1,16 +1,24 @@
 package Tile;
+import Plants.*;
+import Zombies.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Tile {
     private Boolean protectedArea;
     private Boolean grass;
     private Boolean water;
     private Boolean spawnArea;
+    private Plants plant;
+    private List<Zombies> zombies;
 
     public Tile(Boolean protectedArea, Boolean grass, Boolean water, Boolean spawnArea){
         this.protectedArea = protectedArea;
         this.grass = grass;
         this.water = water;
         this.spawnArea = spawnArea;
+        this.zombies = new ArrayList<>();
     }
 
     public Boolean getProtectedArea() {
@@ -43,5 +51,24 @@ public abstract class Tile {
 
     public void setSpawnArea(Boolean spawnArea) {
         this.spawnArea = spawnArea;
+    }
+
+    public void setPlant(Plants plant){
+        this.plant = plant;
+    }
+
+    public Plants getPlant() {
+        return plant;
+    }
+
+    public List<Zombies> getZombies() {
+        return zombies;
+    }
+    public void addZombie(Zombies zombie) {
+        zombies.add(zombie);
+    }
+
+    public void removeZombie(Zombies zombie) {
+        zombies.remove(zombie);
     }
 }
