@@ -43,7 +43,7 @@ public class Map {
                 synchronized(tiles[i][j]){
                     System.out.print("[");
                     if(tiles[i][j].getPlant() != null){
-                        System.out.print(tiles[i][j].getPlant().getName() + " ");
+                        System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
                         if(!tiles[i][j].getZombies().isEmpty()){
                             System.out.print("_");
                             List<Zombies> zombies = (tiles[i][j].getZombies());
@@ -92,9 +92,9 @@ public class Map {
         else {
             throw new IllegalArgumentException("This plant cannot be planted on this tile");
         }
-        if(plant.getAttack_damage() != 0){
-            attackZombies(col, row, plant);
-        }
+        // if(plant.getAttack_damage() != 0){
+        //     attackZombies(col, row, plant);
+        // }
     }
 
     public void dig(int row, int col){
@@ -103,7 +103,7 @@ public class Map {
         }
         else if(tiles[col][row] instanceof Water){
             if((tiles[col][row]).getPlant().getName() != "Lilypad"){
-                (tiles[col][row]).setPlant(new Lilypad());
+                (tiles[col][row]).setPlant(new Lilypad(0));
             }
             else{
                 (tiles[col][row]).setPlant(null);
@@ -115,40 +115,40 @@ public class Map {
         synchronized(tiles[row][10]){
             tiles[row][10].addZombie(zombie);
         }
-        new Thread(() -> {
-            while (!Main.gameOver) {
-                Tile tile = getTile(row, zombie.getCurrentCol());
-                if (tile.getPlant() != null) {
-                    try {
-                        Thread.sleep(1000 * zombie.getAttack_speed()); // sleep for the attack speed duration
-                    } 
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Plants plant = tile.getPlant();
-                    if (plant != null) { // Check if plant is not null
-                        plant.setHealth(plant.getHealth() - zombie.getAttack_damage());
-                        // If the plant's HP is 0 or less, remove the plant
-                        if (plant.getHealth() <= 0) {
-                            tile.setPlant(null);
-                        }
-                    }
-                }
-                // If there's no plant on the tile, move the zombie to the left
-                else if (zombie.getCurrentCol() > 0) {
-                    try {
-                        Thread.sleep(5000); // sleep for 5 seconds
-                    } 
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    moveZombie(row, zombie);
-                }
-            }
-        }).start();
+        // new Thread(() -> {
+        //     while (!Main.gameOver) {
+        //         Tile tile = getTile(row, zombie.getCurrentCol());
+        //         if (tile.getPlant() != null) {
+        //             try {
+        //                 Thread.sleep(1000 * zombie.getAttack_speed()); // sleep for the attack speed duration
+        //             } 
+        //             catch (InterruptedException e) {
+        //                 e.printStackTrace();
+        //             }
+        //             Plants plant = tile.getPlant();
+        //             if (plant != null) { // Check if plant is not null
+        //                 plant.setHealth(plant.getHealth() - zombie.getAttack_damage());
+        //                 // If the plant's HP is 0 or less, remove the plant
+        //                 if (plant.getHealth() <= 0) {
+        //                     tile.setPlant(null);
+        //                 }
+        //             }
+        //         }
+        //         // If there's no plant on the tile, move the zombie to the left
+        //         else if (zombie.getCurrentCol() > 0) {
+        //             try {
+        //                 Thread.sleep(5000); // sleep for 5 seconds
+        //             } 
+        //             catch (InterruptedException e) {
+        //                 e.printStackTrace();
+        //             }
+        //             moveZombie(row, zombie);
+        //         }
+        //     }
+        // }).start();
     }
 
-    public void moveZombie(int row, Zombies zombie) {
+    public synchronized void moveZombie(int row, Zombies zombie) {
         for (int col = 0; col < 11; col++) {
             Tile tile = getTile(row, col);
             if (tile.getZombies().contains(zombie)) {
@@ -164,44 +164,44 @@ public class Map {
         }
     }
 
-    public void attackZombies(int row, int col, Plants plant) {
-        new Thread(() -> {
-            while (!Main.gameOver) {
-                try {
-                    Tile tile = getTile(row, col);
-                    synchronized(tile){
-                        if (tile.getPlant() != null && tile.getPlant().equals(plant)) {
-                            if (plant.getRange() == -1) {
-                                for (int col2 = col; col2 < 11; col2++) {
-                                    Tile tile2 = getTile(row, col2);
-                                    if (!tile2.getZombies().isEmpty()) {
-                                        Zombies zombie = tile2.getZombies().get(0);
-                                        zombie.setHealth(zombie.getHealth() - plant.getAttack_damage());
-                                        if(zombie.getHealth() <= 0){
-                                            tile2.removeZombie(zombie);
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                            else if (plant.getRange() == 1 && col < 10) {
-                                Tile tile2 = getTile(row, col + 1);
-                                if (!tile2.getZombies().isEmpty()) {
-                                    Zombies zombie = tile2.getZombies().get(0);
-                                    zombie.setHealth(zombie.getHealth() - plant.getAttack_damage());
-                                }
-                            }
-                        }
-                        else{
-                            return;
-                        }
-                    }
-                    Thread.sleep(plant.getAttack_speed() * 1000);
-                } 
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+    // public void attackZombies(int row, int col, Plants plant) {
+    //     new Thread(() -> {
+    //         while (!Main.gameOver) {
+    //             try {
+    //                 Tile tile = getTile(row, col);
+    //                 synchronized(tile){
+    //                     if (tile.getPlant() != null && tile.getPlant().equals(plant)) {
+    //                         if (plant.getRange() == -1) {
+    //                             for (int col2 = col; col2 < 11; col2++) {
+    //                                 Tile tile2 = getTile(row, col2);
+    //                                 if (!tile2.getZombies().isEmpty()) {
+    //                                     Zombies zombie = tile2.getZombies().get(0);
+    //                                     zombie.setHealth(zombie.getHealth() - plant.getAttack_damage());
+    //                                     if(zombie.getHealth() <= 0){
+    //                                         tile2.removeZombie(zombie);
+    //                                     }
+    //                                     break;
+    //                                 }
+    //                             }
+    //                         }
+    //                         else if (plant.getRange() == 1 && col < 10) {
+    //                             Tile tile2 = getTile(row, col + 1);
+    //                             if (!tile2.getZombies().isEmpty()) {
+    //                                 Zombies zombie = tile2.getZombies().get(0);
+    //                                 zombie.setHealth(zombie.getHealth() - plant.getAttack_damage());
+    //                             }
+    //                         }
+    //                     }
+    //                     else{
+    //                         return;
+    //                     }
+    //                 }
+    //                 Thread.sleep(plant.getAttack_speed() * 1000);
+    //             } 
+    //             catch (InterruptedException e) {
+    //                 e.printStackTrace();
+    //             }
+    //         }
+    //     }).start();
+    // }
 }

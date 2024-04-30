@@ -7,13 +7,15 @@ public abstract class Zombies {
     private Integer attack_speed;
     private Boolean is_aquatic;
     private int currentCol = 10;
+    private int timeCreated;
 
-    public Zombies(String name, Integer health, Integer attack_damage, Integer attack_speed, Boolean is_aquatic) {
+    public Zombies(String name, Integer health, Integer attack_damage, Integer attack_speed, Boolean is_aquatic, int timeCreated) {
         this.name = name;
         this.health = health;
         this.attack_damage = attack_damage;
         this.attack_speed = attack_speed;
         this.is_aquatic = is_aquatic;
+        this.timeCreated = timeCreated;
     }
 
     public String getName() {
@@ -62,5 +64,9 @@ public abstract class Zombies {
 
     public void moveLeft(){
         currentCol--;
+    }
+
+    public int getTimeCreated(){
+        return timeCreated;
     }
 }

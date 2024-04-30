@@ -4,6 +4,7 @@ import Zombies.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Tile {
     private Boolean protectedArea;
@@ -18,7 +19,7 @@ public abstract class Tile {
         this.grass = grass;
         this.water = water;
         this.spawnArea = spawnArea;
-        this.zombies = new ArrayList<>();
+        this.zombies = new CopyOnWriteArrayList<>();
     }
 
     public Boolean getProtectedArea() {
