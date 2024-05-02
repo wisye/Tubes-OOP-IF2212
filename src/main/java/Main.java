@@ -64,6 +64,7 @@ public class Main {
         seconds = 0;
         Map map = new Map();
         Random random = new Random();
+        Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
         deck.add(new Deck.PeashooterFactory());
         deck.add(new Deck.SunflowerFactory());
@@ -102,14 +103,16 @@ public class Main {
                     }
 
                     if (seconds >= 20 && seconds <= 160) {
-                        if(random.nextFloat() < 0.3){
-                            Normal zombie = new Normal(seconds); // Jadiin per tile
-                            map.addZombie(random.nextInt(5), zombie);
+                        for(int i = 0; i < 6; i++){
+                            if(random.nextFloat() < 0.3){
+                                Normal zombie = new Normal(seconds);
+                                map.addZombie(i, zombie);
+                            }
                         }
                     }
 
                     for (int row = 0; row < 5; row++) {
-                        if (!map.getTile(row, 0).getZombies().isEmpty()) {
+                        if (!Map.getTile(row, 0).getZombies().isEmpty()) {
                             gameOver = true;
                             break;
                         }
@@ -144,50 +147,23 @@ public class Main {
         //     }
         // }).start();
 
-        // Thread for plants and zombies actions
+        // Thread for plants and zombies
         // new Thread(() -> {
         while (!gameOver) {
             try{
                 for(int i = 0; i < 11; i++){
                     for(int j = 0; j < 6; j++){
-                        Tile tile = map.getTile(j, i);
+                        Tile tile = Map.getTile(j, i);
                         synchronized(tile){
                             if(!(tile.getPlant() == null)){
-                                Plants plant = tile.getPlant();
-                                if (plant.getRange() == -1) {
-                                    if((seconds - plant.getTimeCreated()) % plant.getAttack_speed() == 0){
-                                        for (int col2 = i; col2 < 11; col2++) {
-                                            Tile tile2 = map.getTile(j, col2);
-                                            if (!tile2.getZombies().isEmpty()) {
-                                                Zombies zombie = tile2.getZombies().get(0);
-                                                zombie.setHealth(zombie.getHealth() - plant.getAttack_damage());
-                                                if(zombie.getHealth() <= 0){
-                                                    tile2.removeZombie(zombie);
-                                                }
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
+                                action.attackPlant(i, j, tile.getPlant());
                             }
                             if(!tile.getZombies().isEmpty()){
                                 if(tile.getPlant() == null){
-                                    for (Zombies zombie : tile.getZombies()){
-                                        if(seconds > zombie.getTimeCreated() && (seconds - zombie.getTimeCreated()) % 5 == 0){
-                                            map.moveZombie(j, zombie);
-                                        }
-                                    }
+                                    action.moveZombie(j, tile.getZombies());
                                 }
                                 else{
-                                    for (Zombies zombie : tile.getZombies()) {
-                                        if(seconds > zombie.getTimeCreated() && (seconds - zombie.getTimeCreated()) % zombie.getAttack_speed() == 0){
-                                            tile.getPlant().setHealth(tile.getPlant().getHealth() - zombie.getAttack_damage());
-                                        }
-                                        if(tile.getPlant().getHealth() <= 0){
-                                            map.dig(i, j);
-                                            break;
-                                        }
-                                    }
+                                    action.attackZombie(tile, map, i, j);
                                 }
                             }
 

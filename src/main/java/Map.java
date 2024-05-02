@@ -33,7 +33,7 @@ public class Map {
         }
     }
 
-    public Tile getTile(int row, int col) {
+    public static Tile getTile(int row, int col) {
         return tiles[row][col];
     }
 
@@ -146,21 +146,6 @@ public class Map {
         //         }
         //     }
         // }).start();
-    }
-
-    public synchronized void moveZombie(int row, Zombies zombie) {
-        for (int col = 0; col < 11; col++) {
-            Tile tile = getTile(row, col);
-            if (tile.getZombies().contains(zombie)) {
-                // Move the zombie to the left
-                if (col > 0) {
-                    Tile leftTile = getTile(row, col - 1);
-                    leftTile.addZombie(zombie);
-                    tile.removeZombie(zombie);
-                }
-                break;
-            }
-        }
     }
 
     // public void attackZombies(int row, int col, Plants plant) {

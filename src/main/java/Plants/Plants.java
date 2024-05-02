@@ -4,18 +4,18 @@ public abstract class Plants {
     private String name;
     private Integer cost;
     private Integer health;
-    private Integer attack_damage;
-    private Integer attack_speed;
+    private Integer attackDamage;
+    private Integer attackSpeed;
     private Integer range;
     private Integer cooldown;
     private int timeCreated = 0;
 
-    public Plants(String name, Integer cost, Integer health, Integer attack_damage, Integer attack_speed, Integer range, Integer cooldown, int timeCreated){
+    public Plants(String name, Integer cost, Integer health, Integer attackDamage, Integer attackSpeed, Integer range, Integer cooldown, int timeCreated){
         this.name = name;
         this.cost = cost;
         this.health = health;
-        this.attack_damage = attack_damage;
-        this.attack_speed = attack_speed;
+        this.attackDamage = attackDamage;
+        this.attackSpeed = attackSpeed;
         this.range = range;
         this.cooldown = cooldown;
         this.timeCreated = timeCreated;
@@ -33,12 +33,12 @@ public abstract class Plants {
         return health;
     }
 
-    public Integer getAttack_damage() {
-        return attack_damage;
+    public Integer getAttackDamage() {
+        return attackDamage;
     }
 
-    public Integer getAttack_speed() {
-        return attack_speed;
+    public Integer getAttackSpeed() {
+        return attackSpeed;
     }
 
     public Integer getRange() {
@@ -61,12 +61,12 @@ public abstract class Plants {
         this.health = health;
     }
 
-    public void setAttack_damage(Integer attack_damage) {
-        this.attack_damage = attack_damage;
+    public void setAttackDamage(Integer attackDamage) {
+        this.attackDamage = attackDamage;
     }
 
-    public void setAttack_speed(Integer attack_speed) {
-        this.attack_speed = attack_speed;
+    public void setAttackSpeed(Integer attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 
     public void setRange(Integer range) {

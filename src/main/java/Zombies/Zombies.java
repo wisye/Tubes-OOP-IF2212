@@ -3,17 +3,17 @@ package Zombies;
 public abstract class Zombies {
     private String name;
     private Integer health;
-    private Integer attack_damage;
-    private Integer attack_speed;
-    private Boolean is_aquatic;
+    private Integer attackDamage;
+    private Integer attackSpeed;
+    private Boolean isAquatic;
     private int timeCreated;
 
-    public Zombies(String name, Integer health, Integer attack_damage, Integer attack_speed, Boolean is_aquatic, int timeCreated) {
+    public Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic, int timeCreated) {
         this.name = name;
         this.health = health;
-        this.attack_damage = attack_damage;
-        this.attack_speed = attack_speed;
-        this.is_aquatic = is_aquatic;
+        this.attackDamage = attackDamage;
+        this.attackSpeed = attackSpeed;
+        this.isAquatic = isAquatic;
         this.timeCreated = timeCreated;
     }
 
@@ -25,16 +25,16 @@ public abstract class Zombies {
         return health;
     }
 
-    public Integer getAttack_damage() {
-        return attack_damage;
+    public Integer getAttackDamage() {
+        return attackDamage;
     }
 
-    public Integer getAttack_speed() {
-        return attack_speed;
+    public Integer getAttackSpeed() {
+        return attackSpeed;
     }
 
-    public Boolean getIs_aquatic() {
-        return is_aquatic;
+    public Boolean getIsAquatic() {
+        return isAquatic;
     }
 
     public void setName(String name) {
@@ -45,16 +45,16 @@ public abstract class Zombies {
         this.health = health;
     }
 
-    public void setAttack_damage(Integer attack_damage) {
-        this.attack_damage = attack_damage;
+    public void setAttackDamage(Integer attackDamage) {
+        this.attackDamage = attackDamage;
     }
 
-    public void setAttack_speed(Integer attack_speed) {
-        this.attack_speed = attack_speed;
+    public void setAttackSpeed(Integer attackSpeed) {
+        this.attackSpeed = attackSpeed;
     }
 
-    public void setIs_aquatic(Boolean is_aquatic) {
-        this.is_aquatic = is_aquatic;
+    public void setIsAquatic(Boolean isAquatic) {
+        this.isAquatic = isAquatic;
     }
 
     public int getTimeCreated(){
