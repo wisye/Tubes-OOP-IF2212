@@ -52,4 +52,8 @@ public class Deck<T extends Plants> {
             return new Wallnut(timeCreated);
         }
     }
+
+    public void remove(PlantFactory<? extends Plants> factory) {
+        deck.remove(factory);
+    }
 }

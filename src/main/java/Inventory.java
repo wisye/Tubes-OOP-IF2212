@@ -46,7 +46,11 @@ public class Inventory {
 
     //Menghapus tanaman
     //Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
-    public void removePlant(Deck.PlantFactory<? extends Plants> plants, Deck<? extends Plants> deck){
-        
+    public void removePlant(int slot, Deck<? extends Plants> deck){
+        if(deck.get(slot) != null){
+            deck.remove(deck.get(slot));
+        } else {
+            throw new IllegalStateException("Slot is empty");
+        }
     }
 }
