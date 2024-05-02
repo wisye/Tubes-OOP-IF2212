@@ -10,11 +10,11 @@ public class Deck<T extends Plants> {
     }
 
     public Deck(){
-        this.deck = new ArrayList<>(10);
+        this.deck = new ArrayList<>(6);
     }
 
     public void add(PlantFactory<? extends Plants> factory) {
-        if (deck.size() < 10) {
+        if (deck.size() < 6) {
             deck.add(factory);
         } else {
             throw new IllegalStateException("Deck is full");
