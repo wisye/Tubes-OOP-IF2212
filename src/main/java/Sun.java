@@ -1,11 +1,27 @@
 public class Sun {
-    private static Integer amount = 25;
+    private static Sun sun;
+    private static int amount;
 
-    public static Integer getAmount() {
+    private Sun(){
+        amount = 25;
+    }
+
+    public static Sun getInstance(){
+        if(sun == null){
+            sun = new Sun();
+        }
+        return sun;
+    }
+
+    public static int getAmount() {
         return amount;
     }
 
     public static synchronized void addSun(){
         amount += 25;
+    }
+
+    public static void reduceSun(int amount){
+        Sun.amount -= amount;
     }
 }

@@ -62,6 +62,7 @@ public class Main {
     public static void start(Scanner scanner){
         gameOver = false;
         seconds = 0;
+        Sun.getInstance();
         Map map = new Map();
         Random random = new Random();
         Actions action = new Actions();
@@ -120,6 +121,7 @@ public class Main {
                     Thread.sleep(1000); // sleep for 1 second
                     seconds++;
 //                    System.out.println(Sun.getAmount());
+                    System.out.println(Sun.getAmount());
                     map.printMap();
                     System.out.println();
                 } 
