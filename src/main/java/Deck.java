@@ -2,12 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import Plants.*;
 
-public class Deck<T extends Plants> {
+public class Deck<T> {
     private List<PlantFactory<? extends Plants>> deck;
-
-    public interface PlantFactory<T extends Plants> {
-        T create(int timeCreated);
-    }
 
     public Deck(){
         this.deck = new ArrayList<>(6);

@@ -103,7 +103,7 @@ public class Main {
 
                     if (seconds >= 20 && seconds <= 160) {
                         if(random.nextFloat() < 0.3){
-                            Normal zombie = new Normal(seconds);
+                            Normal zombie = new Normal(seconds); // Jadiin per tile
                             map.addZombie(random.nextInt(5), zombie);
                         }
                     }

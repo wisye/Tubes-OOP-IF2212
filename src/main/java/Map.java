@@ -157,7 +157,6 @@ public class Map {
                     Tile leftTile = getTile(row, col - 1);
                     leftTile.addZombie(zombie);
                     tile.removeZombie(zombie);
-                    zombie.moveLeft();
                 }
                 break;
             }
