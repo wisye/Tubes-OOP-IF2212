@@ -40,8 +40,16 @@ public class Inventory {
 
     //Menukar posisi tanaman
     //Menukar posisi tanaman pada slot deck maupun inventory. Tidak akan ada penukaran antar slot deck dan inventory. Pastikan posisi tidak bisa ditukar dengan posisi sendiri ataupun posisi kosong.
-    public void swapPlant(){
-
+    public void swapPlant(Deck<? extends Plants> deck, int slot1, int slot2){
+        if (deck.get(slot1) == deck.get(slot2)){
+            throw new IllegalStateException("Cannot swap with the same slot");
+        } else if (deck.get(slot1) == null || deck.get(slot2) == null){
+            throw new IllegalStateException("Cannot swap with empty slot");
+        } else {
+            Deck.PlantFactory<? extends Plants> temp = deck.get(slot1);
+            deck.add(deck.get(slot2));
+            deck.add(temp);
+        } 
     }
 
     //Menghapus tanaman
