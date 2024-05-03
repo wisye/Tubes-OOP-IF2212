@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.HashMap;
 import Plants.*;
 
-public class Inventory<T extends Plants>{
-    private Map<PlantFactory<T>, Boolean> inventory;
+public class Inventory{
+    private Map<Plants, Boolean> inventory;
 
     public Inventory(){
         this.inventory = new HashMap<>();
@@ -26,8 +26,8 @@ public class Inventory<T extends Plants>{
 
     //Memilih tanaman
     //Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan tanaman yang dipilih tidak bisa dipilih kembali
-    public void choosePlant(PlantFactory<T> plants, Deck<T> deck){
-        for (Map.Entry<PlantFactory<T>, Boolean> entry : inventory.entrySet()) {
+    public void choosePlant(Plants plants, Deck<? extends Plants> deck){
+        for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
             if(entry.getKey().equals(plants) && entry.getValue()){
                 throw new IllegalStateException("Plant already chosen");
             } else if(entry.getKey().equals(plants) && !entry.getValue()){
