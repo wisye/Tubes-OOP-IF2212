@@ -52,4 +52,8 @@ public class Deck<T> {
     public void remove(PlantFactory<? extends Plants> factory) {
         deck.remove(factory);
     }
+
+    public void set(int index, PlantFactory<? extends Plants> factory) {
+        deck.set(index, factory);
+    }
 }
