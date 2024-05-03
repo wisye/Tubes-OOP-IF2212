@@ -55,7 +55,7 @@ public class Inventory{
     }
 
     //Menghapus tanaman
-    //Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
+    //Mengubah slot pada deck tanaman yang  berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
     public void removePlant(int slot, Deck<?> deck){
         if(deck.get(slot) != null){
             deck.remove(deck.get(slot));
