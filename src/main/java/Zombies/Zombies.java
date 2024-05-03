@@ -65,12 +65,7 @@ public abstract class Zombies {
     }
 
     public void setSlowed(boolean slow){
-        if(slow){
-            statusEffect = statusEffect | 1;
-        }
-        else{
-            statusEffect = statusEffect & 0;
-        }
+        statusEffect = slow ? (statusEffect | 1) : (statusEffect & ~1);
     }
 
     public boolean getSlowed(){
