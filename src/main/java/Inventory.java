@@ -49,6 +49,7 @@ public class Inventory{
             PlantFactory<? extends Plants> temp = deck.get(slot1);
             deck.set(slot1, deck.get(slot2));
             deck.set(slot2, temp);
+            deck.swap(slot1, slot2);
         }
 
     }
