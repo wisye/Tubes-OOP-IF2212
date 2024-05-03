@@ -24,4 +24,8 @@ public class Sun {
     public static void reduceSun(int amount){
         Sun.amount -= amount;
     }
+
+    public static void setSun(int amount){
+        Sun.amount = amount;
+    }
 }

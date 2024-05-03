@@ -26,7 +26,7 @@ public class Inventory{
 
     //Memilih tanaman
     //Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan tanaman yang dipilih tidak bisa dipilih kembali
-    public void choosePlant(Plants plants, Deck<? extends Plants> deck){
+    public void choosePlant(Plants plants, Deck<?> deck){
         for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
             if(entry.getKey().equals(plants) && entry.getValue()){
                 throw new IllegalStateException("Plant already chosen");
@@ -40,7 +40,7 @@ public class Inventory{
 
     //Menukar posisi tanaman
     //Menukar posisi tanaman pada slot deck maupun inventory. Tidak akan ada penukaran antar slot deck dan inventory. Pastikan posisi tidak bisa ditukar dengan posisi sendiri ataupun posisi kosong.
-    public void swapPlant(int slot1, int slot2, Deck<T> deck){
+    public void swapPlant(int slot1, int slot2, Deck<?> deck){
         if(slot1 == slot2){
             throw new IllegalStateException("Cannot swap with the same slot");
         } else if(deck.get(slot1) == null || deck.get(slot2) == null){
@@ -55,7 +55,7 @@ public class Inventory{
 
     //Menghapus tanaman
     //Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
-    public void removePlant(int slot, Deck<T> deck){
+    public void removePlant(int slot, Deck<?> deck){
         if(deck.get(slot) != null){
             deck.remove(deck.get(slot));
         } else {

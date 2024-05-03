@@ -7,6 +7,9 @@ public abstract class Zombies {
     private Integer attackSpeed;
     private Boolean isAquatic;
     private int timeCreated;
+    private int statusEffect = 0;
+    // Bit 0 = slowed
+    // Bit 1 = 
 
     public Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic, int timeCreated) {
         this.name = name;
@@ -59,5 +62,18 @@ public abstract class Zombies {
 
     public int getTimeCreated(){
         return timeCreated;
+    }
+
+    public void setSlowed(boolean slow){
+        if(slow){
+            statusEffect = statusEffect | 1;
+        }
+        else{
+            statusEffect = statusEffect & 0;
+        }
+    }
+
+    public boolean getSlowed(){
+        return ((statusEffect & 1) == 1);
     }
 }

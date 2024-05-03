@@ -9,10 +9,23 @@ public class Deck<T> {
         this.deck = new ArrayList<>(6);
     }
 
-    public void add(PlantFactory<? extends Plants> factory) {
+    public void add(Plants plant) {
         if (deck.size() < 6) {
-            deck.add(factory);
-        } else {
+            if(plant instanceof Peashooter){
+                deck.add(new PeashooterFactory());
+            }
+            else if(plant instanceof Sunflower){
+                deck.add(new SunflowerFactory());
+            }
+            else if(plant instanceof Lilypad){
+                deck.add(new LilypadFactory());
+            }
+            else if(plant instanceof Wallnut){
+                deck.add(new WallnutFactory());
+            }
+            
+        } 
+        else {
             throw new IllegalStateException("Deck is full");
         }
     }

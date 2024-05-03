@@ -63,14 +63,15 @@ public class Main {
         gameOver = false;
         seconds = 0;
         Sun.getInstance();
+        Sun.setSun(25);
         Map map = new Map();
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
-        deck.add(new Deck.PeashooterFactory());
-        deck.add(new Deck.SunflowerFactory());
-        deck.add(new Deck.LilypadFactory());
-        deck.add(new Deck.WallnutFactory());
+        deck.add(new Peashooter(0));
+        deck.add(new Sunflower(0));
+        deck.add(new Lilypad(0));
+        deck.add(new Wallnut(0));
 
 //        map.plant(2, 1, deck.get(1));
 //        map.plant(3, 1, deck.get(1));
@@ -94,12 +95,19 @@ public class Main {
             
             while (!gameOver && seconds < 200) {
                 try {
-
-
                     if (seconds <= 100) {
                         if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
                             Sun.addSun();
                             lastSunUpdate = seconds;
+                        }
+                    }
+
+                    if (seconds >= 55 && seconds <= 58){ // BONUS YANG FLAG
+                        for(int i = 0; i < 6; i++){
+                            if(random.nextFloat() < 0.3){
+                                Normal zombie = new Normal(seconds);
+                                map.addZombie(i, zombie);
+                            }
                         }
                     }
 
