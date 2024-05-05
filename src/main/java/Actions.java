@@ -8,6 +8,8 @@ public class Actions{
         
     // }
 
+    private static final String[] zombieList = {"Normal", "Conehead"};
+
 	public void moveZombie(int row, List<Zombies> zombies) {
         for(Zombies zombie : zombies){
             if(Main.seconds > zombie.getTimeCreated() && (Main.seconds - zombie.getTimeCreated()) % 5 == 0){
@@ -59,4 +61,19 @@ public class Actions{
             }
         }
     }
+
+    // public void spawnRandomZombies(){
+    //     // random from length of array zombie
+    //     result = zombieList[i];
+    //     switch (result) {
+    //         case "normal":
+    //             new Normal
+    //             break;
+            
+    //         case "Conehead":
+    //             new Conehead
+    //         default:
+    //             break;
+    //     }
+    // }
 }

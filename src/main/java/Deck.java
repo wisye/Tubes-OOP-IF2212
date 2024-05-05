@@ -37,6 +37,10 @@ public class Deck<T> {
     public Plants create(int index, int timeCreated){
         return deck.get(index).create(timeCreated);
     }
+
+    public int size(){
+        return deck.size();
+    }
     
     public static class PeashooterFactory implements PlantFactory<Peashooter> {
         public Peashooter create(int timeCreated) {

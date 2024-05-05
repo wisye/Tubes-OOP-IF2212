@@ -11,13 +11,14 @@ public class Main {
     public static int seconds = 0;
     public static void main(String[] args) {
         int choice = 0;
+        Gui gui = new Gui();
         while(true){
             Scanner scanner = new Scanner(System.in);
             // Thread gameThread = null;
             try{
                 choice = menu(scanner);
                 if(choice == 1){
-                    start(scanner);
+                    start(scanner, gui);
                 }
                 else if(choice == 2){
                     // help();
@@ -59,7 +60,7 @@ public class Main {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public static void start(Scanner scanner){
+    public static void start(Scanner scanner, Gui gui){
         gameOver = false;
         seconds = 0;
         Sun.getInstance();
@@ -68,6 +69,10 @@ public class Main {
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
+        Inventory inventory = new Inventory();
+
+        gui.startMenu(deck, inventory);
+        
         deck.add(new Peashooter(0));
         deck.add(new Sunflower(0));
         deck.add(new Lilypad(0));

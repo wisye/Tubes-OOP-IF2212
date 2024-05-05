@@ -15,6 +15,8 @@ Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar po
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import Plants.*;
 
 public class Inventory{
@@ -61,5 +63,14 @@ public class Inventory{
         } else {
             throw new IllegalStateException("Slot is empty");
         }
+    }
+
+    public int size(){
+        return inventory.size();
+    }
+
+    public Plants get(int i){
+        List<Plants> plants = new ArrayList<>(inventory.keySet());
+        return plants.get(i);
     }
 }

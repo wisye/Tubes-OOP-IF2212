@@ -19,7 +19,7 @@ public abstract class Tile {
         this.grass = grass;
         this.water = water;
         this.spawnArea = spawnArea;
-        this.zombies = new CopyOnWriteArrayList<>();
+        this.zombies = new CopyOnWriteArrayList<Zombies>();
     }
 
     public Boolean getProtectedArea() {
