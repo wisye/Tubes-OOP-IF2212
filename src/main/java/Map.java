@@ -37,6 +37,10 @@ public class Map {
         return tiles[row][col];
     }
 
+    public static Tile setTile(int row, int col) {
+        return tiles[row][col] = null;
+    }
+
     public void printMap() {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {

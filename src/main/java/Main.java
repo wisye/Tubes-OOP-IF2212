@@ -191,6 +191,21 @@ public class Main {
         // return gameThread;
     }
 
+    public static void help(){
+        System.out.println("\tJaga rumah mu dengan menanam tanaman sebanyak mungkin!");
+        System.out.println("\tBerikut caranya:");
+        System.out.println("1. Pilihlah tanaman dari inventory mu");
+        System.out.println("2. Pilih 1 untuk memulai permainan");
+        System.out.println("3. Kumpulkan Sun mungkin agar bisa menanam tanaman");
+        System.out.println("4. Mulailah menanam tanaman sebanyak mungkin");
+        System.out.println("\tJika di pagi harisudah tidak ada zombie, maka kamu berhasil menjaga rumah mu!");
+        System.out.println("\tJika salah satu zombie telah sampai di depan rumah mu, maka kamu akan terkena serangan zombie");
+    }
+
+    public static void plantsList(){
+        for(Plants i : )
+    }
+
     public static void pickPlant(Scanner scanner){
 
     }

@@ -75,4 +75,8 @@ public class Deck<T> {
         deck.set(index1, deck.get(index2));
         deck.set(index2, temp);
     }
+
+    public void test(){
+        System.out.println("test");
+    }
 }
