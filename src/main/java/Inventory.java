@@ -51,12 +51,13 @@ public class Inventory{
             PlantFactory<? extends Plants> temp = deck.get(slot1);
             deck.set(slot1, deck.get(slot2));
             deck.set(slot2, temp);
+            deck.swap(slot1, slot2);
         }
 
     }
 
     //Menghapus tanaman
-    //Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
+    //Mengubah slot pada deck tanaman yang  berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
     public void removePlant(int slot, Deck<?> deck){
         if(deck.get(slot) != null){
             deck.remove(deck.get(slot));
