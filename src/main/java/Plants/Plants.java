@@ -84,4 +84,8 @@ public abstract class Plants {
     public void setTimeCreated(int timeCreated){
         this.timeCreated = timeCreated;
     }
+
+    public void test(){
+        System.out.println(name);
+    }
 }
