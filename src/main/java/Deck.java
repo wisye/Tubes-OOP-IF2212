@@ -20,6 +20,8 @@ public class Deck<T> {
                     deck.add(new LilypadFactory());
                 } else if (plant instanceof Wallnut) {
                     deck.add(new WallnutFactory());
+                } else {
+                    throw new IllegalArgumentException();
                 }
 
             } else {
