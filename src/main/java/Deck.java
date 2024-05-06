@@ -5,28 +5,28 @@ import Plants.*;
 public class Deck<T> {
     private List<PlantFactory<? extends Plants>> deck;
 
-    public Deck(){
+    public Deck() {
         this.deck = new ArrayList<>(6);
     }
 
     public void add(Plants plant) {
-        if (deck.size() < 6) {
-            if(plant instanceof Peashooter){
-                deck.add(new PeashooterFactory());
+        try {
+            if (deck.size() < 6) {
+                if (plant instanceof Peashooter) {
+                    deck.add(new PeashooterFactory());
+                } else if (plant instanceof Sunflower) {
+                    deck.add(new SunflowerFactory());
+                } else if (plant instanceof Lilypad) {
+                    deck.add(new LilypadFactory());
+                } else if (plant instanceof Wallnut) {
+                    deck.add(new WallnutFactory());
+                }
+
+            } else {
+                throw new IllegalStateException("Deck is full");
             }
-            else if(plant instanceof Sunflower){
-                deck.add(new SunflowerFactory());
-            }
-            else if(plant instanceof Lilypad){
-                deck.add(new LilypadFactory());
-            }
-            else if(plant instanceof Wallnut){
-                deck.add(new WallnutFactory());
-            }
-            
-        } 
-        else {
-            throw new IllegalStateException("Deck is full");
+        } catch (Exception E) {
+            E.printStackTrace();
         }
     }
 
@@ -34,32 +34,32 @@ public class Deck<T> {
         return deck.get(index);
     }
 
-    public Plants create(int index, int timeCreated){
+    public Plants create(int index, int timeCreated) {
         return deck.get(index).create(timeCreated);
     }
 
-    public int size(){
+    public int size() {
         return deck.size();
     }
-    
+
     public static class PeashooterFactory implements PlantFactory<Peashooter> {
         public Peashooter create(int timeCreated) {
             return new Peashooter(timeCreated);
         }
     }
-    
+
     public static class SunflowerFactory implements PlantFactory<Sunflower> {
         public Sunflower create(int timeCreated) {
             return new Sunflower(timeCreated);
         }
     }
-    
+
     public static class LilypadFactory implements PlantFactory<Lilypad> {
         public Lilypad create(int timeCreated) {
             return new Lilypad(timeCreated);
         }
     }
-    
+
     public static class WallnutFactory implements PlantFactory<Wallnut> {
         public Wallnut create(int timeCreated) {
             return new Wallnut(timeCreated);
