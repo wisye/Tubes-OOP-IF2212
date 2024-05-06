@@ -21,7 +21,7 @@ public class Deck<T> {
                 } else if (plant instanceof Wallnut) {
                     deck.add(new WallnutFactory());
                 } else {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Invalid Plant Type");
                 }
 
             } else {
