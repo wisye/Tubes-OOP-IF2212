@@ -10,8 +10,9 @@
 -Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
 
 
-Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar posisi tanaman”  */
+Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar posisi tanaman”
 
+*/
 
 import java.util.Map;
 import java.util.HashMap;
