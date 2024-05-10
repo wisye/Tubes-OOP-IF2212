@@ -202,9 +202,9 @@ public class Main {
         System.out.println("\tJika salah satu zombie telah sampai di depan rumah mu, maka kamu akan terkena serangan zombie");
     }
 
-    public static void plantsList(){
-        for(Plants i : )
-    }
+    // public static void plantsList(){
+    //     for(Plants i : )
+    // }
 
     public static void pickPlant(Scanner scanner){
 
