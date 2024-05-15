@@ -32,6 +32,8 @@ public class Map {
         for (int i = 0; i < 6; i++) {
             tiles[i][10] = new SpawnArea();
         }
+        tiles[2][10].setWater(true);
+        tiles[3][10].setWater(true);
     }
 
     public static Tile getTile(int row, int col) {
@@ -72,9 +74,9 @@ public class Map {
     public void plant(int row, int col, Plants plant){
         if(plant instanceof Sunflower){
             new Thread(() -> {
-                while (!Main.gameOver) {
+                while (!gameLoop.gameOver) {
                     try {
-                        Thread.sleep(10000); // sleep for 10 seconds
+                        Thread.sleep(3000); // sleep for 3 seconds
                         Sun.addSun();
                     } 
                     catch (InterruptedException e) {

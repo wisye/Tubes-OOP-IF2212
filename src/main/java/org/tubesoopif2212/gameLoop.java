@@ -7,61 +7,47 @@ import org.tubesoopif2212.Zombies.*;
 import java.util.Random;
 import java.util.Scanner;
 
-
-public class Main {
+public class gameLoop {
     public static Boolean gameOver = false;
     public static int seconds = 0;
+
     public static void main(String[] args) {
         int choice = 0;
-        while(true){
+        while (true) {
             Scanner scanner = new Scanner(System.in);
             // Thread gameThread = null;
-            try{
-                choice = menu(scanner);
-                if(choice == 1){
-                    start(scanner);
-                }
-                else if(choice == 2){
+            try {
+                menu(scanner);
+                choice = Integer.parseInt(scanner.nextLine());
+                if (choice == 1) {
+                    startGame(scanner);
+                } else if (choice == 2) {
                     // help();
-                }
-                else if(choice == 3){
+                } else if (choice == 3) {
                     // plantsList(scanner);
-                }
-                else if(choice == 4){
+                } else if (choice == 4) {
                     // zombiesList(scanner);
-                }
-                else if(choice == 5){
+                } else if (choice == 5) {
                     System.out.println("Byee");
                     break;
-                }
-                else{
+                } else {
                     throw new IllegalArgumentException("Choice is invalid");
                 }
-            }
-            catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-
-            // if (gameThread != null) {
-            //     try {
-            //         gameThread.join();
-            //     } catch (InterruptedException e) {
-            //         e.printStackTrace();
-            //     }
-            // }
         }
     }
 
-    public static int menu(Scanner scanner){
-        System.out.println( "1. Start\n" +
-                            "2. Help\n" +
-                            "3. Plants List\n" +
-                            "4. Zombies List\n" +
-                            "5. Exit");
-        return Integer.parseInt(scanner.nextLine());
+    public static void menu(Scanner scanner) {
+        System.out.println("1. Start\n" +
+                "2. Help\n" +
+                "3. Plants List\n" +
+                "4. Zombies List\n" +
+                "5. Exit");
     }
 
-    public static void start(Scanner scanner){
+    public static void startGame(Scanner scanner) {
         gameOver = false;
         seconds = 0;
         Sun.getInstance();
@@ -72,16 +58,15 @@ public class Main {
         Deck<Plants> deck = new Deck<Plants>();
         Inventory inventory = new Inventory();
 
-        
         deck.add(new Peashooter(0));
         deck.add(new Sunflower(0));
         deck.add(new Lilypad(0));
         deck.add(new Wallnut(0));
 
-//        map.plant(2, 1, deck.get(1));
-//        map.plant(3, 1, deck.get(1));
-//        map.plant(4, 1, deck.get(1));
-//        map.plant(4, 1, deck.get(1));
+        // map.plant(2, 1, deck.get(1));
+        // map.plant(3, 1, deck.get(1));
+        // map.plant(4, 1, deck.get(1));
+        // map.plant(4, 1, deck.get(1));
         map.plant(9, 1, deck.create(3, seconds));
         map.plant(8, 5, deck.create(1, seconds));
         map.plant(8, 4, deck.create(3, seconds));
@@ -97,7 +82,7 @@ public class Main {
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
             int lastSunUpdate = 0;
-            
+
             while (!gameOver && seconds < 200) {
                 try {
                     if (seconds <= 100) {
@@ -107,9 +92,9 @@ public class Main {
                         }
                     }
 
-                    if (seconds >= 55 && seconds <= 58){ // BONUS YANG FLAG
-                        for(int i = 0; i < 6; i++){
-                            if(random.nextFloat() < 0.3){
+                    if (seconds >= 55 && seconds <= 58) { // BONUS YANG FLAG
+                        for (int i = 0; i < 6; i++) {
+                            if (random.nextFloat() < 0.3) {
                                 Normal zombie = new Normal(seconds);
                                 map.addZombie(i, zombie);
                             }
@@ -117,10 +102,10 @@ public class Main {
                     }
 
                     if (seconds >= 20 && seconds <= 160) {
-                        for(int i = 0; i < 6; i++){
-                            if(random.nextFloat() < 0.3){
-                                Normal zombie = new Normal(seconds);
-                                map.addZombie(i, zombie);
+                        for (int i = 0; i < 6; i++) {
+                            Tile tile = Map.getTile(i, 10);
+                            if (random.nextFloat() < 0.3) {
+                                action.spawnRandomZombies(tile);
                             }
                         }
                     }
@@ -133,17 +118,16 @@ public class Main {
                     }
                     Thread.sleep(1000); // sleep for 1 second
                     seconds++;
-//                    System.out.println(Sun.getAmount());
+                    // System.out.println(Sun.getAmount());
                     System.out.println(Sun.getAmount());
                     map.printMap();
                     System.out.println();
-                } 
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            if(gameOver){
+            if (gameOver) {
                 System.out.println("You lose!");
             }
 
@@ -152,32 +136,30 @@ public class Main {
                 gameOver = true;
             }
 
-
         });
         gameThread.start();
 
         // // Thread for user input
         // new Thread(() -> {
-        //     while (!gameOver) {
-        //     }
+        // while (!gameOver) {
+        // }
         // }).start();
 
         // Thread for plants and zombies
         // new Thread(() -> {
         while (!gameOver) {
-            try{
-                for(int i = 0; i < 11; i++){
-                    for(int j = 0; j < 6; j++){
+            try {
+                for (int i = 0; i < 11; i++) {
+                    for (int j = 0; j < 6; j++) {
                         Tile tile = Map.getTile(j, i);
-                        synchronized(tile){
-                            if(!(tile.getPlant() == null)){
+                        synchronized (tile) {
+                            if (!(tile.getPlant() == null)) {
                                 action.attackPlant(i, j, tile.getPlant());
                             }
-                            if(!tile.getZombies().isEmpty()){
-                                if(tile.getPlant() == null){
+                            if (!tile.getZombies().isEmpty()) {
+                                if (tile.getPlant() == null) {
                                     action.moveZombie(j, tile.getZombies());
-                                }
-                                else{
+                                } else {
                                     action.attackZombie(tile, map, i, j);
                                 }
                             }
@@ -186,8 +168,7 @@ public class Main {
                     }
                 }
                 Thread.sleep(1000);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -196,7 +177,7 @@ public class Main {
         // return gameThread;
     }
 
-    public static void pickPlant(Scanner scanner){
-
+    public static void pickPlant(Scanner scanner) {
+        
     }
 }

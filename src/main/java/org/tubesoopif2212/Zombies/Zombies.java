@@ -8,6 +8,8 @@ public abstract class Zombies {
     private Boolean isAquatic;
     private int timeCreated;
     private int statusEffect = 0;
+
+    public static int amount = 0;
     // Bit 0 = slowed
     // Bit 1 = 
 

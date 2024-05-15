@@ -27,7 +27,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'org.tubesoopif2212'
-  mainClass = 'org.tubesoopif2212.Gui'
+  mainClass = 'org.tubesoopif2212.gameLoop'
 }
 
 javafx {
@@ -58,4 +58,8 @@ jlink {
 
 jlinkZip {
   group = 'distribution'
+}
+
+run {
+  standardInput = System.in
 }
