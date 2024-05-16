@@ -58,22 +58,15 @@ public class gameLoop {
         Deck<Plants> deck = new Deck<Plants>();
         Inventory inventory = new Inventory();
 
-        deck.add(new Peashooter(0));
-        deck.add(new Sunflower(0));
-        deck.add(new Lilypad(0));
-        deck.add(new Wallnut(0));
+        pickPlant(scanner, deck, inventory);
 
-        // map.plant(2, 1, deck.get(1));
-        // map.plant(3, 1, deck.get(1));
-        // map.plant(4, 1, deck.get(1));
-        // map.plant(4, 1, deck.get(1));
         map.plant(9, 1, deck.create(3, seconds));
         map.plant(8, 5, deck.create(1, seconds));
         map.plant(8, 4, deck.create(3, seconds));
         map.plant(7, 0, deck.create(1, seconds));
         map.plant(1, 1, deck.create(0, seconds));
-        map.plant(1, 0, deck.create(0, seconds));
-        map.plant(2, 0, deck.create(0, seconds));
+        map.plant(1, 0, deck.create(4, seconds));
+        map.plant(2, 0, deck.create(4, seconds));
         map.plant(2, 1, deck.create(0, seconds));
         map.plant(2, 4, deck.create(0, seconds));
         map.plant(2, 5, deck.create(0, seconds));
@@ -177,7 +170,36 @@ public class gameLoop {
         // return gameThread;
     }
 
-    public static void pickPlant(Scanner scanner) {
-        
+    public static void pickPlant(Scanner scanner, Deck<Plants> deck, Inventory inventory) {
+        while (deck.size() < 6) {
+            System.out.println("Inventory: ");
+            System.out.println(inventory.toString());
+            System.out.println();
+            System.out.println("Deck: ");
+            System.out.println(deck.toString());
+            System.out.println(
+                    "<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
+                            "<2 x> Pilih tanaman untuk dikeluarkan dari deck\n" +
+                            "<3 x y> Pilih tanaman untuk ditukar di deck\n");
+            int choice = scanner.nextInt();
+            try {
+                if (choice == 1) {
+                    int x = scanner.nextInt() - 1;
+                    inventory.choosePlant(inventory.get(x), deck);
+                } else if (choice == 2) {
+                    int x = scanner.nextInt() - 1;
+                    inventory.removePlant(x, deck);
+                } else if (choice == 3) {
+                    int x = scanner.nextInt() - 1;
+                    int y = scanner.nextInt() - 1;
+                    inventory.swapPlant(x, y, deck);
+                } else {
+                    scanner.nextLine();
+                    System.out.println("Input tidak valid");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
