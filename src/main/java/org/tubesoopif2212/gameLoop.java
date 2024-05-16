@@ -60,17 +60,17 @@ public class gameLoop {
 
         pickPlant(scanner, deck, inventory);
 
-        map.plant(9, 1, deck.create(3, seconds));
-        map.plant(8, 5, deck.create(1, seconds));
-        map.plant(8, 4, deck.create(3, seconds));
-        map.plant(7, 0, deck.create(1, seconds));
-        map.plant(1, 1, deck.create(0, seconds));
-        map.plant(1, 0, deck.create(4, seconds));
-        map.plant(2, 0, deck.create(4, seconds));
-        map.plant(2, 1, deck.create(0, seconds));
-        map.plant(2, 4, deck.create(0, seconds));
-        map.plant(2, 5, deck.create(0, seconds));
-        map.plant(8, 1, deck.create(1, seconds));
+        // map.plant(9, 1, deck.create(3, seconds));
+        // map.plant(8, 5, deck.create(1, seconds));
+        // map.plant(8, 4, deck.create(3, seconds));
+        // map.plant(7, 0, deck.create(1, seconds));
+        // map.plant(1, 1, deck.create(0, seconds));
+        // map.plant(1, 0, deck.create(4, seconds));
+        // map.plant(2, 0, deck.create(4, seconds));
+        // map.plant(2, 1, deck.create(0, seconds));
+        // map.plant(2, 4, deck.create(0, seconds));
+        // map.plant(2, 5, deck.create(0, seconds));
+        // map.plant(8, 1, deck.create(1, seconds));
 
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
@@ -112,9 +112,9 @@ public class gameLoop {
                     Thread.sleep(1000); // sleep for 1 second
                     seconds++;
                     // System.out.println(Sun.getAmount());
-                    System.out.println(Sun.getAmount());
-                    map.printMap();
-                    System.out.println();
+                    // System.out.println(Sun.getAmount());
+                    // map.printMap();
+                    // System.out.println();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -133,10 +133,35 @@ public class gameLoop {
         gameThread.start();
 
         // // Thread for user input
-        // new Thread(() -> {
-        // while (!gameOver) {
-        // }
-        // }).start();
+        new Thread(() -> {
+            map.printMap();
+            while (!gameOver) {
+                System.out.println(
+                    "\n" +
+                    "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
+                    "<2 x y> Dig tanaman di koordinat map\n" +
+                    Sun.getAmount() + "\n" +
+                    deck.toString() + "\n"
+                );
+                int input = scanner.nextInt();
+                try{
+                    if(input == 1){
+                        map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
+                        map.printMap();
+                    }
+                    else if(input == 2){
+                        map.dig(scanner.nextInt(), scanner.nextInt() - 1);
+                        map.printMap();
+                    }
+                    else{
+                        throw new Exception("Invalid input");
+                    }
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+        }).start();
 
         // Thread for plants and zombies
         // new Thread(() -> {
@@ -178,9 +203,10 @@ public class gameLoop {
             System.out.println("Deck: ");
             System.out.println(deck.toString());
             System.out.println(
-                    "<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
-                            "<2 x> Pilih tanaman untuk dikeluarkan dari deck\n" +
-                            "<3 x y> Pilih tanaman untuk ditukar di deck\n");
+                "<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
+                "<2 x> Pilih tanaman untuk dikeluarkan dari deck\n" +
+                "<3 x y> Pilih tanaman untuk ditukar di deck\n"
+            );
             int choice = scanner.nextInt();
             try {
                 if (choice == 1) {

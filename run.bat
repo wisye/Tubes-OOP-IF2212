@@ -1,2 +1,2 @@
 @echo off
-gradle -q --console plain run
+.\gradlew -q --console plain run
