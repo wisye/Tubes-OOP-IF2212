@@ -17,7 +17,7 @@ public class Actions implements ZombieFactory{
 
 	public void moveZombie(int row, List<Zombies> zombies) {
         for(Zombies zombie : zombies){
-            if(gameLoop.seconds <= zombie.getTimeCreated() || (gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
+            if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
                 continue;
             }
             for (int col = 0; col < 11; col++) {

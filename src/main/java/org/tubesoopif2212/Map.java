@@ -42,7 +42,7 @@ public class Map {
 
     public void printMap() {
         for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
+            for (int j = 1; j < tiles[i].length - 1; j++) {
                 synchronized(tiles[i][j]){
                     System.out.print("[");
                     if(tiles[i][j].getPlant() != null){
@@ -71,7 +71,11 @@ public class Map {
         }
     }
 
-    public void plant(int row, int col, Plants plant){
+    public void plant(int row, int col, Plants plant) throws Exception{
+        if(Sun.getAmount() < plant.getCost()){
+            throw new Exception("Not enough sun");
+        }
+        Sun.reduceSun(plant.getCost());
         if(plant instanceof Sunflower){
             new Thread(() -> {
                 while (!gameLoop.gameOver) {
@@ -93,7 +97,7 @@ public class Map {
             (tiles[col][row]).setPlant(plant);
         }
         else {
-            throw new IllegalArgumentException("This plant cannot be planted on this tile");
+            throw new Exception("This plant cannot be planted on this tile");
         }
         // if(plant.getAttack_damage() != 0){
         //     attackZombies(col, row, plant);
