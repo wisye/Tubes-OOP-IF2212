@@ -99,9 +99,6 @@ public class Map {
         else {
             throw new Exception("This plant cannot be planted on this tile");
         }
-        // if(plant.getAttack_damage() != 0){
-        //     attackZombies(col, row, plant);
-        // }
     }
 
     public void dig(int row, int col){

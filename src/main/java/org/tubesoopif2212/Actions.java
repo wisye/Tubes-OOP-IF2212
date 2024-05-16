@@ -28,8 +28,13 @@ public class Actions implements ZombieFactory{
                     }
                     if (col > 0) {
                         Tile leftTile = Map.getTile(row, col - 1);
-                        leftTile.addZombie(zombie);
-                        tile.removeZombie(zombie);
+                        if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
+                            jump(row, col, zombie);
+                        }
+                        else{
+                            leftTile.addZombie(zombie);
+                            tile.removeZombie(zombie);
+                        }
                     }
                     break;
                 }
@@ -38,48 +43,40 @@ public class Actions implements ZombieFactory{
 	}
 
     public void attackPlant(int row, int column, Plants plant){
-        if (plant.getAttackSpeed() == 0) {
+        if (plant.getAttackDamage() == 0) {
             return;
         }
 
-        if ((gameLoop.seconds - plant.getTimeCreated()) % plant.getAttackSpeed() != 0) {
+        if(plant.getAttackCooldown() > 0){
+            plant.setAttackCooldown(plant.getAttackCooldown() - 1);
             return;
         }
-        
-        if (plant.getRange() == -1) {
-            for (int i = row; i < 11; i++) {
-                Tile tile = Map.getTile(column, i);
-                if (tile.getZombies().isEmpty()) {
-                    continue;
-                }
-                for (Zombies zombie : tile.getZombies()) {
-                    zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
-                    if(zombie.getHealth() > 0){
-                        continue;
-                    }
-                    tile.removeZombie(zombie);
-                    Zombies.amount--;
-                }
-                break;
-            }
-        } 
-        else {
-            for (int i = row; i <= row + plant.getRange() && i < 11; i++) {
-                Tile tile = Map.getTile(column, i);
-                if (tile.getZombies().isEmpty()) {
-                    continue;
-                }
-                for (Zombies zombie : tile.getZombies()) {
-                    zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
-                    if(zombie.getHealth() > 0){
-                        continue;
-                    }
-                    tile.removeZombie(zombie);
-                    Zombies.amount--;
-                }
+
+        int max_range = plant.getRange() == -1 ? 10 : (plant.getRange() + row) >= 10 ? 10 : (plant.getRange() + row);
+        boolean hasZombies = false;
+        Tile tile = null;
+
+        for (int i = row; i < max_range; i++) {
+            tile = Map.getTile(column, i);
+            if (!tile.getZombies().isEmpty()) {
+                hasZombies = true;
                 break;
             }
         }
+    
+        if (!hasZombies) {
+            return;
+        }
+
+        for (Zombies zombie : tile.getZombies()) {
+            zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
+            if(zombie.getHealth() > 0){
+                continue;
+            }
+            tile.removeZombie(zombie);
+            Zombies.amount--;
+        }
+        plant.setAttackCooldown(plant.getAttackSpeed() - 1);
     }
 
     public void attackZombie(Tile tile, Map map, int row, int column){
@@ -155,5 +152,16 @@ public class Actions implements ZombieFactory{
             }
         }
         Zombies.amount++;
+    }
+
+    public void jump(int row, int col, Zombies zombie){
+        Tile currentTile = Map.getTile(row, col);
+        Tile leftTile = Map.getTile(row, col - 1);
+        Tile secondLeftTile = Map.getTile(row, col - 2);
+
+        leftTile.setPlant(null);
+        secondLeftTile.addZombie(zombie);
+        currentTile.removeZombie(zombie);
+        zombie.setNextHop(false);
     }
 }
