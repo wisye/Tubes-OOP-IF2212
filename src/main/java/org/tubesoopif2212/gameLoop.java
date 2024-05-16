@@ -51,7 +51,7 @@ public class gameLoop {
         gameOver = false;
         seconds = 0;
         Sun.getInstance();
-        Sun.setSun(25);
+        Sun.setSun(10000);
         Map map = new Map();
         Random random = new Random();
         Actions action = new Actions();
@@ -75,9 +75,15 @@ public class gameLoop {
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
             int lastSunUpdate = 0;
-
+            try{
+            map.plant(5, 5, deck.create(0, seconds));
+            } catch (Exception e){System.out.println(e.getMessage());}
+            // map.addZombie(0, new EntireZom100Cast(seconds));
             while (!gameOver && seconds < 200) {
                 try {
+                    if(seconds == 10){
+                        map.addZombie(5, new ShrekButZombie(seconds));
+                    }
                     if (seconds <= 100) {
                         if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
                             Sun.addSun();
@@ -113,8 +119,8 @@ public class gameLoop {
                     seconds++;
                     // System.out.println(Sun.getAmount());
                     // System.out.println(Sun.getAmount());
-                    // map.printMap();
-                    // System.out.println();
+                    map.printMap();
+                    System.out.println();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

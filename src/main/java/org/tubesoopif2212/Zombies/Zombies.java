@@ -8,6 +8,7 @@ public abstract class Zombies {
     private Boolean isAquatic;
     private int timeCreated;
     private int statusEffect = 0;
+    private int ability = 0;
 
     public static int amount = 0;
     // Bit 0 = slowed
@@ -72,5 +73,13 @@ public abstract class Zombies {
 
     public boolean getSlowed(){
         return ((statusEffect & 1) == 1);
+    }
+
+    public void setNextHop(boolean hop){
+        ability = hop ? (ability | 1) : (ability & ~1);
+    }
+
+    public boolean getNextHop(){
+        return ((ability & 1) == 1);
     }
 }
