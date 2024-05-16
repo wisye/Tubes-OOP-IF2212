@@ -1,10 +1,10 @@
 module org.tubesoopif2212 {
-    // requires javafx.controls;
-    // requires javafx.fxml;
-    // requires transitive javafx.graphics;
-    // requires kotlin.stdlib;
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires transitive javafx.graphics;
+    requires kotlin.stdlib;
 
-    // requires com.almasb.fxgl.all;
+    requires com.almasb.fxgl.all;
 
     opens org.tubesoopif2212 to javafx.fxml;
     exports org.tubesoopif2212;
