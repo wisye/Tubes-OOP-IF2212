@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Actions implements ZombieFactory{
-    // public void run(){
-        
-    // }
 
     public ZombieFactory.zombieTypeWater[] typesWater = ZombieFactory.zombieTypeWater.values();
     public ZombieFactory.zombieTypeLand[] typesLand = ZombieFactory.zombieTypeLand.values();
@@ -30,6 +27,13 @@ public class Actions implements ZombieFactory{
                         Tile leftTile = Map.getTile(row, col - 1);
                         if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
                             jump(row, col, zombie);
+                        } else if(leftTile.getPlant() != null && zombie.getSlowed()==true){
+                            int waktu = gameLoop.seconds;
+                            while(gameLoop.seconds - waktu <= 3){
+                                if((gameLoop.seconds - zombie.getTimeCreated()) % 10 != 0){
+                                    continue;
+                                }
+                            }
                         }
                         else{
                             leftTile.addZombie(zombie);
@@ -69,6 +73,12 @@ public class Actions implements ZombieFactory{
         }
 
         for (Zombies zombie : tile.getZombies()) {
+            if(plant instanceof Snowpea){
+                zombie.setSlowed(true);
+                zombie.setAttackSpeed(zombie.getAttackSpeed()/2);
+                zombie.setStatusEffect(1);
+            }
+
             zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
             if(zombie.getHealth() > 0){
                 continue;
