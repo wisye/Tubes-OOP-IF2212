@@ -9,7 +9,8 @@ public abstract class Zombies {
     private int timeCreated;
     private int statusEffect = 0;
     private int ability = 0;
-
+    private boolean slowed = false;
+    
     public static int amount = 0;
     // Bit 0 = slowed
     // Bit 1 = 
@@ -21,6 +22,18 @@ public abstract class Zombies {
         this.attackSpeed = attackSpeed;
         this.isAquatic = isAquatic;
         this.timeCreated = timeCreated;
+    }
+
+    public void setStatusEffect(int a){
+        statusEffect = a;
+    }
+
+    public void setSlowed(boolean slowed) {
+        this.slowed = slowed;
+    }
+
+    public boolean getSlowed(){
+        return slowed;
     }
 
     public String getName() {
@@ -65,14 +78,6 @@ public abstract class Zombies {
 
     public int getTimeCreated(){
         return timeCreated;
-    }
-
-    public void setSlowed(boolean slow){
-        statusEffect = slow ? (statusEffect | 1) : (statusEffect & ~1);
-    }
-
-    public boolean getSlowed(){
-        return ((statusEffect & 1) == 1);
     }
 
     public void setNextHop(boolean hop){
