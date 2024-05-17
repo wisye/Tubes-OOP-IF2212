@@ -1,4 +1,4 @@
-package Plants;
+package org.tubesoopif2212.Plants;
 
 public class Snowpea extends Plants{
 
