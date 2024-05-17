@@ -32,6 +32,8 @@ public class Map {
         for (int i = 0; i < 6; i++) {
             tiles[i][10] = new SpawnArea();
         }
+        tiles[2][10].setWater(true);
+        tiles[3][10].setWater(true);
     }
 
     public static Tile getTile(int row, int col) {
@@ -40,7 +42,7 @@ public class Map {
 
     public void printMap() {
         for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
+            for (int j = 1; j < tiles[i].length - 1; j++) {
                 synchronized(tiles[i][j]){
                     System.out.print("[");
                     if(tiles[i][j].getPlant() != null){
@@ -69,12 +71,16 @@ public class Map {
         }
     }
 
-    public void plant(int row, int col, Plants plant){
+    public void plant(int row, int col, Plants plant) throws Exception{
+        if(Sun.getAmount() < plant.getCost()){
+            throw new Exception("Not enough sun");
+        }
+        Sun.reduceSun(plant.getCost());
         if(plant instanceof Sunflower){
             new Thread(() -> {
-                while (!Main.gameOver) {
+                while (!gameLoop.gameOver) {
                     try {
-                        Thread.sleep(10000); // sleep for 10 seconds
+                        Thread.sleep(3000); // sleep for 3 seconds
                         Sun.addSun();
                     } 
                     catch (InterruptedException e) {
@@ -83,33 +89,26 @@ public class Map {
                 }
             }).start();
         }
-        if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
-            (tiles[col][row]).setPlant(plant);
-            ((Water)tiles[col][row]).setLilypadHere();
+        if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
+            throw new Exception("This plant cannot be planted on this tile");
         }
-        else if(tiles[col][row] instanceof Grass || ((Water)tiles[col][row]).getLilypadHere()){
+        else if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
+            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
+            (tiles[col][row]).setPlant(plant);
+        }
+        else if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
+            (tiles[col][row]).setPlant(plant);
+        }
+        else if(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad)){
             (tiles[col][row]).setPlant(plant);
         }
         else {
-            throw new IllegalArgumentException("This plant cannot be planted on this tile");
+            throw new Exception("This plant cannot be planted on this tile");
         }
-        // if(plant.getAttack_damage() != 0){
-        //     attackZombies(col, row, plant);
-        // }
     }
 
     public void dig(int row, int col){
-        if(tiles[col][row] instanceof Grass){
-            (tiles[col][row]).setPlant(null);
-        }
-        else if(tiles[col][row] instanceof Water){
-            if((tiles[col][row]).getPlant().getName() != "Lilypad"){
-                (tiles[col][row]).setPlant(new Lilypad(0));
-            }
-            else{
-                (tiles[col][row]).setPlant(null);
-            }
-        }
+        (tiles[col][row]).setPlant(null);
     }
 
     public void addZombie(int row, Zombies zombie){

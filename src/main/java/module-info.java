@@ -2,6 +2,7 @@ module org.tubesoopif2212 {
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
+    requires kotlin.stdlib;
 
     requires com.almasb.fxgl.all;
 

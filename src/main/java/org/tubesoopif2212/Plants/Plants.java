@@ -8,7 +8,8 @@ public abstract class Plants {
     private Integer attackSpeed;
     private Integer range;
     private Integer cooldown;
-    private int timeCreated = 0;
+    private Integer attackCooldown = 0;
+    private Integer timeCreated = 0;
 
     public Plants(String name, Integer cost, Integer health, Integer attackDamage, Integer attackSpeed, Integer range, Integer cooldown, int timeCreated){
         this.name = name;
@@ -83,5 +84,13 @@ public abstract class Plants {
 
     public void setTimeCreated(int timeCreated){
         this.timeCreated = timeCreated;
+    }
+
+    public Integer getAttackCooldown(){
+        return attackCooldown;
+    }
+
+    public void setAttackCooldown(Integer cooldown){
+        this.attackCooldown = cooldown;
     }
 }

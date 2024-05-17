@@ -15,18 +15,40 @@ public class Deck<T> {
     public void add(Plants plant) {
         try {
             if (deck.size() < 6) {
-                if (plant instanceof Peashooter) {
-                    deck.add(new PeashooterFactory());
-                } else if (plant instanceof Sunflower) {
-                    deck.add(new SunflowerFactory());
-                } else if (plant instanceof Lilypad) {
-                    deck.add(new LilypadFactory());
-                } else if (plant instanceof Wallnut) {
-                    deck.add(new WallnutFactory());
-                } else {
-                    throw new IllegalArgumentException("Invalid Plant Type");
+                switch (plant.getName()) {
+                    case "Peashooter":
+                        deck.add(new PeashooterFactory());
+                        break;
+                    case "Sunflower":
+                        deck.add(new SunflowerFactory());
+                        break;
+                    case "Lilypad":
+                        deck.add(new LilypadFactory());
+                        break;
+                    case "Wall nut":
+                        deck.add(new WallnutFactory());
+                        break;
+                    case "Squash":
+                        deck.add(new SquashFactory());
+                        break;
+                    case "Snow pea":
+                        deck.add(new SnowPeaFactory());
+                        break;
+                    case "Nahida":
+                        deck.add(new NahidaFactory());
+                        break;
+                    case "Planterra":
+                        deck.add(new PlanterraFactory());
+                        break;
+                    case "Cannabis":
+                        deck.add(new CannabisFactory());
+                        break;
+                    case "Ceres Fauna":
+                        deck.add(new CeresFaunaFactory());
+                        break;
+                    default:
+                        break;
                 }
-
             } else {
                 throw new IllegalStateException("Deck is full");
             }
@@ -71,6 +93,42 @@ public class Deck<T> {
         }
     }
 
+    public static class SquashFactory implements PlantFactory<Squash> {
+        public Squash create(int timeCreated) {
+            return new Squash(timeCreated);
+        }
+    }
+
+    public static class SnowPeaFactory implements PlantFactory<Snowpea> {
+        public Snowpea create(int timeCreated) {
+            return new Snowpea(timeCreated);
+        }
+    }
+
+    public static class NahidaFactory implements PlantFactory<Nahida> {
+        public Nahida create(int timeCreated) {
+            return new Nahida(timeCreated);
+        }
+    }
+
+    public static class PlanterraFactory implements PlantFactory<Planterra> {
+        public Planterra create(int timeCreated) {
+            return new Planterra(timeCreated);
+        }
+    }
+
+    public static class CannabisFactory implements PlantFactory<Cannabis> {
+        public Cannabis create(int timeCreated) {
+            return new Cannabis(timeCreated);
+        }
+    }
+
+    public static class CeresFaunaFactory implements PlantFactory<CeresFauna> {
+        public CeresFauna create(int timeCreated) {
+            return new CeresFauna(timeCreated);
+        }
+    }
+
     public void remove(PlantFactory<? extends Plants> factory) {
         deck.remove(factory);
     }
@@ -83,5 +141,15 @@ public class Deck<T> {
         PlantFactory<? extends Plants> temp = deck.get(index1);
         deck.set(index1, deck.get(index2));
         deck.set(index2, temp);
+    }
+
+    public String toString() {
+        String ret = new String();
+        int i = 1;
+        for (PlantFactory<? extends Plants> p : deck) {
+            ret += i + ". " + (p.create(0).getName()) + ("\n");
+            i++;
+        }
+        return ret.toString();
     }
 }
