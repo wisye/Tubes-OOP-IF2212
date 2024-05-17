@@ -89,11 +89,17 @@ public class Map {
                 }
             }).start();
         }
-        if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
-            (tiles[col][row]).setPlant(plant);
-            ((Water)tiles[col][row]).setLilypadHere();
+        if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
+            throw new Exception("This plant cannot be planted on this tile");
         }
-        else if(tiles[col][row] instanceof Grass || ((Water)tiles[col][row]).getLilypadHere()){
+        else if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
+            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
+            (tiles[col][row]).setPlant(plant);
+        }
+        else if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
+            (tiles[col][row]).setPlant(plant);
+        }
+        else if(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad)){
             (tiles[col][row]).setPlant(plant);
         }
         else {
@@ -102,17 +108,7 @@ public class Map {
     }
 
     public void dig(int row, int col){
-        if(tiles[col][row] instanceof Grass){
-            (tiles[col][row]).setPlant(null);
-        }
-        else if(tiles[col][row] instanceof Water){
-            if((tiles[col][row]).getPlant().getName() != "Lilypad"){
-                (tiles[col][row]).setPlant(new Lilypad(0));
-            }
-            else{
-                (tiles[col][row]).setPlant(null);
-            }
-        }
+        (tiles[col][row]).setPlant(null);
     }
 
     public void addZombie(int row, Zombies zombie){

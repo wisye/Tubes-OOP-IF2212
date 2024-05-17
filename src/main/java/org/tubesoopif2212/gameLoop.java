@@ -17,7 +17,7 @@ public class gameLoop {
             Scanner scanner = new Scanner(System.in);
             // Thread gameThread = null;
             try {
-                menu(scanner);
+                menu();
                 choice = Integer.parseInt(scanner.nextLine());
                 if (choice == 1) {
                     startGame(scanner);
@@ -28,6 +28,7 @@ public class gameLoop {
                 } else if (choice == 4) {
                     // zombiesList(scanner);
                 } else if (choice == 5) {
+                    scanner.close();
                     System.out.println("Byee");
                     break;
                 } else {
@@ -39,7 +40,7 @@ public class gameLoop {
         }
     }
 
-    public static void menu(Scanner scanner) {
+    public static void menu() {
         System.out.println("1. Start\n" +
                 "2. Help\n" +
                 "3. Plants List\n" +
@@ -75,9 +76,9 @@ public class gameLoop {
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
             int lastSunUpdate = 0;
-            try{
-            map.plant(5, 5, deck.create(0, seconds));
-            } catch (Exception e){System.out.println(e.getMessage());}
+            // try{
+            // map.plant(5, 5, deck.create(0, seconds));
+            // } catch (Exception e){System.out.println(e.getMessage());}
             // map.addZombie(0, new EntireZom100Cast(seconds));
             while (!gameOver && seconds < 200) {
                 try {
@@ -119,8 +120,8 @@ public class gameLoop {
                     seconds++;
                     // System.out.println(Sun.getAmount());
                     // System.out.println(Sun.getAmount());
-                    map.printMap();
-                    System.out.println();
+                    // map.printMap();
+                    // System.out.println();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -144,28 +145,31 @@ public class gameLoop {
             while (!gameOver) {
                 System.out.println(
                     "\n" +
+                    "Time: " + seconds + "\n" +
                     "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
                     "<2 x y> Dig tanaman di koordinat map\n" +
-                    Sun.getAmount() + "\n" +
+                    "<3> Print map\n" +
+                    "Sun: " + Sun.getAmount() + "\n" +
                     deck.toString() + "\n"
                 );
                 int input = scanner.nextInt();
                 try{
                     if(input == 1){
                         map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
-                        map.printMap();
                     }
                     else if(input == 2){
                         map.dig(scanner.nextInt(), scanner.nextInt() - 1);
-                        map.printMap();
+                    }
+                    else if(input == 3){
                     }
                     else{
                         throw new Exception("Invalid input");
                     }
                 } catch(Exception e) {
                     System.out.println(e.getMessage());
+                } finally {
+                    map.printMap();
                 }
-
             }
         }).start();
 
