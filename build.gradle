@@ -18,8 +18,9 @@ ext {
   junitVersion = '5.10.0'
 }
 
-sourceCompatibility = '21'
-targetCompatibility = '21'
+apply plugin: 'java'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
@@ -27,7 +28,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'org.tubesoopif2212'
-  mainClass = 'org.tubesoopif2212.Gui'
+  mainClass = 'org.tubesoopif2212.gameLoop'
 }
 
 javafx {
@@ -59,4 +60,8 @@ jlink {
 
 jlinkZip {
   group = 'distribution'
+}
+
+run {
+  standardInput = System.in
 }
