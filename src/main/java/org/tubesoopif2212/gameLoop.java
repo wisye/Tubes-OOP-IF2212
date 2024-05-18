@@ -25,9 +25,9 @@ public class gameLoop {
                 } else if (choice == 2) {
                     help();
                 } else if (choice == 3) {
-                    plantListss(scanner);
+                    plantLists(scanner);
                 } else if (choice == 4) {
-                    // zombieLists
+                    zombieLists(scanner);
                 } else if (choice == 5) {
                     System.out.println("Byee");
                     break;
@@ -225,10 +225,10 @@ public class gameLoop {
         System.out.println("1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower");
     }
 
-    public static void plantListss(Scanner scanner) {
+    public static void plantLists(Scanner scanner) {
         int choice = -1;
         while (choice != 0){
-            System.out.println("Inventory: ");
+            System.out.println("Tanaman: ");
             System.out.println(inventory.toString());
             System.out.println();
             try {
@@ -240,5 +240,29 @@ public class gameLoop {
                 System.out.println("Terjadi kesalahan: " + e.getMessage());
             }
         }
+    }
+
+    public static void zombieLists(Scanner scanner){
+        int choice = -1;
+        Zombies.addZombie();
+        while (choice != 0){
+            System.out.println("Zombie: ");
+            int i = 1;
+            for (Zombies zombies : Zombies.zoms){
+                System.out.println(i + ". " + zombies.getName());
+                1++
+            }
+
+            try{
+                System.out.print("Pilih indeks zombie (0 untuk kembali ke menu utama): ");
+                choice = scanner.nextInt();
+                Zombies zom = Zombies.zoms.get(choice-1);
+                System.out.println(Zombies.toString(zom));
+            } catch(Exception e){
+                System.out.println("Terjadi kesalahan: " + e.getMessage());
+            }
+        }
+
+
     }
 }
