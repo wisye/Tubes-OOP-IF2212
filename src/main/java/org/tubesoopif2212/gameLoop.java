@@ -250,7 +250,7 @@ public class gameLoop {
             int i = 1;
             for (Zombies zombies : Zombies.zoms){
                 System.out.println(i + ". " + zombies.getName());
-                1++
+                i++;
             }
 
             try{
