@@ -1,0 +1,43 @@
+.root {
+    -fx-background-image: url('images/background.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.button {
+    -fx-padding: 0.65em 1.6em;
+    -fx-border-width: 3px;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 0.12em;
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-font-weight: 300;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    transition: all 0.2s;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 0);
+}
+
+.button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #000000;
+}
+
+@keyframes bn13bouncy {
+    0%, 40%, 100% {
+        -fx-translate-y: 0em;
+    }
+    43% {
+        -fx-translate-y: -0.9em;
+    }
+    46% {
+        -fx-translate-y: 0em;
+    }
+    48% {
+        -fx-translate-y: -0.4em;
+    }
+    50% {
+        -fx-translate-y: 0em;
+    }
+}
