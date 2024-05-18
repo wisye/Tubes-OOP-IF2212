@@ -14,9 +14,18 @@ public class Actions implements ZombieFactory{
 
 	public void moveZombie(int row, List<Zombies> zombies) {
         for(Zombies zombie : zombies){
-            if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
-                continue;
+
+            if(zombie.getSlowed()){
+                int timing = gameLoop.seconds;
+                if((gameLoop.seconds - zombie.getTimeCreated()) % 7.5 != 0 && (gameLoop.seconds - timing <= 3)){
+                    continue;
+                }
+            } else{
+                if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
+                    continue;
+                }
             }
+
             for (int col = 0; col < 11; col++) {
                 Tile tile = Map.getTile(row, col);
                 synchronized(tile){
@@ -74,9 +83,7 @@ public class Actions implements ZombieFactory{
 
         for (Zombies zombie : tile.getZombies()) {
             if(plant instanceof Snowpea){
-                zombie.setSlowed(true);
-                zombie.setAttackSpeed(zombie.getAttackSpeed()/2);
-                zombie.setStatusEffect(1);
+                slowed(zombie);
             }
 
             zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
@@ -173,5 +180,11 @@ public class Actions implements ZombieFactory{
         secondLeftTile.addZombie(zombie);
         currentTile.removeZombie(zombie);
         zombie.setNextHop(false);
+    }
+
+    public void slowed(Zombies zombie){
+        zombie.setSlowed(true);
+        zombie.setAttackSpeed(zombie.getAttackSpeed() + zombie.getAttackSpeed()/2);
+        zombie.setStatusEffect(1);
     }
 }
