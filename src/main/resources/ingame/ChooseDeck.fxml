@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox fx:id="vbox" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.tubesoopif2212.controllers.ChooseDeckController">
+    <Label text="Inventory" />
+    <TilePane fx:id="inventoryTilePane" prefColumns="4" hgap="5" vgap="5"/>
+    <Label text="Choose Your Deck" />
+    <ListView fx:id="deckListView" />
+    <Button text="Select Deck" onAction="#handleSelectDeck"/>
+</VBox>
