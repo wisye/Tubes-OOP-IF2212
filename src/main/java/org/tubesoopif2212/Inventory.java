@@ -121,6 +121,7 @@ public class Inventory {
         ret += String.format(format, "Atribut", "Value");
         ret += separator + "\n";
         ret += String.format(format, "Name", tans.getName());
+        ret += separator + "\n";
         ret += String.format(format, "Cost", tans.getCost());
         ret += separator + "\n";
         ret += String.format(format, "Health", tans.getHealth());
