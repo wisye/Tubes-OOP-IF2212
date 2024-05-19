@@ -43,11 +43,16 @@ public class gameLoop {
     }
 
     public static void menu(Scanner scanner) {
-        System.out.println("1. Start\n" +
-                "2. Help\n" +
-                "3. Plants List\n" +
-                "4. Zombies List\n" +
-                "5. Exit");
+        System.out.println("------------------------------");
+        System.out.println("|          Menu Utama        |");
+        System.out.println("| 1. Start                   |");
+        System.out.println("| 2. Help                    |");
+        System.out.println("| 3. Plant List              |");
+        System.out.println("| 4. Zombie List             |");
+        System.out.println("| 5. Exit                    |");
+        System.out.println("------------------------------");
+        System.out.print("Pilihan Anda: ");
+        System.out.println("");
     }
 
     public static void startGame(Scanner scanner) {
