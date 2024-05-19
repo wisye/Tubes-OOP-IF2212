@@ -225,6 +225,8 @@ public class gameLoop {
     public static void help() {
         System.out.println("Berikut adalah langkah dalam melakukan permainan:");
         System.out.println("1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower");
+        System.out.println("2. Letakkan tanaman di koordinat yang diinginkan");
+        System.out.println("3. Lindungi rumah dari serangan zombie");
     }
 
     public static void plantLists(Scanner scanner) {
