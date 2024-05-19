@@ -44,7 +44,12 @@ public class Map {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 1; j < tiles[i].length - 1; j++) {
                 synchronized(tiles[i][j]){
-                    System.out.print("[");
+                    if((i >= 2 && i <=3) && (j >= 1 && j <= 9)){
+                        System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
+                    } else {
+                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
+                    }
+                    
                     if(tiles[i][j].getPlant() != null){
                         System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
                         if(!tiles[i][j].getZombies().isEmpty()){
@@ -64,12 +69,19 @@ public class Map {
                     else{
                         System.out.print(" ");
                     }
-                    System.out.print("]");
+                    
+                    if((i >= 2 && i <=3) && (j >= 1 && j <= 9)){
+                        System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
+                    } else {
+                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
+                    }
+                    
+                    System.out.print("\u001B[0m"); // Mengembalikan warna ke default
                 }
             }
             System.out.println();
         }
-    }
+    }    
 
     public void plant(int row, int col, Plants plant) throws Exception{
         if(Sun.getAmount() < plant.getCost()){
