@@ -71,11 +71,6 @@ public class gameLoop {
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
             int lastSunUpdate = 0;
-            try {
-                map.plant(5, 5, deck.create(0, seconds));
-            } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
-            }
 
             while (!gameOver && seconds < 200) {
                 try {
@@ -141,6 +136,8 @@ public class gameLoop {
             map.printMap();
             while (!gameOver) {
                 try {
+                    Thread.sleep(5000); // Sleep for 5 seconds
+                    map.printMap(); // Print the map
                     System.out.println(
                         "\n" +
                         "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
