@@ -43,6 +43,28 @@ public class gameLoop {
     }
 
     public static void menu(Scanner scanner) {
+        // ANSI escape codes for colors
+        final String ANSI_RESET = "\u001B[0m";
+        final String ANSI_BLUE_NEON = "\u001B[38;2;0;255;255m";
+        final String ANSI_RED_NEON = "\u001B[38;2;255;0;0m";
+        final String ANSI_GREEN_NEON = "\u001B[38;2;57;255;20m";
+
+        // ASCII art split into sections for coloring
+        String[] asciiArtLines = {
+            "   __        __                      _   __      __  ____     __            __",
+            "  / /  ___ / /_ ____  ___ ____    | | / /__   /  |/  ()/ /  ___ ____ / /",
+            " / // _ `/ / _ `/ _ \\/ _ `/ _ \\   | |/ (-<  / /|/ / / _/ _ \\/ _ `/ -) / ",
+            "//\\,//\\,/ ./\\,////   |// //  ///\\////\\,/\\/_/  ",
+            "                /_/                                                          "
+        };
+
+        // Apply colors to each section
+        for (String line : asciiArtLines) {
+            String greenPart = ANSI_GREEN_NEON + line.substring(0, 34) + ANSI_RESET;
+            String redPart = ANSI_RED_NEON + line.substring(34, 46) + ANSI_RESET;
+            String bluePart = ANSI_BLUE_NEON + line.substring(46) + ANSI_RESET;
+            System.out.println(greenPart + redPart + bluePart);
+        }
         System.out.println("------------------------------");
         System.out.println("|          Menu Utama        |");
         System.out.println("| 1. Start                   |");
@@ -105,6 +127,7 @@ public class gameLoop {
                     for (int row = 0; row < 5; row++) {
                         if (!Map.getTile(row, 0).getZombies().isEmpty()) {
                             gameOver = true;
+
                             break;
                         }
                     }
