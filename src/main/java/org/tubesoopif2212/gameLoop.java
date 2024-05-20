@@ -43,11 +43,16 @@ public class gameLoop {
     }
 
     public static void menu(Scanner scanner) {
-        System.out.println("1. Start\n" +
-                "2. Help\n" +
-                "3. Plants List\n" +
-                "4. Zombies List\n" +
-                "5. Exit");
+        System.out.println("------------------------------");
+        System.out.println("|          Menu Utama        |");
+        System.out.println("| 1. Start                   |");
+        System.out.println("| 2. Help                    |");
+        System.out.println("| 3. Plant List              |");
+        System.out.println("| 4. Zombie List             |");
+        System.out.println("| 5. Exit                    |");
+        System.out.println("------------------------------");
+        System.out.print("Pilihan Anda: ");
+        System.out.println("");
     }
 
     public static void startGame(Scanner scanner) {
@@ -66,11 +71,6 @@ public class gameLoop {
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
             int lastSunUpdate = 0;
-            try {
-                map.plant(5, 5, deck.create(0, seconds));
-            } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
-            }
 
             while (!gameOver && seconds < 200) {
                 try {
@@ -136,6 +136,8 @@ public class gameLoop {
             map.printMap();
             while (!gameOver) {
                 try {
+                    Thread.sleep(5000); // Sleep for 5 seconds
+                    map.printMap(); // Print the map
                     System.out.println(
                         "\n" +
                         "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
@@ -235,6 +237,8 @@ public class gameLoop {
     public static void help() {
         System.out.println("Berikut adalah langkah dalam melakukan permainan:");
         System.out.println("1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower");
+        System.out.println("2. Letakkan tanaman di koordinat yang diinginkan");
+        System.out.println("3. Lindungi rumah dari serangan zombie");
     }
 
     public static void plantLists(Scanner scanner) {
