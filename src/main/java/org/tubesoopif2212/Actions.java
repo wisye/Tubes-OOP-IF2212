@@ -8,18 +8,24 @@ import java.util.List;
 import java.util.Random;
 
 public class Actions implements ZombieFactory{
-    // public void run(){
-        
-    // }
 
     public ZombieFactory.zombieTypeWater[] typesWater = ZombieFactory.zombieTypeWater.values();
     public ZombieFactory.zombieTypeLand[] typesLand = ZombieFactory.zombieTypeLand.values();
 
 	public void moveZombie(int row, List<Zombies> zombies) {
         for(Zombies zombie : zombies){
-            if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
-                continue;
+
+            if(zombie.getSlowed()){
+                int timing = gameLoop.seconds;
+                if((gameLoop.seconds - zombie.getTimeCreated()) % 7.5 != 0 && (gameLoop.seconds - timing <= 3)){
+                    continue;
+                }
+            } else{
+                if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
+                    continue;
+                }
             }
+
             for (int col = 0; col < 11; col++) {
                 Tile tile = Map.getTile(row, col);
                 synchronized(tile){
@@ -30,6 +36,13 @@ public class Actions implements ZombieFactory{
                         Tile leftTile = Map.getTile(row, col - 1);
                         if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
                             jump(row, col, zombie);
+                        } else if(leftTile.getPlant() != null && zombie.getSlowed()==true){
+                            int waktu = gameLoop.seconds;
+                            while(gameLoop.seconds - waktu <= 3){
+                                if((gameLoop.seconds - zombie.getTimeCreated()) % 10 != 0){
+                                    continue;
+                                }
+                            }
                         }
                         else{
                             leftTile.addZombie(zombie);
@@ -69,6 +82,10 @@ public class Actions implements ZombieFactory{
         }
 
         for (Zombies zombie : tile.getZombies()) {
+            if(plant instanceof Snowpea){
+                slowed(zombie);
+            }
+
             zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
             if(zombie.getHealth() > 0){
                 continue;
@@ -163,5 +180,11 @@ public class Actions implements ZombieFactory{
         secondLeftTile.addZombie(zombie);
         currentTile.removeZombie(zombie);
         zombie.setNextHop(false);
+    }
+
+    public void slowed(Zombies zombie){
+        zombie.setSlowed(true);
+        zombie.setAttackSpeed(zombie.getAttackSpeed() + zombie.getAttackSpeed()/2);
+        zombie.setStatusEffect(1);
     }
 }
