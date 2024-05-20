@@ -16,6 +16,8 @@ Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar po
 
 import org.tubesoopif2212.Plants.*;
 
+import kotlin.OverloadResolutionByLambdaReturnType;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -93,7 +95,10 @@ public class Inventory {
 
     public Plants get(int i) {
         List<Plants> plants = new ArrayList<>(inventory.keySet());
-        return plants.get(i);
+        if (i >= 0 && i < plants.size()) {
+            return plants.get(i);
+        }
+        throw new IndexOutOfBoundsException("Index out of bounds");
     }
 
     @Override
@@ -106,4 +111,31 @@ public class Inventory {
         }
         return ret;
     }
+
+    public String toString(Plants tans) {
+        String ret = new String();
+        String separator = "--------------------------------------";
+        String format = "%-15s | %s\n";
+        
+        ret += separator + "\n";
+        ret += String.format(format, "Atribut", "Value");
+        ret += separator + "\n";
+        ret += String.format(format, "Name", tans.getName());
+        ret += separator + "\n";
+        ret += String.format(format, "Cost", tans.getCost());
+        ret += separator + "\n";
+        ret += String.format(format, "Health", tans.getHealth());
+        ret += separator + "\n";
+        ret += String.format(format, "Attack Damage", tans.getAttackDamage());
+        ret += separator + "\n";
+        ret += String.format(format, "Attack Speed", tans.getAttackSpeed());
+        ret += separator + "\n";
+        ret += String.format(format, "Range", tans.getRange());
+        ret += separator + "\n";
+        ret += String.format(format, "Cooldown", tans.getCooldown());
+        ret += separator;
+        
+        return ret;
+    }    
+
 }

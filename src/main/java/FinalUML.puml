@@ -1,0 +1,359 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class Zombies {
+    - name: String
+    - health: Integer
+    - attackDamage: Integer
+    - attackSpeed: Integer
+    - isAquatic: Boolean
+    - timeCreated: int
+    - statusEffect: int = 0
+    - ability: int = 0
+    - slowed: boolean = false
+    + {static} zoms =  List<Zombies>
+    + {static} amount:  int = 0
+    + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic, int timeCreated) <<constructor>>
+    + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic) <<constructor>>
+    + setStatusEffect(int a): void
+    + setSlowed(boolean slowed): void
+    + getSlowed(): boolean
+    + getName(): String
+    + getHealth(): Integer
+    + getAttackDamage(): Integer
+    + getAttackSpeed(): Integer
+    + getIsAquatic(): Boolean
+    + setName(String name): void
+    + setHealth(Integer health): void
+    + setAttackDamage(Integer attackDamage): void
+    + setAttackSpeed(Integer attackSpeed): void
+    + setIsAquatic(Boolean isAquatic): void
+    + getTimeCreated(): int
+    + setNextHop(boolean hop): void
+    + getNextHop(): boolean
+    + {static} addZombie: void
+    + {static} toString(Zombies zom): String
+}
+
+class Buckethead extends Zombies{
+    + Buckethead(int timeCreated) <<constructor>>
+    + Buckethead() <<constructor>>
+}
+
+class Conehead extends Zombies{
+    + Conehead(int timeCreated) <<constructor>>
+    + Conehead() <<constructor>>
+}
+class DolphinRider extends Zombies{
+    + DolphinRider(int timeCreated) <<constructor>>
+    + DolphinRider() <<constructor>>
+}
+
+class DuckyTube extends Zombies{
+    + DuckyTube(int timeCreated) <<constructor>>
+    + DuckyTube() <<constructor>>
+}
+
+class EntireZoom100Cast extends Zombies{
+    + EntireZoom100Cast(int timeCreated) <<constructor>>
+    + EntireZoom100Cast() <<constructor>>
+}
+
+class KureijiOllie extends Zombies{
+    + KureijiOllie(int timeCreated) <<constructor>>
+    + KureijiOllie() <<constructor>>
+}
+
+class Normal extends Zombies{
+    + Normal(int timeCreated) <<constructor>>
+    + Normal() <<constructor>>
+}
+
+class PoleVaulting extends Zombies{
+    + PoleVaulting(int timeCreated) <<constructor>>
+    + PoleVaulting() <<constructor>>
+}
+
+class Qiqi extends Zombies{
+    + Qiqi(int timeCreated) <<constructor>>
+    + Qiqi() <<constructor>>
+}
+
+class ShrekButZombie extends Zombies{
+    + ShrekButZombie(int timeCreated) <<constructor>>
+    + ShrekButZombie() <<constructor>>
+}
+
+abstract class Plants{
+    - name: String
+    - cost: Integer
+    - health: Integer
+    - attackDamage: Integer
+    - attackSpeed: Integer
+    - range: Integer
+    - cooldown: Integer
+    - attackCooldown: Integer = 0
+    - timeCreated: Integer = 0
+    + getName(): String
+    + getCost() : Integer
+    + getHealth(): Integer
+    + getAttackDamage(): Integer
+    + getAttackSpeed(): Integer
+    + getRange(): Integer
+    + getCooldown(): Integer
+    + setName(String name): void
+    + setCost(Integer cost): void
+    + setHealth(Integer health): void
+    + setAttackDamage(Integer attackDamage): void
+    + setAttackSpeed(Integer attackSpeed): void
+    + setRange(Integer range): void
+    + setCooldown(Integer cooldown): void
+    + getTimeCreated(): int
+    + setTimeCreated(int timeCreated): void
+    + getAttackCooldown():Integer
+    + setAttackCooldown(Integer cooldown): void
+}
+
+class Cannabis extends Plants{
+    + Cannabis(int timeCreated) <<constructor>>
+}
+
+class CeresFauna extends Plants{
+    + CeresFauna(int timeCreated) <<constructor>>
+}
+
+class Lilypad extends Plants{
+    + Lilypad(int timeCreated) <<constructor>>
+}
+
+class Nahida extends Plants{
+    + Nahida(int timeCreated) <<constructor>>
+}
+
+class Peashooter extends Plants{
+    + Peashooter(int timeCreated) <<constructor>>
+}
+
+class Planterra extends Plants{
+    + Planterra(int timeCreated) <<constructor>>
+}
+
+class Snowpea extends Plants{
+    + Snowpea(int timeCreated) <<constructor>>
+}
+
+class Squash extends Plants{
+    + Squash(int timeCreated) <<constructor>>
+}
+
+class SunFlower extends Plants{
+    + SunFlower(int timeCreated) <<constructor>>
+}
+
+class Wallnut extends Plants{
+    + Wallnut(int timeCreated) <<constructor>>
+}
+
+abstract class Tile{
+    - protectedArea: Boolean
+    - grass: Boolean
+    - water: Boolean
+    - spawnArea: Boolean
+    - plant: Plants
+    - zombies: List<Zombies>
+
+    + Tile(Boolean protectedArea, Boolean grass, Boolean water, Boolean spawnArea) <<constructor>>
+    + getProtectedArea(): Boolean
+    + getGrass(): Boolean
+    + getWater(): Boolean
+    + getSpawnArea(): Boolean
+    + setProtectedArea(Boolean protectedArea): void
+    + setGrass(Boolean grass): void
+    + setWater(Boolean water): void
+    + setSpawnArea(Boolean spawnArea): void
+    + setPlant(Plants plant): void
+    + getPlant(): Plants
+    + getZombies(): List<Zombies>
+    + addZombie(Zombies zombie):void
+    + removeZombie(Zombies zombie): void
+}
+
+class Grass extends Tile{
+    + Grass() <<constructor>>
+}
+
+class ProtectedArea extends Tile{
+    + ProtectedArea() <<constructor>>
+}
+
+class SpawnArea extends Tile{
+    + SpawnArea() <<constructor>>
+}
+
+class Water extends Tile{
+    + Water() <<constructor>>
+}
+
+interface ZombieFactory{
+    + spawnRandomZombies(Tile tile): void
+}
+
+enum zombieTypeLand{
+    Normal
+    Conehead
+    Buckethead
+    PoleVaulting
+    KureijiOllie
+    Qiqi
+    ShrekButZombie
+    EntireZom100Cast
+}
+enum zombieTypeWater{
+    DolphinRider
+    DuckyTube
+}
+
+ZombieFactory --> zombieTypeLand
+ZombieFactory --> zombieTypeWater
+
+interface PlantFactory<T extends Plants> {
+    +create(timeCreated: int): T
+}
+
+class Actions implements ZombieFactory{
+    + typesWater: ZombieFactory.zombieTypeWater[]
+    + TypesLand: ZombieFactory.zombieTypeLand[]
+    + moveZombie(int row, List<Zombies> zombies): void
+    + attackPlant(int row, int column, Plants plant): void
+    + attackZombie(Tile tile, Map map, int row, int column): void
+    + spawnRandomZombies(Tile tile): void
+    + jump(int row, int col, Zombies zombie): void
+    + slowed(Zombies zombie): void
+}
+
+class Map{
+    - {static} tiles: Tile[][]
+    + Map() <<constructor>>
+    + {static} getTile(int row, int col): Tile
+    + printMap(): void
+    + plant(int row, int col, Plants plant): void
+    + dig(int row, int col): void
+    + addZombie(int row, Zombies zombie): void
+}
+
+class gameLoop{
+    + {static} gameOver: Boolean = false
+    + {static} seconds: int = 0
+    + {static} inventory: Inventory
+    + main(String[] args): void
+    + {static} menu(Scanner scanner): void
+    + {static} startGame(Scanner scanner): void
+    + {static} pickPlant(Scanner scanner, Deck<Plants> deck): void
+    + {static} help(): void
+    + {static} plantLists(Scanner scanner): void
+    + {static} zombieLists(Scanner scanner): void
+}
+
+class Inventory{
+    - inventory: Map<Plants, Boolean>
+    + Inventory() <<constructor>>
+    + choosePlant(Plants plants, Deck<?> deck): void
+    + swapPlant(int slot1, int slot2, Deck<?> deck): void
+    + removePlant(int slot, Deck<?> deck): void
+    + size(): int
+    + get(int i): Plants
+    + toString(): String
+    + toString(Plants plants): String
+}
+
+class Deck{
+    - deck: List<PlantFactory<? extends Plants>>
+    + Deck() <<constructor>>
+    + add(Plants plant): void
+    + get(int index): PlantFactory<? extends Plants>
+    + create(int index, int timeCreated): Plants
+    + size(): int
+    + remove(PlantFactory<? extends Plants> factory): void
+    + set(int index, PlantFactory<? extends Plants> factory): void
+    + swap(int index1, int index2): void
+    + toString(): String
+}
+
+class PeashooterFactory implements PlantFactory<Peashooter>{
+    + create(int timeCreated): Peashooter
+}
+
+class SunFlowerFactory implements PlantFactory<SunFlower>{
+    + create(int timeCreated): SunFlower
+}
+
+class LilypadFactory implements PlantFactory<Lilypad>{
+    + create(int timeCreated): Lilypad
+}
+
+class WallnutFactory implements PlantFactory<Wallnut>{
+    + create(int timeCreated): Wallnut
+}
+
+class SquashFactory implements PlantFactory<Squash>{
+    + create(int timeCreated): Squash
+}
+
+class SnowpeaFactory implements PlantFactory<Snowpea>{
+    + create(int timeCreated): Snowpea
+}
+
+class NahidaFactory implements PlantFactory<Nahida>{
+    + create(int timeCreated): Nahida
+}
+
+class PlanterraFactory implements PlantFactory<Planterra>{
+    + create(int timeCreated): Planterra
+}
+
+class CannabisFactory implements PlantFactory<Cannabis>{
+    + create(int timeCreated): Cannabis
+}
+
+class CeresFaunaFactory implements PlantFactory<CeresFauna>{
+    + create(int timeCreated): CeresFauna
+}
+
+class System << (S,#FF7700) Singleton >>{
+    - {static} sun: Sun
+    - {static} amount: int
+    + {static} getInstance(): Sun
+    + {static} getAmount(): int
+    + {static} addSun(): void
+    + {static} reduceSun(): void
+    + {static} setSun(): void
+}
+
+
+
+' Relationships between Plant Factories and Plants
+CannabisFactory --> Cannabis
+CeresFaunaFactory --> CeresFauna
+LilypadFactory --> Lilypad
+NahidaFactory --> Nahida
+PeashooterFactory --> Peashooter
+PlanterraFactory --> Planterra
+SnowpeaFactory --> Snowpea
+SquashFactory --> Squash
+SunFlowerFactory --> SunFlower
+WallnutFactory --> Wallnut
+
+' Relationships between Tiles and Plants/Zombies
+Tile --> Plants
+Tile --> "0..*" Zombies
+
+Actions --> ZombieFactory
+Map --> "1..*" Tile
+Map --> Plants
+Map --> Zombies
+gameLoop --> Inventory
+Inventory --> Deck
+Deck --> "0..*" Plants
+Deck --> "0..*" PlantFactory
+
+@enduml

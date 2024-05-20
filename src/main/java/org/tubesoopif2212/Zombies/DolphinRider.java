@@ -7,4 +7,8 @@ public class DolphinRider extends Zombies{
         super("Dolphin Rider Zombie", 175, 100, 1, true, timeCreated);
         setNextHop(true);
     }
+    public DolphinRider(){
+        super("Dolphin Rider Zombie", 175, 100, 1, true);
+        setNextHop(true);
+    }
 }
