@@ -163,10 +163,10 @@ public class gameLoop {
                     else if(input == 3){
                     }
                     else{
-                        throw new Exception("Invalid input");
+                        throw new Exception("Pilihan tidak tersedia!");
                     }
                 } catch(Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("Input tidak sesuai! Perhatikan format input");
                 } finally {
                     map.printMap();
                 }
@@ -213,28 +213,40 @@ public class gameLoop {
             System.out.println("Deck: ");
             System.out.println(deck.toString());
             System.out.println(
-                "<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
-                "<2 x> Pilih tanaman untuk dikeluarkan dari deck\n" +
-                "<3 x y> Pilih tanaman untuk ditukar di deck\n"
+                "<1 x>\t Pilih tanaman untuk dimasukkan ke deck\n" +
+                "<2 x>\t Pilih tanaman untuk dikeluarkan dari deck\n" +
+                "<3 x y>\t Pilih tanaman untuk ditukar di deck\n"
             );
             int choice = scanner.nextInt();
             try {
                 if (choice == 1) {
                     int x = scanner.nextInt() - 1;
-                    inventory.choosePlant(inventory.get(x), deck);
+                    try{
+                        inventory.choosePlant(inventory.get(x), deck);
+                    } catch (Exception e){
+                        System.out.println("Indeks tersebut tidak ada di Inventory!");
+                    }
                 } else if (choice == 2) {
                     int x = scanner.nextInt() - 1;
-                    inventory.removePlant(x, deck);
+                    try{
+                        inventory.removePlant(x, deck);
+                    } catch(Exception e){
+                        System.out.println("Indeks tersebut tidak ada di Deck!");
+                    }
                 } else if (choice == 3) {
                     int x = scanner.nextInt() - 1;
                     int y = scanner.nextInt() - 1;
-                    inventory.swapPlant(x, y, deck);
+                    try{
+                        inventory.swapPlant(x, y, deck);
+                    } catch(Exception e){
+                        System.out.println("Indeks tersebut tidak ada di Deck!");
+                    }
                 } else {
                     scanner.nextLine();
-                    System.out.println("Input tidak valid");
+                    throw new Exception("Pilihan " + choice+ " tidak tersedia!");
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Perhatikan format input!");
             }
         }
     }
