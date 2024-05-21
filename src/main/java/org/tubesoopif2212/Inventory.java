@@ -63,9 +63,9 @@ public class Inventory {
     // dengan posisi sendiri ataupun posisi kosong.
     public void swapPlant(int slot1, int slot2, Deck<?> deck) throws Exception {
         if (slot1 == slot2) {
-            throw new Exception("Cannot swap with the same slot");
+            throw new Exception("\u001B[31mCannot swap with the same slot\u001B[0m");
         } else if (deck.get(slot1) == null || deck.get(slot2) == null) {
-            throw new Exception("Cannot swap with empty slot");
+            throw new Exception("\u001B[31mCannot swap with empty slot\u001B[0m");
         } else {
             deck.swap(slot1, slot2);
         }
@@ -85,7 +85,7 @@ public class Inventory {
                 }
             }
         } else {
-            throw new Exception("Slot is empty");
+            throw new Exception("\u001B[31mSlot is empty\u001B[0m");
         }
     }
 
