@@ -19,6 +19,7 @@ public abstract class Zombies {
     public static List<Zombies> zoms = new ArrayList<Zombies>();
     
     public static int amount = 0;
+    public static int maxAmount = 10;
     // Bit 0 = slowed
     // Bit 1 = 
 

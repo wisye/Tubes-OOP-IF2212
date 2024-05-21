@@ -16,8 +16,6 @@ Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar po
 
 import org.tubesoopif2212.Plants.*;
 
-import kotlin.OverloadResolutionByLambdaReturnType;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,7 +41,11 @@ public class Inventory {
     // Memilih tanaman
     // Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan
     // tanaman yang dipilih tidak bisa dipilih kembali
-    public void choosePlant(Plants plants, Deck<?> deck) throws Exception {
+    public void choosePlant(int slot, Deck<?> deck) throws Exception {
+        if(slot >= 10){
+            throw new Exception("Plant does not exists");
+        }
+        Plants plants = get(slot);
         for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
             if (entry.getKey().getName().equals(plants.getName())) {
                 if (entry.getValue()) {
@@ -64,6 +66,8 @@ public class Inventory {
     public void swapPlant(int slot1, int slot2, Deck<?> deck) throws Exception {
         if (slot1 == slot2) {
             throw new Exception("Cannot swap with the same slot");
+        } else if (slot1 >= deck.size() || slot2 >= deck.size()){
+            throw new Exception("Cannot swap with empty slot");
         } else if (deck.get(slot1) == null || deck.get(slot2) == null) {
             throw new Exception("Cannot swap with empty slot");
         } else {
@@ -75,7 +79,7 @@ public class Inventory {
     // Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong.
     // Pastikan slot yang dipilih untuk dihapus tidak kosong.
     public void removePlant(int slot, Deck<?> deck) throws Exception {
-        if (deck.get(slot) != null) {
+        if (slot < deck.size()) {
             Plants plant = deck.get(slot).create(0);
             deck.remove(deck.get(slot));
             for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
