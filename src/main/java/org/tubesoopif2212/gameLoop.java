@@ -6,6 +6,7 @@ import org.tubesoopif2212.Zombies.*;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class gameLoop {
     public static Boolean gameOver = false;
@@ -19,25 +20,30 @@ public class gameLoop {
         while (true) {
             try {
                 menu(scanner);
-                choice = Integer.parseInt(scanner.nextLine());
+                choice = scanner.nextInt();
                 if (choice == 1) {
                     startGame(scanner);
+                    continue;
                 } else if (choice == 2) {
                     help();
+                    continue;
                 } else if (choice == 3) {
                     plantLists(scanner);
+                    continue;
                 } else if (choice == 4) {
                     zombieLists(scanner);
+                    continue;
                 } else if (choice == 5) {
                     System.out.println("Byee");
                     break;
                 } else {
                     throw new IllegalArgumentException("Choice is invalid");
                 }
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
             } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
+                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
     }
@@ -59,12 +65,13 @@ public class gameLoop {
         gameOver = false;
         seconds = 0;
         Sun.getInstance();
-        Sun.setSun(10000);
+        Sun.setSun(50);
         Map map = new Map();
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
-        inventory = new Inventory();  // Pastikan inventory diinisialisasi
+        ZombieFactory zf = new ZombieFactory();
+        // Inventory inventory = new Inventory();  // Pastikan inventory diinisialisasi
 
         pickPlant(scanner, deck);
 
@@ -74,9 +81,6 @@ public class gameLoop {
 
             while (!gameOver && seconds < 200) {
                 try {
-                    if (seconds == 10) {
-                        map.addZombie(5, new ShrekButZombie(seconds));
-                    }
                     if (seconds <= 100) {
                         if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
                             Sun.addSun();
@@ -84,22 +88,17 @@ public class gameLoop {
                         }
                     }
 
-                    if (seconds >= 55 && seconds <= 58) { // BONUS YANG FLAG
-                        for (int i = 0; i < 6; i++) {
-                            if (random.nextFloat() < 0.3) {
-                                Normal zombie = new Normal(seconds);
-                                map.addZombie(i, zombie);
-                            }
-                        }
+                    if ((seconds >= 75 && seconds <= 78) ||
+                        (seconds >= 135 && seconds <= 138)) { // BONUS YANG FLAG
+                        Zombies.maxAmount = 25;
+                        zf.flag();
                     }
 
-                    if (seconds >= 20 && seconds <= 160) {
-                        for (int i = 0; i < 6; i++) {
-                            Tile tile = Map.getTile(i, 10);
-                            if (random.nextFloat() < 0.3) {
-                                action.spawnRandomZombies(tile);
-                            }
-                        }
+                    if ((seconds >= 20 && seconds <= 74) ||
+                        (seconds >= 79 && seconds <= 134) ||
+                        (seconds >= 139 && seconds <= 160)) {
+                        Zombies.maxAmount = 10;
+                        zf.spawnZombies();
                     }
 
                     for (int row = 0; row < 5; row++) {
@@ -110,12 +109,12 @@ public class gameLoop {
                     }
                     Thread.sleep(1000); // sleep for 1 second
                     seconds++;
-                    map.printMap();
-                    System.out.println();
+                    // map.printMap();
+                    // System.out.println();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
-                    System.out.println("Terjadi kesalahan: " + e.getMessage());
+                    System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
                 }
             }
 
@@ -136,27 +135,32 @@ public class gameLoop {
             map.printMap();
             while (!gameOver) {
                 try {
-                    Thread.sleep(5000); // Sleep for 5 seconds
-                    map.printMap(); // Print the map
                     System.out.println(
                         "\n" +
                         "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
                         "<2 x y> Dig tanaman di koordinat map\n" +
-                        Sun.getAmount() + "\n" +
+                        "\n" + 
+                        "Jumlah sun : " + Sun.getAmount() + "\n" +
+                        "Waktu : " + seconds + "\n" +
+                        "Max zombie amount : " + Zombies.amount + "\n" + 
+                        "\n" +
                         deck.toString() + "\n"
                     );
                     int input = scanner.nextInt();
                     if (input == 1) {
                         map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
-                        map.printMap();
                     } else if (input == 2) {
                         map.dig(scanner.nextInt(), scanner.nextInt() - 1);
-                        map.printMap();
                     } else {
-                        throw new IllegalArgumentException("Invalid input");
+                        throw new IllegalArgumentException("Error : Invalid input");
                     }
+                } catch (InputMismatchException e){
+                    scanner.nextLine();
+                    System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
                 } catch (Exception e) {
-                    System.out.println("Terjadi kesalahan: " + e.getMessage());
+                    System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
+                } finally {
+                    map.printMap();
                 }
             }
         }).start();
@@ -183,9 +187,12 @@ public class gameLoop {
                 }
                 Thread.sleep(1000);
             } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
+                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
+        try{
+            gameThread.join();
+        } catch(Exception e){}
     }
 
     public static void pickPlant(Scanner scanner, Deck<Plants> deck) {
@@ -203,33 +210,45 @@ public class gameLoop {
                 );
                 int choice = scanner.nextInt();
                 if (choice == 1) {
-                    int x = scanner.nextInt() - 1;
                     try{
-                        inventory.choosePlant(inventory.get(x), deck);
+                        int x = scanner.nextInt() - 1;
+                        inventory.choosePlant(x, deck);
+                    } catch (InputMismatchException e){
+                        scanner.nextLine();
+                        System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
                     } catch (Exception e){
-                        System.out.println("Indeks tersebut tidak ada di Inventory!");
+                        System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
                     }
                 } else if (choice == 2) {
-                    int x = scanner.nextInt() - 1;
                     try{
+                        int x = scanner.nextInt() - 1;
                         inventory.removePlant(x, deck);
-                    } catch(Exception e){
-                        System.out.println("Indeks tersebut tidak ada di Deck!");
+                    } catch (InputMismatchException e){
+                        scanner.nextLine();
+                        System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
+                    } catch (Exception e){
+                        System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
                     }
                 } else if (choice == 3) {
-                    int x = scanner.nextInt() - 1;
-                    int y = scanner.nextInt() - 1;
                     try{
+                        int x = scanner.nextInt() - 1;
+                        int y = scanner.nextInt() - 1;
                         inventory.swapPlant(x, y, deck);
-                    } catch(Exception e){
-                        System.out.println("Indeks tersebut tidak ada di Deck!");
+                    } catch (InputMismatchException e){
+                        scanner.nextLine();
+                        System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
+                    } catch (Exception e){
+                        System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
                     }
                 } else {
                     scanner.nextLine();
-                    throw new Exception("Pilihan " + choice+ " tidak tersedia!");
+                    throw new Exception(choice + " does not exists");
                 }
-            } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
+            } catch (Exception e){
+                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
     }
@@ -252,8 +271,11 @@ public class gameLoop {
                 choice = scanner.nextInt();
                 Plants tans = inventory.get(choice-1);
                 System.out.println(inventory.toString(tans));
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
             } catch (Exception e) {
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
+                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
     }
@@ -268,14 +290,16 @@ public class gameLoop {
                 System.out.println(i + ". " + zombies.getName());
                 i++;
             }
-
             try{
                 System.out.print("Pilih indeks zombie (0 untuk kembali ke menu utama): ");
                 choice = scanner.nextInt();
                 Zombies zom = Zombies.zoms.get(choice-1);
                 System.out.println(Zombies.toString(zom));
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
             } catch(Exception e){
-                System.out.println("Terjadi kesalahan: " + e.getMessage());
+                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
 
