@@ -50,26 +50,51 @@ public class gameLoop {
 
     public static void menu(Scanner scanner) {
         // ANSI escape codes for colors
-        final String ANSI_RESET = "\u001B[0m";
-        final String ANSI_BLUE_NEON = "\u001B[38;2;0;255;255m";
-        final String ANSI_RED_NEON = "\u001B[38;2;255;0;0m";
-        final String ANSI_GREEN_NEON = "\u001B[38;2;57;255;20m";
+        // ANSI escape codes for colors
+        String[] greenGradient = generateGradient(144, 238, 144, 34, 139, 34, 7);
+        String[] redGradient = generateGradient(255, 182, 193, 139, 0, 0, 7);
+        String[] blueGradient = generateGradient(173, 216, 230, 0, 0, 139, 7);
 
-        // ASCII art split into sections for coloring
-        String[] asciiArtLines = {
-            "   __        __                      _   __      __  ____     __            __",
-            "  / /  ___ / /_ ____  ___ ____    | | / /__   /  |/  ()/ /  ___ ____ / /",
-            " / // _ `/ / _ `/ _ \\/ _ `/ _ \\   | |/ (-<  / /|/ / / _/ _ \\/ _ `/ -) / ",
-            "//\\,//\\,/ ./\\,////   |// //  ///\\////\\,/\\/_/  ",
-            "                /_/                                                          "
+        // ASCII art lines
+        String[] art = {
+            "██╗      █████╗ ██╗      █████╗ ██████╗  █████╗ ███╗   ██╗    ██╗   ██╗███████╗    ███╗   ███╗██╗ ██████╗██╗  ██╗ █████╗ ███████╗██╗     ",
+            "██║     ██╔══██╗██║     ██╔══██╗██╔══██╗██╔══██╗████╗  ██║    ██║   ██║██╔════╝    ████╗ ████║██║██╔════╝██║  ██║██╔══██╗██╔════╝██║     ",
+            "██║     ███████║██║     ███████║██████╔╝███████║██╔██╗ ██║    ██║   ██║███████╗    ██╔████╔██║██║██║     ███████║███████║█████╗  ██║     ",
+            "██║     ██╔══██║██║     ██╔══██║██╔═══╝ ██╔══██║██║╚██╗██║    ╚██╗ ██╔╝╚════██║    ██║╚██╔╝██║██║██║     ██╔══██║██╔══██║██╔══╝  ██║     ",
+            "███████╗██║  ██║███████╗██║  ██║██║     ██║  ██║██║ ╚████║     ╚████╔╝ ███████║    ██║ ╚═╝ ██║██║╚██████╗██║  ██║██║  ██║███████╗███████╗",
+            "╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝      ╚═══╝  ╚══════╝    ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝",
+            "                                                                                                                                         "
         };
 
-        // Apply colors to each section
-        for (String line : asciiArtLines) {
-            String greenPart = ANSI_GREEN_NEON + line.substring(0, 34) + ANSI_RESET;
-            String redPart = ANSI_RED_NEON + line.substring(34, 46) + ANSI_RESET;
-            String bluePart = ANSI_BLUE_NEON + line.substring(46) + ANSI_RESET;
-            System.out.println(greenPart + redPart + bluePart);
+        // Print the ASCII art with color gradient sections
+        for (int i = 0; i < art.length; i++) {
+            String line = art[i];
+
+            // First section (Green gradient)
+            for (int j = 0; j < 60; j++) {
+                if (j < line.length()) {
+                    System.out.print(greenGradient[i % greenGradient.length] + line.charAt(j));
+                } else {
+                    System.out.print(greenGradient[i % greenGradient.length] + ' ');
+                }
+            }
+
+            // Second section (Red gradient)
+            for (int j = 60; j < 80; j++) {
+                if (j < line.length()) {
+                    System.out.print(redGradient[i % redGradient.length] + line.charAt(j));
+                } else {
+                    System.out.print(redGradient[i % redGradient.length] + ' ');
+                }
+            }
+
+            // Third section (Blue gradient)
+            for (int j = 80; j < line.length(); j++) {
+                System.out.print(blueGradient[i % blueGradient.length] + line.charAt(j));
+            }
+
+            // Reset color and move to the next line
+            System.out.print("\u001B[0m\n");
         }
         System.out.println("------------------------------");
         System.out.println("|          Menu Utama        |");
@@ -325,7 +350,25 @@ public class gameLoop {
                 System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
         }
+    }
 
+    // warna main
+    private static String[] generateGradient(int r1, int g1, int b1, int r2, int g2, int b2, int steps) {
+        String[] gradient = new String[steps];
+        for (int i = 0; i < steps; i++) {
+            int r = r1 + (r2 - r1) * i / (steps - 1);
+            int g = g1 + (g2 - g1) * i / (steps - 1);
+            int b = b1 + (b2 - b1) * i / (steps - 1);
+            gradient[i] = String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
+        }
+        return gradient;
+    }
 
+    private static String printa(){
+        return ("1. Start\n" +
+                "2. Help\n" +
+                "3. Plants List\n" +
+                "4. Zombies List\n" +
+                "5. Exit");
     }
 }
