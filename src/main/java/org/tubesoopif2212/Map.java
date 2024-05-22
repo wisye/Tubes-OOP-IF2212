@@ -44,7 +44,11 @@ public class Map {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 1; j < tiles[i].length - 1; j++) {
                 synchronized(tiles[i][j]){
-                    if((i >= 2 && i <=3) && (j >= 1 && j <= 9)){
+                    boolean isLilypad = tiles[i][j].getPlant() != null && "Lilypad".equals(tiles[i][j].getPlant().getName());
+                    
+                    if(isLilypad){
+                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
+                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9)){
                         System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
                     } else {
                         System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
@@ -56,21 +60,23 @@ public class Map {
                             System.out.print("_");
                             List<Zombies> zombies = (tiles[i][j].getZombies());
                             for (Zombies zombies2 : zombies) {
-                                System.out.print(zombies2.getName() + "-" +zombies2.getHealth() + ", ");
+                                System.out.print(zombies2.getName() + "-" + zombies2.getHealth() + ", ");
                             }
                         }
                     }
                     else if(!tiles[i][j].getZombies().isEmpty()){
                         List<Zombies> zombies = (tiles[i][j].getZombies());
                         for (Zombies zombies2 : zombies) {
-                            System.out.print(zombies2.getName() + "-" +zombies2.getHealth() + ", ");
+                            System.out.print(zombies2.getName() + "-" + zombies2.getHealth() + ", ");
                         }
                     }
                     else{
                         System.out.print(" ");
                     }
-                    
-                    if((i >= 2 && i <=3) && (j >= 1 && j <= 9)){
+    
+                    if(isLilypad){
+                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
+                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9)){
                         System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
                     } else {
                         System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
@@ -81,7 +87,8 @@ public class Map {
             }
             System.out.println();
         }
-    }    
+    }
+     
 
     public void plant(int row, int col, Plants plant) throws Exception{
         if(Sun.getAmount() < plant.getCost()){

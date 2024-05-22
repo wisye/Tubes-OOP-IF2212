@@ -25,7 +25,7 @@ public class gameLoop {
                     startGame(scanner);
                     continue;
                 } else if (choice == 2) {
-                    help();
+                    help(scanner);
                     continue;
                 } else if (choice == 3) {
                     plantLists(scanner);
@@ -49,63 +49,22 @@ public class gameLoop {
     }
 
     public static void menu(Scanner scanner) {
-        // ANSI escape codes for colors
-        // ANSI escape codes for colors
-        String[] greenGradient = generateGradient(144, 238, 144, 34, 139, 34, 7);
-        String[] redGradient = generateGradient(255, 182, 193, 139, 0, 0, 7);
-        String[] blueGradient = generateGradient(173, 216, 230, 0, 0, 139, 7);
-
-        // ASCII art lines
-        String[] art = {
-            "██╗      █████╗ ██╗      █████╗ ██████╗  █████╗ ███╗   ██╗    ██╗   ██╗███████╗    ███╗   ███╗██╗ ██████╗██╗  ██╗ █████╗ ███████╗██╗     ",
-            "██║     ██╔══██╗██║     ██╔══██╗██╔══██╗██╔══██╗████╗  ██║    ██║   ██║██╔════╝    ████╗ ████║██║██╔════╝██║  ██║██╔══██╗██╔════╝██║     ",
-            "██║     ███████║██║     ███████║██████╔╝███████║██╔██╗ ██║    ██║   ██║███████╗    ██╔████╔██║██║██║     ███████║███████║█████╗  ██║     ",
-            "██║     ██╔══██║██║     ██╔══██║██╔═══╝ ██╔══██║██║╚██╗██║    ╚██╗ ██╔╝╚════██║    ██║╚██╔╝██║██║██║     ██╔══██║██╔══██║██╔══╝  ██║     ",
-            "███████╗██║  ██║███████╗██║  ██║██║     ██║  ██║██║ ╚████║     ╚████╔╝ ███████║    ██║ ╚═╝ ██║██║╚██████╗██║  ██║██║  ██║███████╗███████╗",
-            "╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝      ╚═══╝  ╚══════╝    ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝",
-            "                                                                                                                                         "
-        };
-
-        // Print the ASCII art with color gradient sections
-        for (int i = 0; i < art.length; i++) {
-            String line = art[i];
-
-            // First section (Green gradient)
-            for (int j = 0; j < 60; j++) {
-                if (j < line.length()) {
-                    System.out.print(greenGradient[i % greenGradient.length] + line.charAt(j));
-                } else {
-                    System.out.print(greenGradient[i % greenGradient.length] + ' ');
-                }
-            }
-
-            // Second section (Red gradient)
-            for (int j = 60; j < 80; j++) {
-                if (j < line.length()) {
-                    System.out.print(redGradient[i % redGradient.length] + line.charAt(j));
-                } else {
-                    System.out.print(redGradient[i % redGradient.length] + ' ');
-                }
-            }
-
-            // Third section (Blue gradient)
-            for (int j = 80; j < line.length(); j++) {
-                System.out.print(blueGradient[i % blueGradient.length] + line.charAt(j));
-            }
-
-            // Reset color and move to the next line
-            System.out.print("\u001B[0m\n");
-        }
+        // Teks ASCII art tanpa pewarnaan untuk debugging
+        Print.printMenu();
+        String boldStart = "\033[1m";
+        String boldEnd = "\033[0m";
+        
+        // Printing the menu with bold text for the title
         System.out.println("------------------------------");
-        System.out.println("|          Menu Utama        |");
-        System.out.println("| 1. Start                   |");
-        System.out.println("| 2. Help                    |");
-        System.out.println("| 3. Plant List              |");
-        System.out.println("| 4. Zombie List             |");
-        System.out.println("| 5. Exit                    |");
+        System.out.println("|" + boldStart + "          MENU UTAMA        " + boldEnd + "|");
+        System.out.println("------------------------------");
+        System.out.println("| 1. START                   |");
+        System.out.println("| 2. HELP                    |");
+        System.out.println("| 3. PLANT LIST              |");
+        System.out.println("| 4. ZOMBIE LIST             |");
+        System.out.println("| 5. EXIT                    |");
         System.out.println("------------------------------");
         System.out.print("Pilihan Anda: ");
-        System.out.println("");
     }
 
     public static void startGame(Scanner scanner) {
@@ -167,11 +126,11 @@ public class gameLoop {
             }
 
             if (gameOver) {
-                System.out.println("You lose!");
+                Print.printLose();
             }
 
             if (seconds >= 200) {
-                System.out.println("You win!");
+                Print.printWin();
                 gameOver = true;
             }
 
@@ -246,13 +205,33 @@ public class gameLoop {
     public static void pickPlant(Scanner scanner, Deck<Plants> deck) {
         while (deck.size() < 6) {
             try {
-                System.out.println("Inventory: ");
-                System.out.println(inventory.toString());
+                // System.out.println("\nInventory: ");
+                // System.out.println(inventory.toString());
+                // System.out.println();
+                // System.out.println("Deck: ");
+                // System.out.println(deck.toString());
+
+                String[] inventoryLines = inventory.toString().split("\n");
+                String[] deckLines = deck.toString().split("\n");
+
+                int maxLength = Math.max(inventoryLines.length, deckLines.length);
+
+                String boldStart = "\033[1m";
+                String boldEnd = "\033[0m";
+                
+                // Printing the menu with bold text for the title
                 System.out.println();
-                System.out.println("Deck: ");
-                System.out.println(deck.toString());
+                System.out.println("--------------------------------------");
+                System.out.println(boldStart + "Inventory:\t\t\tDeck:" + boldEnd);
+                System.out.println("--------------------------------------");
+                for (int i = 0; i < maxLength; i++) {
+                    String inventoryLine = i < inventoryLines.length ? inventoryLines[i] : "";
+                    String deckLine = i < deckLines.length ? deckLines[i] : "";
+
+                    System.out.printf("%-20s\t\t%s\n", inventoryLine, deckLine);
+                }
                 System.out.println(
-                    "<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
+                    "\n<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
                     "<2 x> Pilih tanaman untuk dikeluarkan dari deck\n" +
                     "<3 x y> Pilih tanaman untuk ditukar di deck\n"
                 );
@@ -301,11 +280,14 @@ public class gameLoop {
         }
     }
 
-    public static void help() {
-        System.out.println("Berikut adalah langkah dalam melakukan permainan:");
-        System.out.println("1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower");
-        System.out.println("2. Letakkan tanaman di koordinat yang diinginkan");
-        System.out.println("3. Lindungi rumah dari serangan zombie");
+    public static void help(Scanner scanner) {
+        int choice = -1;
+        while(choice != 0){
+            Print.printHelp();
+            System.out.print("Masukkan 0 jika sudah paham: ");
+            choice = scanner.nextInt();
+        }
+        
     }
 
     public static void plantLists(Scanner scanner) {
