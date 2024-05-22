@@ -69,7 +69,7 @@ public class Inventory {
         } else if (slot1 >= deck.size() || slot2 >= deck.size()){
             throw new Exception("Cannot swap with empty slot");
         } else if (deck.get(slot1) == null || deck.get(slot2) == null) {
-            throw new Exception("Cannot swap with empty slot");
+            throw new Exception("\u001B[31mCannot swap with empty slot\u001B[0m");
         } else {
             deck.swap(slot1, slot2);
         }
@@ -89,7 +89,7 @@ public class Inventory {
                 }
             }
         } else {
-            throw new Exception("Slot is empty");
+            throw new Exception("\u001B[31mSlot is empty\u001B[0m");
         }
     }
 
