@@ -16,28 +16,33 @@ public class gameLoop {
     public static void main(String[] args) {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
+        Zombies.addZombie();
 
         while (true) {
             try {
-                menu(scanner);
-                choice = scanner.nextInt();
-                if (choice == 1) {
-                    startGame(scanner);
-                    continue;
-                } else if (choice == 2) {
-                    help();
-                    continue;
-                } else if (choice == 3) {
-                    plantLists(scanner);
-                    continue;
-                } else if (choice == 4) {
-                    zombieLists(scanner);
-                    continue;
-                } else if (choice == 5) {
-                    System.out.println("Byee");
-                    break;
+                menu();
+                if(scanner.hasNextInt()){
+                    choice = scanner.nextInt();
+                    if (choice == 1) {
+                        startGame(scanner);
+                    } else if (choice == 2) {
+                        help();
+                        continue;
+                    } else if (choice == 3) {
+                        plantLists(scanner);
+                        continue;
+                    } else if (choice == 4) {
+                        zombieLists(scanner);
+                        continue;
+                    } else if (choice == 5) {
+                        System.out.println("Byee");
+                        break;
+                    } else {
+                        throw new IllegalArgumentException("Choice is invalid");
+                    }
                 } else {
-                    throw new IllegalArgumentException("Choice is invalid");
+                    scanner.next();
+                    throw new InputMismatchException();
                 }
             } catch (InputMismatchException e) {
                 scanner.nextLine();
@@ -48,7 +53,7 @@ public class gameLoop {
         }
     }
 
-    public static void menu(Scanner scanner) {
+    public static void menu() {
         System.out.println("------------------------------");
         System.out.println("|          Menu Utama        |");
         System.out.println("| 1. Start                   |");
@@ -71,9 +76,55 @@ public class gameLoop {
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
         ZombieFactory zf = new ZombieFactory();
+        Zombies.amount = 0;
+        inventory.resetInventory();
         // Inventory inventory = new Inventory();  // Pastikan inventory diinisialisasi
 
         pickPlant(scanner, deck);
+
+        // Thread for user input
+        Thread userThread = new Thread(() -> {
+            map.printMap();
+            while (!gameOver) {
+                try {
+                    if(gameOver){
+                        break;
+                    }
+                    System.out.println(
+                        "\n" +
+                        "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
+                        "<2 x y> Dig tanaman di koordinat map\n" +
+                        "\n" + 
+                        "Jumlah sun : " + Sun.getAmount() + "\n" +
+                        "Waktu : " + seconds + "\n" +
+                        "Zombie amount : " + Zombies.amount + "\n" + 
+                        "\n" +
+                        deck.toString() + "\n"
+                    );
+                    int input = scanner.nextInt();
+                    if (input == 1) {
+                        map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
+                    } else if (input == 2) {
+                        map.dig(scanner.nextInt(), scanner.nextInt() - 1);
+                    } else if (input == 0){
+                        continue;
+                    } else {
+                        throw new IllegalArgumentException("Invalid input");
+                    }
+                } catch (InterruptedException e){
+                    break; 
+                } catch (InputMismatchException e){
+                    scanner.nextLine();
+                    System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
+                } catch (Exception e) {
+                    System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
+                } finally {
+                    if(!gameOver){
+                        map.printMap();
+                    }
+                }
+            }
+        });
 
         // Thread for game loop
         Thread gameThread = new Thread(() -> {
@@ -81,6 +132,9 @@ public class gameLoop {
 
             while (!gameOver && seconds < 200) {
                 try {
+                    if(gameOver){
+                        break;
+                    }
                     if (seconds <= 100) {
                         if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
                             Sun.addSun();
@@ -126,73 +180,50 @@ public class gameLoop {
                 System.out.println("You win!");
                 gameOver = true;
             }
-
+            System.out.println("Press 0 and then enter to continue, this is not a bug, this is a feature");
         });
         gameThread.start();
-
-        // Thread for user input
-        new Thread(() -> {
-            map.printMap();
-            while (!gameOver) {
-                try {
-                    System.out.println(
-                        "\n" +
-                        "<1 x y plants(index)> Plant tanaman di koordinat map\n" +
-                        "<2 x y> Dig tanaman di koordinat map\n" +
-                        "\n" + 
-                        "Jumlah sun : " + Sun.getAmount() + "\n" +
-                        "Waktu : " + seconds + "\n" +
-                        "Max zombie amount : " + Zombies.amount + "\n" + 
-                        "\n" +
-                        deck.toString() + "\n"
-                    );
-                    int input = scanner.nextInt();
-                    if (input == 1) {
-                        map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
-                    } else if (input == 2) {
-                        map.dig(scanner.nextInt(), scanner.nextInt() - 1);
-                    } else {
-                        throw new IllegalArgumentException("Error : Invalid input");
-                    }
-                } catch (InputMismatchException e){
-                    scanner.nextLine();
-                    System.out.println("\u001B[91m" + "Error : Invalid input" + "\u001B[0m");
-                } catch (Exception e) {
-                    System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
-                } finally {
-                    map.printMap();
-                }
-            }
-        }).start();
+        userThread.start();
 
         // Thread for plants and zombies
-        while (!gameOver) {
-            try {
-                for (int i = 0; i < 11; i++) {
-                    for (int j = 0; j < 6; j++) {
-                        Tile tile = Map.getTile(j, i);
-                        synchronized (tile) {
-                            if (!(tile.getPlant() == null)) {
-                                action.attackPlant(i, j, tile.getPlant());
-                            }
-                            if (!tile.getZombies().isEmpty()) {
-                                if (tile.getPlant() == null) {
-                                    action.moveZombie(j, tile.getZombies());
-                                } else {
-                                    action.attackZombie(tile, map, i, j);
+        Thread actionThread = new Thread(() -> {
+            while (!gameOver) {
+                try {
+                    if(gameOver){
+                        break;
+                    }
+                    for (int i = 0; i < 11; i++) {
+                        for (int j = 0; j < 6; j++) {
+                            Tile tile = Map.getTile(j, i);
+                            synchronized (tile) {
+                                if (!(tile.getPlant() == null)) {
+                                    action.attackPlant(i, j, tile.getPlant());
+                                }
+                                if (!tile.getZombies().isEmpty()) {
+                                    if (tile.getPlant() == null) {
+                                        action.moveZombie(j, tile.getZombies());
+                                    } else {
+                                        action.attackZombie(tile, map, i, j);
+                                    }
                                 }
                             }
                         }
                     }
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
                 }
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                System.out.println("\u001B[91m" + "Error : " + e.getMessage() + "\u001B[0m");
             }
-        }
-        try{
+        });
+        actionThread.start();
+        
+        try {
             gameThread.join();
-        } catch(Exception e){}
+            userThread.join();
+            actionThread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void pickPlant(Scanner scanner, Deck<Plants> deck) {
@@ -282,7 +313,6 @@ public class gameLoop {
 
     public static void zombieLists(Scanner scanner){
         int choice = -1;
-        Zombies.addZombie();
         while (choice != 0){
             System.out.println("Zombie: ");
             int i = 1;

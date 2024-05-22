@@ -142,4 +142,9 @@ public class Inventory {
         return ret;
     }    
 
+    public void resetInventory(){
+        for (Plants plants : inventory.keySet()) {
+            inventory.put(plants, true);
+        }
+    }
 }
