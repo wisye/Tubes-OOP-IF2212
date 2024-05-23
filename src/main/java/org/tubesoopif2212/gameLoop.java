@@ -132,9 +132,10 @@ public class gameLoop {
                     if(gameOver){
                         break;
                     }
+
                     if (seconds <= 100) {
                         if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
-                            Sun.addSun();
+                            Sun.addSun(25);
                             lastSunUpdate = seconds;
                         }
                     }
@@ -196,6 +197,9 @@ public class gameLoop {
                             synchronized (tile) {
                                 if (!(tile.getPlant() == null)) {
                                     action.attackPlant(i, j, tile.getPlant());
+                                }
+                                if (tile.getPlant() instanceof Sunflower){
+                                    action.addSun((Sunflower) tile.getPlant());
                                 }
                                 if (!tile.getZombies().isEmpty()) {
                                     if (tile.getPlant() == null) {

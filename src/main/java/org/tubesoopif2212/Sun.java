@@ -19,8 +19,8 @@ public class Sun {
         return amount;
     }
 
-    public static synchronized void addSun(){
-        amount += 25;
+    public static synchronized void addSun(int amount){
+        Sun.amount += amount;
     }
 
     public static void reduceSun(int amount){

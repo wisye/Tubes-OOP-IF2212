@@ -10,6 +10,7 @@ public abstract class Plants {
     private Integer cooldown;
     private Integer attackCooldown = 0;
     private Integer timeCreated = 0;
+    private int ability = 0;
 
     public Plants(String name, Integer cost, Integer health, Integer attackDamage, Integer attackSpeed, Integer range, Integer cooldown, int timeCreated){
         this.name = name;
@@ -92,5 +93,13 @@ public abstract class Plants {
 
     public void setAttackCooldown(Integer cooldown){
         this.attackCooldown = cooldown;
+    }
+
+    public void setInstant(boolean instant) {
+        ability = instant ? (ability | 1) : (ability & ~1);
+    }
+
+    public boolean getInstant(){
+        return ((ability & 1) == 1);
     }
 }
