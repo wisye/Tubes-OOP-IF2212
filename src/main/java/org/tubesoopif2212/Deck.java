@@ -61,7 +61,7 @@ public class Deck<T> {
         return deck.get(index);
     }
 
-    public Plants create(int index, int timeCreated) {
+    public Plants create(int index, int timeCreated) throws Exception{
         return deck.get(index).create(timeCreated);
     }
 
@@ -70,13 +70,27 @@ public class Deck<T> {
     }
 
     public static class PeashooterFactory implements PlantFactory<Peashooter> {
-        public Peashooter create(int timeCreated) {
+        public int cooldown = new Peashooter(0).getCooldown();
+        private int lastPlantedTime = -200;
+
+        public Peashooter create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Peashooter(timeCreated);
         }
     }
 
     public static class SunflowerFactory implements PlantFactory<Sunflower> {
-        public Sunflower create(int timeCreated) {
+        public int cooldown = new Sunflower(0).getCooldown();
+        private int lastPlantedTime = -200;
+
+        public Sunflower create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Sunflower(timeCreated);
         }
     }
@@ -147,7 +161,7 @@ public class Deck<T> {
         String ret = new String();
         int i = 1;
         for (PlantFactory<? extends Plants> p : deck) {
-            ret += i + ". " + (p.create(0).getName()) + ("\n");
+            ret += i + ". " + (p.getClass().getSimpleName().replace("Factory", "")) + ("\n");
             i++;
         }
         return ret.toString();

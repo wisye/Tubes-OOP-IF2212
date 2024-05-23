@@ -9,16 +9,21 @@ import java.util.Random;
 
 public class Actions{
 
+    private int moveTime = 10;
+
 	public void moveZombie(int row, List<Zombies> zombies) {
         for(Zombies zombie : zombies){
 
             if(zombie.getSlowed()){
-                int timing = gameLoop.seconds;
-                if((gameLoop.seconds - zombie.getTimeCreated()) % 7 != 0 && (gameLoop.seconds - timing <= 3)){
+                if(gameLoop.seconds - zombie.getSlowedTime() >= 3){
+                    zombie.setSlowed(false);
+                    zombie.setAttackSpeed(zombie.getAttackSpeed() * 2 / 3);
+                }
+                if(zombie.getSlowed() && ((gameLoop.seconds - zombie.getTimeCreated()) % (moveTime * 2) != 0)){
                     continue;
                 }
-            } else{
-                if((gameLoop.seconds - zombie.getTimeCreated()) % 5 != 0){
+            } else {
+                if(!zombie.getSlowed() && ((gameLoop.seconds - zombie.getTimeCreated()) % moveTime != 0)){
                     continue;
                 }
             }
@@ -33,13 +38,6 @@ public class Actions{
                         Tile leftTile = Map.getTile(row, col - 1);
                         if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
                             jump(row, col, zombie);
-                        } else if(leftTile.getPlant() != null && zombie.getSlowed()==true){
-                            int waktu = gameLoop.seconds;
-                            while(gameLoop.seconds - waktu <= 3){
-                                if((gameLoop.seconds - zombie.getTimeCreated()) % 10 != 0){
-                                    continue;
-                                }
-                            }
                         }
                         else{
                             leftTile.addZombie(zombie);
@@ -90,6 +88,11 @@ public class Actions{
             tile.removeZombie(zombie);
             Zombies.amount--;
         }
+
+        if(plant.getInstant()){
+            Map.removePlant(row, column);
+        }
+
         plant.setAttackCooldown(plant.getAttackSpeed() - 1);
     }
 
@@ -99,7 +102,7 @@ public class Actions{
                 tile.getPlant().setHealth(tile.getPlant().getHealth() - zombie.getAttackDamage());
             }
             if(tile.getPlant().getHealth() <= 0){
-                map.dig(row, column);
+                Map.getTile(row, column).setPlant(null);
                 break;
             }
         }
@@ -107,18 +110,25 @@ public class Actions{
 
     public void jump(int row, int col, Zombies zombie){
         Tile currentTile = Map.getTile(row, col);
-        Tile leftTile = Map.getTile(row, col - 1);
         Tile secondLeftTile = Map.getTile(row, col - 2);
 
-        leftTile.setPlant(null);
+        secondLeftTile.setPlant(null);
         secondLeftTile.addZombie(zombie);
         currentTile.removeZombie(zombie);
         zombie.setNextHop(false);
     }
 
     public void slowed(Zombies zombie){
-        zombie.setSlowed(true);
-        zombie.setAttackSpeed(zombie.getAttackSpeed() + zombie.getAttackSpeed()/2);
-        zombie.setStatusEffect(1);
+        if(!zombie.getSlowed()){
+            zombie.setSlowed(true);
+            zombie.setAttackSpeed(zombie.getAttackSpeed() + zombie.getAttackSpeed()/2);
+            zombie.setSlowedTime(gameLoop.seconds);
+        }
+    }
+
+    public void addSun(Sunflower sunflower){
+        if((sunflower.getTimeCreated() - gameLoop.seconds) % 3 == 0){
+            Sun.addSun(25);
+        }
     }
 }

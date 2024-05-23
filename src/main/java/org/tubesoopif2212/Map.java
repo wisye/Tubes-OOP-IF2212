@@ -95,19 +95,6 @@ public class Map {
             throw new Exception("Not enough sun");
         }
         Sun.reduceSun(plant.getCost());
-        if(plant instanceof Sunflower){
-            new Thread(() -> {
-                while (!gameLoop.gameOver) {
-                    try {
-                        Thread.sleep(3000); // sleep for 3 seconds
-                        Sun.addSun();
-                    } 
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
         if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
             throw new Exception("This plant cannot be planted on this tile");
         }
@@ -126,8 +113,18 @@ public class Map {
         }
     }
 
-    public void dig(int row, int col){
+    public void dig(int row, int col) throws Exception{
+        if(tiles[col][row].getPlant() == null){
+            throw new Exception("There is no plant here");
+        }
         (tiles[col][row]).setPlant(null);
+    }
+
+    public static void removePlant(int row, int col){
+        if(tiles[col][row] instanceof Water){
+            tiles[col][row].setPlant(new Lilypad(0));
+        }
+        tiles[col][row].setPlant(null);
     }
 
     public void addZombie(int row, Zombies zombie){

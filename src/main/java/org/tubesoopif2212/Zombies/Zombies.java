@@ -14,8 +14,8 @@ public abstract class Zombies {
     private Boolean isAquatic;
     private int timeCreated;
     private int statusEffect = 0;
+    private int slowedTime;
     private int ability = 0;
-    private boolean slowed = false;
     public static List<Zombies> zoms = new ArrayList<Zombies>();
     
     public static int amount = 0;
@@ -41,14 +41,6 @@ public abstract class Zombies {
 
     public void setStatusEffect(int a){
         statusEffect = a;
-    }
-
-    public void setSlowed(boolean slowed) {
-        this.slowed = slowed;
-    }
-
-    public boolean getSlowed(){
-        return slowed;
     }
 
     public String getName() {
@@ -94,6 +86,23 @@ public abstract class Zombies {
     public int getTimeCreated(){
         return timeCreated;
     }
+
+    public void setSlowed(boolean slowed) {
+        statusEffect = slowed ? (statusEffect | 1) : (statusEffect & ~1);
+    }
+
+    public boolean getSlowed(){
+        return ((statusEffect & 1) == 1);
+    }
+
+    public void setSlowedTime(int slowedTime) {
+        this.slowedTime = slowedTime;
+    }
+
+    public int getSlowedTime() {
+        return slowedTime;
+    }
+
 
     public void setNextHop(boolean hop){
         ability = hop ? (ability | 1) : (ability & ~1);
