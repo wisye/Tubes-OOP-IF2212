@@ -41,7 +41,14 @@ public class Print {
             System.out.print("\u001B[0m\n");
         }
 
-        // dalam sebuah tile ada lebih dari 1 zombie
+        System.out.println("=================================================");
+        System.out.println("|| 1. [START]       - Embark on the adventure! ||");
+        System.out.println("|| 2. [HELP]        - How to play and controls ||");
+        System.out.println("|| 3. [PLANT LIST]  - See the heroic plants    ||");
+        System.out.println("|| 4. [ZOMBIE LIST] - Meet the wacky zombies   ||");
+        System.out.println("|| 5. [EXIT]        - Exit the game            ||");
+        System.out.println("=================================================");
+        System.out.print("Enter your choice (1-5): ");
     }
     
     public static void printLose(){
@@ -133,15 +140,20 @@ public class Print {
         System.out.println(horizontalLine);
         
         System.out.println("-------------------------------------------------------------------------");
-        System.out.println("| 1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower  |");
+        System.out.println("| 1. Pilih tanaman apa yang ingin kalian tanam, pastikan ada sunflower! |");
         System.out.println("| 2. Letakkan tanaman di koordinat yang diinginkan                      |");
         System.out.println("| 3. Lindungi rumah dari serangan zombie                                |");
         System.out.println("-------------------------------------------------------------------------");
         System.out.println("");
-    }
-
-    private static void printInventory(){
-
+        System.out.println("==========================================================================");
+        System.out.println("||                             MENU                                     ||");
+        System.out.println("==========================================================================");
+        System.out.println("|| 1. START: Ayo mulai pertarungan mu!                                  ||");
+        System.out.println("|| 2. HELP: Butuh bantuan? pilih opsi ini.                              ||");
+        System.out.println("|| 3. PLANT LIST: Berikut adalah tanaman yang akan membantu mu.         ||");
+        System.out.println("|| 4. ZOMBIE LIST: Berikut adalah zombie yang akan kamu hadapi.         ||");
+        System.out.println("|| 5. EXIT: Sayonara!                                                   ||");
+        System.out.println("=========================================================================");
     }
 
     // warna main
@@ -155,4 +167,42 @@ public class Print {
         }
         return gradient;
     }
+
+    public static final String RESET = "\033[0m";  // ANSI reset
+
+    // ANSI color codes
+    public static final String[] COLORS = {
+        "\033[38;2;255;255;0m",    // Yellow
+        "\033[38;2;229;255;26m",
+        "\033[38;2;204;255;51m",
+        "\033[38;2;178;255;77m",
+        "\033[38;2;153;255;102m",
+        "\033[38;2;128;255;128m",
+        "\033[38;2;102;255;153m",
+        "\033[38;2;77;255;178m",
+        "\033[38;2;51;255;204m",
+        "\033[38;2;26;255;229m",
+        "\033[38;2;0;255;255m"     // Cyan
+    };
+
+    public static void printExit(){
+        String text = 
+            "____     _________  ______  _  _____   ___  ___     ____  \n" +
+            "\\ \\ \\   / __/ _ \\ \\/ / __ \\/ |/ / _ | / _ \\/ _ |    \\ \\ \\ \n" +
+            " > > > _\\ \\/ __ |\\  / /_/ /    / __ |/ , _/ __ |     > > >\n" +
+            "/_/_/ /___/_/ |_|/_/\\____/_/|_/_/ |_/_/|_/_/ |_|    /_/_/ \n" +
+            "                                                          \n";
+
+        // Split the text into lines
+        String[] lines = text.split("\n");
+        int totalColors = COLORS.length;
+        int totalLines = lines.length;
+
+        // Print each line with a color from the gradient
+        for (int i = 0; i < totalLines; i++) {
+            int colorIndex = (i * totalColors) / totalLines;  // Calculate the color index for gradient
+            System.out.print(COLORS[colorIndex] + lines[i] + RESET + "\n");
+        }
+    }
+
 }
