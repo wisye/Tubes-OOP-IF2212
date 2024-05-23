@@ -220,19 +220,16 @@ interface PlantFactory<T extends Plants> {
     +create(timeCreated: int): T
 }
 
-class Actions implements ZombieFactory{
-    + typesWater: ZombieFactory.zombieTypeWater[]
-    + TypesLand: ZombieFactory.zombieTypeLand[]
+class Actions {
     + moveZombie(int row, List<Zombies> zombies): void
     + attackPlant(int row, int column, Plants plant): void
     + attackZombie(Tile tile, Map map, int row, int column): void
-    + spawnRandomZombies(Tile tile): void
     + jump(int row, int col, Zombies zombie): void
     + slowed(Zombies zombie): void
 }
 
 class Map{
-    - {static} tiles: Tile[][]
+    - tiles: Tile[][]
     + Map() <<constructor>>
     + {static} getTile(int row, int col): Tile
     + printMap(): void
@@ -264,6 +261,7 @@ class Inventory{
     + get(int i): Plants
     + toString(): String
     + toString(Plants plants): String
+    + resetInventory(): void
 }
 
 class Deck{
@@ -319,7 +317,7 @@ class CeresFaunaFactory implements PlantFactory<CeresFauna>{
     + create(int timeCreated): CeresFauna
 }
 
-class System << (S,#FF7700) Singleton >>{
+class Sun << (S,#FF7700) Singleton >>{
     - {static} sun: Sun
     - {static} amount: int
     + {static} getInstance(): Sun
@@ -329,7 +327,7 @@ class System << (S,#FF7700) Singleton >>{
     + {static} setSun(): void
 }
 
-
+Sun --> Sun
 
 ' Relationships between Plant Factories and Plants
 CannabisFactory --> Cannabis
@@ -343,6 +341,17 @@ SquashFactory --> Squash
 SunFlowerFactory --> SunFlower
 WallnutFactory --> Wallnut
 
+Deck --> CannabisFactory
+Deck --> CeresFaunaFactory
+Deck --> LilypadFactory
+Deck --> NahidaFactory
+Deck --> PeashooterFactory
+Deck --> PlanterraFactory
+Deck --> SnowpeaFactory
+Deck --> SquashFactory
+Deck --> SunFlowerFactory
+Deck --> WallnutFactory
+
 ' Relationships between Tiles and Plants/Zombies
 Tile --> Plants
 Tile --> "0..*" Zombies
@@ -353,6 +362,7 @@ Map --> Plants
 Map --> Zombies
 gameLoop --> Inventory
 Inventory --> Deck
+Inventory --> Map
 Deck --> "0..*" Plants
 Deck --> "0..*" PlantFactory
 
