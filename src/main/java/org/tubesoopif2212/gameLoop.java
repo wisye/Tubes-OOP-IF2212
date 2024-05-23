@@ -355,24 +355,4 @@ public class gameLoop {
             }
         }
     }
-
-    // warna main
-    private static String[] generateGradient(int r1, int g1, int b1, int r2, int g2, int b2, int steps) {
-        String[] gradient = new String[steps];
-        for (int i = 0; i < steps; i++) {
-            int r = r1 + (r2 - r1) * i / (steps - 1);
-            int g = g1 + (g2 - g1) * i / (steps - 1);
-            int b = b1 + (b2 - b1) * i / (steps - 1);
-            gradient[i] = String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
-        }
-        return gradient;
-    }
-
-    private static String printa(){
-        return ("1. Start\n" +
-                "2. Help\n" +
-                "3. Plants List\n" +
-                "4. Zombies List\n" +
-                "5. Exit");
-    }
 }
