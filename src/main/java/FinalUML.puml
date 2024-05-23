@@ -220,19 +220,17 @@ interface PlantFactory<T extends Plants> {
     +create(timeCreated: int): T
 }
 
-class Actions implements ZombieFactory{
-    + typesWater: ZombieFactory.zombieTypeWater[]
-    + TypesLand: ZombieFactory.zombieTypeLand[]
+class Actions {
     + moveZombie(int row, List<Zombies> zombies): void
     + attackPlant(int row, int column, Plants plant): void
     + attackZombie(Tile tile, Map map, int row, int column): void
-    + spawnRandomZombies(Tile tile): void
     + jump(int row, int col, Zombies zombie): void
     + slowed(Zombies zombie): void
 }
 
 class Map{
-    - {static} tiles: Tile[][]
+    - {static} map : Map
+    - tiles: Tile[][]
     + Map() <<constructor>>
     + {static} getTile(int row, int col): Tile
     + printMap(): void
@@ -264,6 +262,7 @@ class Inventory{
     + get(int i): Plants
     + toString(): String
     + toString(Plants plants): String
+    + resetInventory(): void
 }
 
 class Deck{
@@ -319,7 +318,7 @@ class CeresFaunaFactory implements PlantFactory<CeresFauna>{
     + create(int timeCreated): CeresFauna
 }
 
-class System << (S,#FF7700) Singleton >>{
+class Sun << (S,#FF7700) Singleton >>{
     - {static} sun: Sun
     - {static} amount: int
     + {static} getInstance(): Sun
@@ -329,30 +328,34 @@ class System << (S,#FF7700) Singleton >>{
     + {static} setSun(): void
 }
 
-
+Sun --> Sun
+Map --> Map
 
 ' Relationships between Plant Factories and Plants
-CannabisFactory --> Cannabis
-CeresFaunaFactory --> CeresFauna
-LilypadFactory --> Lilypad
-NahidaFactory --> Nahida
-PeashooterFactory --> Peashooter
-PlanterraFactory --> Planterra
-SnowpeaFactory --> Snowpea
-SquashFactory --> Squash
-SunFlowerFactory --> SunFlower
-WallnutFactory --> Wallnut
+CannabisFactory --> "0..*" Cannabis
+CeresFaunaFactory --> "0..*" CeresFauna
+LilypadFactory --> "0..*" Lilypad
+NahidaFactory --> "0..*" Nahida
+PeashooterFactory --> "0..*" Peashooter
+PlanterraFactory --> "0..*" Planterra
+SnowpeaFactory --> "0..*" Snowpea
+SquashFactory --> "0..*" Squash
+SunFlowerFactory --> "0..*" SunFlower
+WallnutFactory --> "0..*" Wallnut
 
 ' Relationships between Tiles and Plants/Zombies
-Tile --> Plants
+Tile --> "0..*" Plants
 Tile --> "0..*" Zombies
 
 Actions --> ZombieFactory
+Actions --> "1..*" Zombies
+Actions --> "1..*" Plants
 Map --> "1..*" Tile
 Map --> Plants
 Map --> Zombies
 gameLoop --> Inventory
 Inventory --> Deck
+Inventory --> Map
 Deck --> "0..*" Plants
 Deck --> "0..*" PlantFactory
 
