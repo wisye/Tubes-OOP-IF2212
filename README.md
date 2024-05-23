@@ -36,3 +36,7 @@ Menjalankan ./run pada terminal atau command prompt
 ### Step 5
 
 May the Game Begin!
+
+---
+
+© 2024 Firefly from HSR. All rights reserved.
