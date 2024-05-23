@@ -26,7 +26,7 @@ public class gameLoop {
                     if (choice == 1) {
                         startGame(scanner);
                     } else if (choice == 2) {
-                        help();
+                        help(scanner);
                         continue;
                     } else if (choice == 3) {
                         plantLists(scanner);
@@ -35,7 +35,7 @@ public class gameLoop {
                         zombieLists(scanner);
                         continue;
                     } else if (choice == 5) {
-                        System.out.println("Byee");
+                        Print.printExit();
                         break;
                     } else {
                         throw new IllegalArgumentException("Choice is invalid");
@@ -225,6 +225,7 @@ public class gameLoop {
     }
 
     public static void pickPlant(Scanner scanner, Deck<Plants> deck) {
+        System.out.println("Starting the game...");
         while (deck.size() < 6) {
             try {
                 // System.out.println("\nInventory: ");
@@ -243,14 +244,14 @@ public class gameLoop {
                 
                 // Printing the menu with bold text for the title
                 System.out.println();
-                System.out.println("--------------------------------------");
-                System.out.println(boldStart + "Inventory:\t\t\tDeck:" + boldEnd);
-                System.out.println("--------------------------------------");
+                System.out.println("------------------------------------------------------------");
+                System.out.println(boldStart + "Inventory:\t\t\t\t| Deck:" + boldEnd);
+                System.out.println("------------------------------------------------------------");
                 for (int i = 0; i < maxLength; i++) {
                     String inventoryLine = i < inventoryLines.length ? inventoryLines[i] : "";
                     String deckLine = i < deckLines.length ? deckLines[i] : "";
 
-                    System.out.printf("%-20s\t\t%s\n", inventoryLine, deckLine);
+                    System.out.printf("%-30s\t\t%s\n", inventoryLine, deckLine);
                 }
                 System.out.println(
                     "\n<1 x> Pilih tanaman untuk dimasukkan ke deck\n" +
