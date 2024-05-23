@@ -229,6 +229,7 @@ class Actions {
 }
 
 class Map{
+    - {static} map : Map
     - tiles: Tile[][]
     + Map() <<constructor>>
     + {static} getTile(int row, int col): Tile
@@ -328,35 +329,27 @@ class Sun << (S,#FF7700) Singleton >>{
 }
 
 Sun --> Sun
+Map --> Map
 
 ' Relationships between Plant Factories and Plants
-CannabisFactory --> Cannabis
-CeresFaunaFactory --> CeresFauna
-LilypadFactory --> Lilypad
-NahidaFactory --> Nahida
-PeashooterFactory --> Peashooter
-PlanterraFactory --> Planterra
-SnowpeaFactory --> Snowpea
-SquashFactory --> Squash
-SunFlowerFactory --> SunFlower
-WallnutFactory --> Wallnut
-
-Deck --> CannabisFactory
-Deck --> CeresFaunaFactory
-Deck --> LilypadFactory
-Deck --> NahidaFactory
-Deck --> PeashooterFactory
-Deck --> PlanterraFactory
-Deck --> SnowpeaFactory
-Deck --> SquashFactory
-Deck --> SunFlowerFactory
-Deck --> WallnutFactory
+CannabisFactory --> "0..*" Cannabis
+CeresFaunaFactory --> "0..*" CeresFauna
+LilypadFactory --> "0..*" Lilypad
+NahidaFactory --> "0..*" Nahida
+PeashooterFactory --> "0..*" Peashooter
+PlanterraFactory --> "0..*" Planterra
+SnowpeaFactory --> "0..*" Snowpea
+SquashFactory --> "0..*" Squash
+SunFlowerFactory --> "0..*" SunFlower
+WallnutFactory --> "0..*" Wallnut
 
 ' Relationships between Tiles and Plants/Zombies
-Tile --> Plants
+Tile --> "0..*" Plants
 Tile --> "0..*" Zombies
 
 Actions --> ZombieFactory
+Actions --> "1..*" Zombies
+Actions --> "1..*" Plants
 Map --> "1..*" Tile
 Map --> Plants
 Map --> Zombies
