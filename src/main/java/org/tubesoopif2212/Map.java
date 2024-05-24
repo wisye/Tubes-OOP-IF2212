@@ -124,7 +124,9 @@ public class Map {
         if(tiles[col][row] instanceof Water){
             tiles[col][row].setPlant(new Lilypad(0));
         }
-        tiles[col][row].setPlant(null);
+        else{
+            tiles[col][row].setPlant(null);
+        }
     }
 
     public void addZombie(int row, Zombies zombie){
