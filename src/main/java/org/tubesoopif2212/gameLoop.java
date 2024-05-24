@@ -68,7 +68,7 @@ public class gameLoop {
         seconds = 0;
         Sun.getInstance();
         Sun.setSun(50);
-        Maps map = new Maps();
+        Map map = Map.getInstance();
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
@@ -100,7 +100,14 @@ public class gameLoop {
                     );
                     int input = scanner.nextInt();
                     if (input == 1) {
-                        map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
+                        int row = scanner.nextInt();
+                        int col = scanner.nextInt() - 1;
+                        int plantIndex = scanner.nextInt() - 1;
+                        // if(Map.getTile(col, row).getPlant() != null && !(Map.getTile(col, row).getPlant() instanceof Lilypad)){
+                        //     throw new Exception("A plant has already existed on this tile");
+                        // }
+                        map.validatePlant(row, col, deck.getPlantPrototype(plantIndex));
+                        map.plant(row, col, deck.create(plantIndex, seconds));
                     } else if (input == 2) {
                         map.dig(scanner.nextInt(), scanner.nextInt() - 1);
                     } else if (input == 0){
@@ -154,7 +161,7 @@ public class gameLoop {
                     }
 
                     for (int row = 0; row < 5; row++) {
-                        if (!Maps.getTile(row, 0).getZombies().isEmpty()) {
+                        if (!Map.getTile(row, 0).getZombies().isEmpty()) {
                             gameOver = true;
 
                             break;
@@ -193,7 +200,7 @@ public class gameLoop {
                     }
                     for (int i = 0; i < 11; i++) {
                         for (int j = 0; j < 6; j++) {
-                            Tile tile = Maps.getTile(j, i);
+                            Tile tile = Map.getTile(j, i);
                             synchronized (tile) {
                                 if (!(tile.getPlant() == null)) {
                                     action.attackPlant(i, j, tile.getPlant());

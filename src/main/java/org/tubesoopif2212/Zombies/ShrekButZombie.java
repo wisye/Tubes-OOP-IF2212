@@ -7,4 +7,7 @@ public class ShrekButZombie extends Zombies {
 	public ShrekButZombie(){
 		super("ShrekbutZombie", 800, 200, 3, true);
 	}
+	public ShrekButZombie(){
+		super("Shrek but Zombie", 800, 200, 3, true);
+	}
 }

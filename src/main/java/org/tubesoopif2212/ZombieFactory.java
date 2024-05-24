@@ -35,7 +35,7 @@ public class ZombieFactory {
 			ZombieFactory.zombieTypeWater randomTypeWater = typesWater[random.nextInt(typesWater.length)];
 			switch (randomTypeWater) {
 				case DolphinRider:
-					tile.addZombie(new DolphinRiderZombie(gameLoop.seconds));
+					tile.addZombie(new DolphinRider(gameLoop.seconds));
 					break;
 
 				case DuckyTube:
@@ -53,11 +53,11 @@ public class ZombieFactory {
 					break;
 
 				case Conehead:
-					tile.addZombie(new ConeheadZombie(gameLoop.seconds));
+					tile.addZombie(new Conehead(gameLoop.seconds));
 					break;
 
 				case Buckethead:
-					tile.addZombie(new BucketheadZombie(gameLoop.seconds));
+					tile.addZombie(new Buckethead(gameLoop.seconds));
 					break;
 
 				case PoleVaulting:
@@ -90,7 +90,7 @@ public class ZombieFactory {
 	public void flag(){
 		Random random = new Random();
 		for (int i = 0; i < 6; i++) {
-			Tile tile = Maps.getTile(i, 10);
+			Tile tile = Map.getTile(i, 10);
 			if (random.nextFloat() < 0.9) {
 			    spawnRandomZombies(tile);
 			}
@@ -100,7 +100,7 @@ public class ZombieFactory {
 	public void spawnZombies(){
 		Random random = new Random();
 		for (int i = 0; i < 6; i++) {
-			Tile tile = Maps.getTile(i, 10);
+			Tile tile = Map.getTile(i, 10);
 			if (random.nextFloat() < 0.3) {
 			    spawnRandomZombies(tile);
 			}

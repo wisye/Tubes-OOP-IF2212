@@ -102,4 +102,20 @@ public abstract class Plants {
     public boolean getInstant(){
         return ((ability & 1) == 1);
     }
+
+    public void setAOE(boolean aoe){
+        ability = aoe ? (ability | 2) : (ability & ~2);
+    }
+
+    public boolean getAOE(){
+        return ((ability & 2) == 1);
+    }
+
+    public void setX2Damage(boolean x2Damage){
+        ability = x2Damage ? (ability | 4) : (ability & ~4);
+    }
+
+    public boolean getX2Damage(){
+        return ((ability & 4) == 1);
+    }
 }

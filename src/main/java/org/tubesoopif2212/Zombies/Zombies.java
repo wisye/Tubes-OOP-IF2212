@@ -1,6 +1,9 @@
 package org.tubesoopif2212.Zombies;
 import java.util.List;
 
+import org.tubesoopif2212.Plants.Plants;
+
+import java.util.List;
 import java.util.ArrayList;
 
 public abstract class Zombies {
@@ -100,6 +103,14 @@ public abstract class Zombies {
         return slowedTime;
     }
 
+    public void setX2Damage(boolean x2Damage){
+        statusEffect = x2Damage ? (statusEffect | 2) : (statusEffect & ~2);
+    }
+
+    public boolean getX2Damage(){
+        return ((statusEffect & 2) == 1);
+    }
+
 
     public void setNextHop(boolean hop){
         ability = hop ? (ability | 1) : (ability & ~1);
@@ -111,14 +122,14 @@ public abstract class Zombies {
 
     public static void addZombie(){
         zoms.add(new Normal());
-        zoms.add(new ConeheadZombie());
-        zoms.add(new BucketheadZombie());
+        zoms.add(new Conehead());
+        zoms.add(new Buckethead());
         zoms.add(new PoleVaulting());
         zoms.add(new KureijiOllie());
         zoms.add(new Qiqi());
         zoms.add(new ShrekButZombie());
         zoms.add(new EntireZom100Cast());
-        zoms.add(new DolphinRiderZombie());
+        zoms.add(new DolphinRider());
         zoms.add(new DuckyTube());
     }
 

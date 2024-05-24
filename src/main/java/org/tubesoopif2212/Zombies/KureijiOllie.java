@@ -7,4 +7,7 @@ public class KureijiOllie extends Zombies {
 	public KureijiOllie(){
 		super("KureijiOllie", 200, 200, 3, true);
 	}
+	public KureijiOllie(){
+		super("Kureiji Ollie", 200, 200, 3, true);
+	}
 }

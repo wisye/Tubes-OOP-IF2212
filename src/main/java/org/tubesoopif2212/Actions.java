@@ -5,6 +5,7 @@ import org.tubesoopif2212.Tile.*;
 import org.tubesoopif2212.Zombies.*;
 
 import java.util.List;
+import java.util.Random;
 
 public class Actions{
 
@@ -28,14 +29,14 @@ public class Actions{
             }
 
             for (int col = 0; col < 11; col++) {
-                Tile tile = Maps.getTile(row, col);
+                Tile tile = Map.getTile(row, col);
                 synchronized(tile){
                     if (!tile.getZombies().contains(zombie)) {
                         continue;
                     }
                     if (col > 0) {
-                        Tile leftTile = Maps.getTile(row, col - 1);
-                        if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRiderZombie)){
+                        Tile leftTile = Map.getTile(row, col - 1);
+                        if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
                             jump(row, col, zombie);
                         }
                         else{
@@ -59,12 +60,12 @@ public class Actions{
             return;
         }
 
-        int max_range = plant.getRange() == -1 ? 10 : (plant.getRange() + row) >= 10 ? 10 : (plant.getRange() + row);
+        int maxRange = plant.getRange() == -1 ? 10 : (plant.getRange() + row) >= 10 ? 10 : (plant.getRange() + row);
         boolean hasZombies = false;
         Tile tile = null;
 
-        for (int i = row; i <= max_range; i++) {
-            tile = Maps.getTile(column, i);
+        for (int i = row; i <= maxRange; i++) {
+            tile = Map.getTile(column, i);
             if (!tile.getZombies().isEmpty()) {
                 hasZombies = true;
                 break;
@@ -72,44 +73,94 @@ public class Actions{
         }
     
         if (!hasZombies) {
+            if(plant instanceof Planterra){
+                for (int i = row + 1; i <= maxRange; i++) {
+                    Tile frontTile = Map.getTile(column, i);
+                    if (frontTile.getPlant() != null) {
+                        Plants frontPlant = frontTile.getPlant();
+                        frontPlant.setHealth(frontPlant.getHealth() - 25);
+                        if(frontPlant.getHealth() <= 0){
+                            Map.removePlant(i, column);
+                        }
+                        break;
+                    }
+                }
+            }
             return;
         }
 
-        for (Zombies zombie : tile.getZombies()) {
-            if(plant instanceof Snowpea){
-                slowed(zombie);
+        if(plant.getAOE()){
+            for (int i = Math.max(0, row - 1); i <= Math.min(9, row + 1); i++) {
+                for (int j = Math.max(0, column - 1); j <= Math.min(9, column + 1); j++) {
+                    Tile aoeTile = Map.getTile(j, i);
+                    for (Zombies zombie : aoeTile.getZombies()) {
+                        int damage = plant.getAttackDamage();
+
+                        if(plant.getX2Damage()){
+                            zombie.setX2Damage(true);
+                        }
+        
+                        if(zombie.getX2Damage()){
+                            damage *= 2;
+                        }
+            
+                        zombie.setHealth(zombie.getHealth() - damage);
+                        if(zombie.getHealth() > 0){
+                            continue;
+                        }
+                        tile.removeZombie(zombie);
+                        Zombies.amount--;
+                    }
+                }
             }
+        } 
+        else{
+            for (Zombies zombie : tile.getZombies()) {
+                int damage = plant.getAttackDamage();
 
-            zombie.setHealth(zombie.getHealth() - plant.getAttackDamage());
-            if(zombie.getHealth() > 0){
-                continue;
+                if(plant instanceof Snowpea){
+                    slowed(zombie);
+                }
+
+                if(plant.getX2Damage()){
+                    zombie.setX2Damage(true);
+                }
+
+                if(zombie.getX2Damage()){
+                    damage *= 2;
+                }
+    
+                zombie.setHealth(zombie.getHealth() - damage);
+                if(zombie.getHealth() > 0){
+                    continue;
+                }
+                tile.removeZombie(zombie);
+                Zombies.amount--;
             }
-            tile.removeZombie(zombie);
-            Zombies.amount--;
+    
+            if(plant.getInstant()){
+                Map.removePlant(row, column);
+            }
+    
+            plant.setAttackCooldown(plant.getAttackSpeed() - 1);
         }
-
-        if(plant.getInstant()){
-            Maps.removePlant(row, column);
-        }
-
-        plant.setAttackCooldown(plant.getAttackSpeed() - 1);
     }
 
-    public void attackZombie(Tile tile, Maps map, int row, int column){
+    public void attackZombie(Tile tile, Map map, int row, int column){
         for (Zombies zombie : tile.getZombies()) {
             if(gameLoop.seconds > zombie.getTimeCreated() && (gameLoop.seconds - zombie.getTimeCreated()) % zombie.getAttackSpeed() == 0){
                 tile.getPlant().setHealth(tile.getPlant().getHealth() - zombie.getAttackDamage());
             }
             if(tile.getPlant().getHealth() <= 0){
-                Maps.getTile(row, column).setPlant(null);
+                Map.deletePlant(row, column);
                 break;
             }
         }
     }
 
     public void jump(int row, int col, Zombies zombie){
-        Tile currentTile = Maps.getTile(row, col);
-        Tile secondLeftTile = Maps.getTile(row, col - 2);
+        Tile currentTile = Map.getTile(row, col);
+        Tile secondLeftTile = Map.getTile(row, col - 2);
 
         secondLeftTile.setPlant(null);
         secondLeftTile.addZombie(zombie);

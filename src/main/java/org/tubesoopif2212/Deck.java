@@ -12,69 +12,49 @@ public class Deck<T> {
         this.deck = new ArrayList<>(6);
     }
 
-    private static Deck lastSelectedDeck;
-
-    public static Deck getLastSelectedDeck(){
-        return lastSelectedDeck;
-    }
-
-    public static void setLastSelectedDeck(Deck selectedDeck) {
-        lastSelectedDeck = selectedDeck;
-    }
-
-    public List<PlantFactory<? extends Plants>> getPlants() {
-        return new ArrayList<>(deck);
-    }
-
     public void add(Plants plant) {
-        System.out.println("Before adding: " + deck.size() + " plants in the deck.");
-
-        if (deck.size() >= 6) {
-            throw new IllegalStateException("Deck is full");
-        }
-
         try {
-            switch (plant.getName()) {
-                case "Peashooter":
-                    deck.add(new PeashooterFactory());
-                    break;
-                case "Sunflower":
-                    deck.add(new SunflowerFactory());
-                    break;
-                case "Lilypad":
-                    deck.add(new LilypadFactory());
-                    break;
-                case "Wallnut":
-                    deck.add(new WallnutFactory());
-                    break;
-                case "Squash":
-                    deck.add(new SquashFactory());
-                    break;
-                case "Snowpea":
-                    deck.add(new SnowPeaFactory());
-                    break;
-                case "Nahida":
-                    deck.add(new NahidaFactory());
-                    break;
-                case "Planterra":
-                    deck.add(new PlanterraFactory());
-                    break;
-                case "Cannabis":
-                    deck.add(new CannabisFactory());
-                    break;
-                case "CeresFauna":
-                    deck.add(new CeresFaunaFactory());
-                    break;
-                default:
-                    break;
+            if (deck.size() < 6) {
+                switch (plant.getName()) {
+                    case "Peashooter":
+                        deck.add(new PeashooterFactory());
+                        break;
+                    case "Sunflower":
+                        deck.add(new SunflowerFactory());
+                        break;
+                    case "Lilypad":
+                        deck.add(new LilypadFactory());
+                        break;
+                    case "Wall nut":
+                        deck.add(new WallnutFactory());
+                        break;
+                    case "Squash":
+                        deck.add(new SquashFactory());
+                        break;
+                    case "Snow pea":
+                        deck.add(new SnowPeaFactory());
+                        break;
+                    case "Nahida":
+                        deck.add(new NahidaFactory());
+                        break;
+                    case "Planterra":
+                        deck.add(new PlanterraFactory());
+                        break;
+                    case "Cannabis":
+                        deck.add(new CannabisFactory());
+                        break;
+                    case "Ceres Fauna":
+                        deck.add(new CeresFaunaFactory());
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                throw new IllegalStateException("Deck is full");
             }
-        } catch (Exception e) {
-            System.out.println("Failed to add plant: " + e.getMessage());
-            return; // Skip the rest of the method if adding the plant failed
+        } catch (Exception E) {
+            E.printStackTrace();
         }
-
-        System.out.println("After adding: " + deck.size() + " plants in the deck.");
-        System.out.println("Added plant: " + plant.getName());
     }
 
     public PlantFactory<? extends Plants> get(int index) {
@@ -83,6 +63,10 @@ public class Deck<T> {
 
     public Plants create(int index, int timeCreated) throws Exception{
         return deck.get(index).create(timeCreated);
+    }
+
+    public Plants getPlantPrototype(int index){
+        return deck.get(index).createPrototype();
     }
 
     public int size() {
@@ -108,8 +92,9 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
-        public String getName(){
-            return "Peashooter";
+
+        public Peashooter createPrototype() {
+            return new Peashooter(0);
         }
     }
 
@@ -132,8 +117,9 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
-        public String getName(){
-            return "Sunflower";
+
+        public Sunflower createPrototype() {
+            return new Sunflower(0);
         }
     }
 
@@ -157,8 +143,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Lilypad";
+        public Lilypad createPrototype() {
+            return new Lilypad(0);
         }
     }
     
@@ -182,8 +168,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Wallnut";
+        public Wallnut createPrototype() {
+            return new Wallnut(0);
         }
     }
     
@@ -207,8 +193,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Squash";
+        public Squash createPrototype() {
+            return new Squash(0);
         }
     }
     
@@ -232,8 +218,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Snowpea";
+        public Snowpea createPrototype() {
+            return new Snowpea(0);
         }
     }
     
@@ -257,8 +243,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Nahida";
+        public Nahida createPrototype() {
+            return new Nahida(0);
         }
     }
     
@@ -282,8 +268,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Planterra";
+        public Planterra createPrototype() {
+            return new Planterra(0);
         }
     }
     
@@ -307,8 +293,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "Cannabis";
+        public Cannabis createPrototype() {
+            return new Cannabis(0);
         }
     }
     
@@ -332,8 +318,8 @@ public class Deck<T> {
             return cooldown;
         }
 
-        public String getName(){
-            return "CeresFauna";
+        public CeresFauna createPrototype() {
+            return new CeresFauna(0);
         }
     }
 
@@ -370,18 +356,5 @@ public class Deck<T> {
             i++;
         }
         return ret.toString();
-    }
-
-    public void removeByName(String plantName) {
-        if (plantName == null || plantName.isEmpty()) {
-            throw new IllegalArgumentException("Plant name cannot be null or empty");
-        }
-        for (PlantFactory<? extends Plants> factory : deck) {
-            if (factory.getName().equals(plantName)) {
-                deck.remove(factory);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Plant not found: " + plantName);
     }
 }

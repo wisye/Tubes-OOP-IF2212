@@ -6,14 +6,11 @@ import org.tubesoopif2212.Zombies.*;
 
 import java.util.List;
 
-public class Maps {
+public class Map {
     private static Tile[][] tiles;
+    private static Map map;
 
-    public static boolean isInitialized() {
-        return tiles != null;
-    }
-
-    public Maps(){
+    private Map(){
         tiles = new Tile[6][11];
         for (int i = 0; i < 6; i++) {
             tiles[i][0] = new ProtectedArea();
@@ -40,82 +37,86 @@ public class Maps {
         tiles[3][10].setWater(true);
     }
 
-    public static Tile getTile(int row, int col) {
-        if (tiles == null) {
-            throw new IllegalStateException("Maps object has not been initialized");
+    public static Map getInstance(){
+        if(map == null){
+            return new Map(); 
         }
+        else{
+            return map;
+        }
+    }
+
+    public static Tile getTile(int row, int col) {
         return tiles[row][col];
     }
 
     public void printMap() {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 1; j < tiles[i].length - 1; j++) {
-                synchronized(tiles[i][j]){
-                    boolean isLilypad = tiles[i][j].getPlant() != null && "Lilypad".equals(tiles[i][j].getPlant().getName());
-                    
-                    if(isLilypad){
-                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
-                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9)){
-                        System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
-                    } else {
-                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
-                    }
-                    
-                    if(tiles[i][j].getPlant() != null){
-                        System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
-                        if(!tiles[i][j].getZombies().isEmpty()){
-                            System.out.print("_");
-                            List<Zombies> zombies = (tiles[i][j].getZombies());
-                            for (Zombies zombies2 : zombies) {
-                                System.out.print(zombies2.getName() + "-" + zombies2.getHealth() + ", ");
-                            }
-                        }
-                    }
-                    else if(!tiles[i][j].getZombies().isEmpty()){
-                        List<Zombies> zombies = (tiles[i][j].getZombies());
-                        for (Zombies zombies2 : zombies) {
-                            System.out.print(zombies2.getName() + "-" + zombies2.getHealth() + ", ");
-                        }
-                    }
-                    else{
-                        System.out.print(" ");
-                    }
-    
-                    if(isLilypad){
-                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
-                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9)){
-                        System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
-                    } else {
-                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
-                    }
-                    
-                    System.out.print("\u001B[0m"); // Mengembalikan warna ke default
+    for (int i = 0; i < tiles.length; i++) {
+        for (int j = 1; j < tiles[i].length - 1; j++) {
+            synchronized(tiles[i][j]){
+                boolean isPlantPresent = tiles[i][j].getPlant() != null; // Cek apakah ada tanaman
+                
+                // Jika ada tanaman (Lilypad atau lainnya), warna hijau
+                if(isPlantPresent) {
+                    System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
+                } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
+                    System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
+                } else {
+                    System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau untuk kondisi lain
                 }
+                
+                // Menampilkan detail tanaman atau zombie jika ada
+                if(tiles[i][j].getPlant() != null){
+                    System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
+                    if(!tiles[i][j].getZombies().isEmpty()){
+                        System.out.print("_");
+                        List<Zombies> zombies = tiles[i][j].getZombies();
+                        for (Zombies zombie : zombies) {
+                            System.out.print(zombie.getName() + "-" + zombie.getHealth() + ", ");
+                        }
+                    }
+                } else if (!tiles[i][j].getZombies().isEmpty()){
+                    List<Zombies> zombies = tiles[i][j].getZombies();
+                    for (Zombies zombie : zombies) {
+                        System.out.print(zombie.getName() + "-" + zombie.getHealth() + ", ");
+                    }
+                } else {
+                    System.out.print(" "); // Print spasi jika tidak ada tanaman atau zombie
+                }
+
+                // Penutup kurung sesuai dengan kondisi tanaman
+                if(isPlantPresent) {
+                    System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
+                } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
+                    System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
+                } else {
+                    System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau untuk kondisi lain
+                }
+                
+                System.out.print("\u001B[0m"); // Reset warna ke default
             }
-            System.out.println();
         }
+        System.out.println();
     }
+}
      
 
     public void plant(int row, int col, Plants plant) throws Exception{
+        Sun.reduceSun(plant.getCost());
+        if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
+            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
+        }
+        tiles[col][row].setPlant(plant);
+    }
+
+    public void validatePlant(int row, int col, Plants plant) throws Exception {
         if(Sun.getAmount() < plant.getCost()){
             throw new Exception("Not enough sun");
         }
-        Sun.reduceSun(plant.getCost());
         if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
             throw new Exception("This plant cannot be planted on this tile");
         }
-        else if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
-            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
-            (tiles[col][row]).setPlant(plant);
-        }
-        else if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
-            (tiles[col][row]).setPlant(plant);
-        }
-        else if(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad)){
-            (tiles[col][row]).setPlant(plant);
-        }
-        else {
+        if(!(tiles[col][row] instanceof Water && (plant instanceof Lilypad || tiles[col][row].getPlant() instanceof Lilypad)) && !(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad))){
             throw new Exception("This plant cannot be planted on this tile");
         }
     }
@@ -134,6 +135,10 @@ public class Maps {
         else{
             tiles[col][row].setPlant(null);
         }
+    }
+
+    public static void deletePlant(int row, int col){
+        tiles[col][row].setPlant(null);
     }
 
     public void addZombie(int row, Zombies zombie){
