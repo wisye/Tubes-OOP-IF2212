@@ -4,7 +4,10 @@ public class DuckyTube extends Zombies{
 
 
     public DuckyTube(int timeCreated){
-        super("Ducky Tube Zombie", 100, 100, 1, true, timeCreated);
+        super("DuckyTubeZombie", 100, 100, 1, true, timeCreated);
+    }
+    public DuckyTube(){
+        super("DuckyTubeZombie", 100, 100, 1, true);
     }
     public DuckyTube(){
         super("Ducky Tube Zombie", 100, 100, 1, true);

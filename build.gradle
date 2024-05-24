@@ -28,20 +28,25 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'org.tubesoopif2212'
-  mainClass = 'org.tubesoopif2212.gameLoop'
+  mainClass = 'org.tubesoopif2212.Gui'
 }
 
 javafx {
   version = '20.0.1'
-  modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
+  modules = ['javafx.controls', 'javafx.fxml', 'javafx.media', 'javafx.graphics', 'javafx.base']
 }
 
 dependencies {
+  implementation 'org.openjfx:javafx-controls:20.0.1'
+  implementation 'org.openjfx:javafx-fxml:20.0.1'
+  implementation 'org.openjfx:javafx-base:20.0.1'
+  implementation 'org.openjfx:javafx-graphics:20.0.1'
+  implementation 'org.openjfx:javafx-media:20.0.1'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
   implementation('com.github.almasb:fxgl:17.3') {
     exclude(group: 'org.openjfx')
     exclude(group: 'org.jetbrains.kotlin')
   }
-
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
   implementation 'org.fusesource.jansi:jansi:2.4.0'
