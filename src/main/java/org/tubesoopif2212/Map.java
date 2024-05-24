@@ -92,24 +92,21 @@ public class Map {
      
 
     public void plant(int row, int col, Plants plant) throws Exception{
+        Sun.reduceSun(plant.getCost());
+        if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
+            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
+        }
+        tiles[col][row].setPlant(plant);
+    }
+
+    public void validatePlant(int row, int col, Plants plant) throws Exception {
         if(Sun.getAmount() < plant.getCost()){
             throw new Exception("Not enough sun");
         }
-        Sun.reduceSun(plant.getCost());
         if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
             throw new Exception("This plant cannot be planted on this tile");
         }
-        else if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
-            plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
-            (tiles[col][row]).setPlant(plant);
-        }
-        else if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
-            (tiles[col][row]).setPlant(plant);
-        }
-        else if(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad)){
-            (tiles[col][row]).setPlant(plant);
-        }
-        else {
+        if(!(tiles[col][row] instanceof Water && (tiles[col][row].getPlant() == null || tiles[col][row].getPlant() instanceof Lilypad)) && !(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad))){
             throw new Exception("This plant cannot be planted on this tile");
         }
     }

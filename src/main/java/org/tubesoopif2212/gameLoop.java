@@ -103,9 +103,10 @@ public class gameLoop {
                         int row = scanner.nextInt();
                         int col = scanner.nextInt() - 1;
                         int plantIndex = scanner.nextInt() - 1;
-                        if(Map.getTile(col, row).getPlant() != null && !(Map.getTile(col, row).getPlant() instanceof Lilypad)){
-                            throw new Exception("A plant has already existed on this tile");
-                        }
+                        // if(Map.getTile(col, row).getPlant() != null && !(Map.getTile(col, row).getPlant() instanceof Lilypad)){
+                        //     throw new Exception("A plant has already existed on this tile");
+                        // }
+                        map.validatePlant(row, col, deck.getPlantPrototype(plantIndex));
                         map.plant(row, col, deck.create(plantIndex, seconds));
                     } else if (input == 2) {
                         map.dig(scanner.nextInt(), scanner.nextInt() - 1);

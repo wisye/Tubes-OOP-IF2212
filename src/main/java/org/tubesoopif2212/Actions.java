@@ -89,9 +89,9 @@ public class Actions{
             Zombies.amount--;
         }
 
-        // if(plant.getInstant()){
-        //     Map.removePlant(row, column);
-        // }
+        if(plant.getInstant()){
+            Map.removePlant(row, column);
+        }
 
         plant.setAttackCooldown(plant.getAttackSpeed() - 1);
     }

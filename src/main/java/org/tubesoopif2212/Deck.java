@@ -65,6 +65,10 @@ public class Deck<T> {
         return deck.get(index).create(timeCreated);
     }
 
+    public Plants getPlantPrototype(int index){
+        return deck.get(index).createPrototype();
+    }
+
     public int size() {
         return deck.size();
     }
@@ -88,6 +92,10 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
+
+        public Peashooter createPrototype() {
+            return new Peashooter(0);
+        }
     }
 
     public static class SunflowerFactory implements PlantFactory<Sunflower> {
@@ -108,6 +116,10 @@ public class Deck<T> {
 
         public int getCooldown(){
             return cooldown;
+        }
+
+        public Sunflower createPrototype() {
+            return new Sunflower(0);
         }
     }
 
@@ -130,6 +142,10 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
+
+        public Lilypad createPrototype() {
+            return new Lilypad(0);
+        }
     }
     
     public static class WallnutFactory implements PlantFactory<Wallnut> {
@@ -150,6 +166,10 @@ public class Deck<T> {
 
         public int getCooldown(){
             return cooldown;
+        }
+
+        public Wallnut createPrototype() {
+            return new Wallnut(0);
         }
     }
     
@@ -172,6 +192,10 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
+
+        public Squash createPrototype() {
+            return new Squash(0);
+        }
     }
     
     public static class SnowPeaFactory implements PlantFactory<Snowpea> {
@@ -192,6 +216,10 @@ public class Deck<T> {
 
         public int getCooldown(){
             return cooldown;
+        }
+
+        public Snowpea createPrototype() {
+            return new Snowpea(0);
         }
     }
     
@@ -214,6 +242,10 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
+
+        public Nahida createPrototype() {
+            return new Nahida(0);
+        }
     }
     
     public static class PlanterraFactory implements PlantFactory<Planterra> {
@@ -234,6 +266,10 @@ public class Deck<T> {
 
         public int getCooldown(){
             return cooldown;
+        }
+
+        public Planterra createPrototype() {
+            return new Planterra(0);
         }
     }
     
@@ -256,6 +292,10 @@ public class Deck<T> {
         public int getCooldown(){
             return cooldown;
         }
+
+        public Cannabis createPrototype() {
+            return new Cannabis(0);
+        }
     }
     
     public static class CeresFaunaFactory implements PlantFactory<CeresFauna> {
@@ -276,6 +316,10 @@ public class Deck<T> {
 
         public int getCooldown(){
             return cooldown;
+        }
+
+        public CeresFauna createPrototype() {
+            return new CeresFauna(0);
         }
     }
 
