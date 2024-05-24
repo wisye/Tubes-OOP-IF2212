@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Map {
     private static Tile[][] tiles;
-    private static boolean planted = false;
 
     public Map(){
         tiles = new Tile[6][11];
@@ -103,23 +102,16 @@ public class Map {
         else if(tiles[col][row] instanceof Water && tiles[col][row].getPlant() instanceof Lilypad){
             plant.setHealth(plant.getHealth() + tiles[col][row].getPlant().getHealth());
             (tiles[col][row]).setPlant(plant);
-            planted = true;
         }
         else if(tiles[col][row] instanceof Water && plant instanceof Lilypad){
             (tiles[col][row]).setPlant(plant);
-            planted = true;
         }
         else if(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad)){
             (tiles[col][row]).setPlant(plant);
-            planted = true;
         }
         else {
             throw new Exception("This plant cannot be planted on this tile");
         }
-    }
-
-    public static boolean getPlanted(){
-        return planted;
     }
 
     public void dig(int row, int col) throws Exception{

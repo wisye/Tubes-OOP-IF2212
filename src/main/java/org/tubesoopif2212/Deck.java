@@ -77,9 +77,7 @@ public class Deck<T> {
             if (timeCreated - lastPlantedTime < cooldown) {
                 throw new Exception("Cannot plant yet, cooldown has not passed");
             }
-            if(Map.getPlanted()){
-                lastPlantedTime = timeCreated;
-            }
+            lastPlantedTime = timeCreated;
             return new Peashooter(timeCreated);
         }
 
