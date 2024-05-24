@@ -70,7 +70,7 @@ public class Deck<T> {
     }
 
     public static class PeashooterFactory implements PlantFactory<Peashooter> {
-        public int cooldown = new Peashooter(0).getCooldown();
+        private int cooldown = new Peashooter(0).getCooldown();
         private int lastPlantedTime = -200;
 
         public Peashooter create(int timeCreated) throws Exception {
@@ -80,10 +80,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Peashooter(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
 
     public static class SunflowerFactory implements PlantFactory<Sunflower> {
-        public int cooldown = new Sunflower(0).getCooldown();
+        private int cooldown = new Sunflower(0).getCooldown();
         private int lastPlantedTime = -200;
 
         public Sunflower create(int timeCreated) throws Exception {
@@ -93,10 +101,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Sunflower(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
 
     public static class LilypadFactory implements PlantFactory<Lilypad> {
-        public int cooldown = new Lilypad(0).getCooldown();
+        private int cooldown = new Lilypad(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Lilypad create(int timeCreated) throws Exception {
@@ -106,10 +122,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Lilypad(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class WallnutFactory implements PlantFactory<Wallnut> {
-        public int cooldown = new Wallnut(0).getCooldown();
+        private int cooldown = new Wallnut(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Wallnut create(int timeCreated) throws Exception {
@@ -119,10 +143,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Wallnut(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class SquashFactory implements PlantFactory<Squash> {
-        public int cooldown = new Squash(0).getCooldown();
+        private int cooldown = new Squash(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Squash create(int timeCreated) throws Exception {
@@ -132,10 +164,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Squash(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class SnowPeaFactory implements PlantFactory<Snowpea> {
-        public int cooldown = new Snowpea(0).getCooldown();
+        private int cooldown = new Snowpea(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Snowpea create(int timeCreated) throws Exception {
@@ -145,10 +185,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Snowpea(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class NahidaFactory implements PlantFactory<Nahida> {
-        public int cooldown = new Nahida(0).getCooldown();
+        private int cooldown = new Nahida(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Nahida create(int timeCreated) throws Exception {
@@ -158,10 +206,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Nahida(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class PlanterraFactory implements PlantFactory<Planterra> {
-        public int cooldown = new Planterra(0).getCooldown();
+        private int cooldown = new Planterra(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Planterra create(int timeCreated) throws Exception {
@@ -171,10 +227,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Planterra(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class CannabisFactory implements PlantFactory<Cannabis> {
-        public int cooldown = new Cannabis(0).getCooldown();
+        private int cooldown = new Cannabis(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public Cannabis create(int timeCreated) throws Exception {
@@ -184,10 +248,18 @@ public class Deck<T> {
             lastPlantedTime = timeCreated;
             return new Cannabis(timeCreated);
         }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
+        }
     }
     
     public static class CeresFaunaFactory implements PlantFactory<CeresFauna> {
-        public int cooldown = new CeresFauna(0).getCooldown();
+        private int cooldown = new CeresFauna(0).getCooldown();
         private int lastPlantedTime = -200;
     
         public CeresFauna create(int timeCreated) throws Exception {
@@ -196,6 +268,14 @@ public class Deck<T> {
             }
             lastPlantedTime = timeCreated;
             return new CeresFauna(timeCreated);
+        }
+
+        public int getLastPlantedTime(){
+            return lastPlantedTime;
+        }
+
+        public int getCooldown(){
+            return cooldown;
         }
     }
 
@@ -218,6 +298,17 @@ public class Deck<T> {
         int i = 1;
         for (PlantFactory<? extends Plants> p : deck) {
             ret += i + ". " + (p.getClass().getSimpleName().replace("Factory", "")) + ("\n");
+            i++;
+        }
+        return ret.toString();
+    }
+
+    public String toStringWithCD(){
+        String ret = new String();
+        int i = 1;
+        for (PlantFactory<? extends Plants> p : deck) {
+            int cooldown = ((p.getCooldown() - (gameLoop.seconds - p.getLastPlantedTime()) <= 0) ? p.getCooldown() : (gameLoop.seconds - p.getLastPlantedTime()));
+            ret += i + ". " + (p.getClass().getSimpleName().replace("Factory", "")) + " - " + cooldown + "/" + p.getCooldown() +("\n");
             i++;
         }
         return ret.toString();

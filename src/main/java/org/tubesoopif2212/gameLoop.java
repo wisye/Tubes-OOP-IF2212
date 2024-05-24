@@ -96,7 +96,7 @@ public class gameLoop {
                         "Waktu : " + seconds + "\n" +
                         "Zombie amount : " + Zombies.amount + "\n" + 
                         "\n" +
-                        deck.toString() + "\n"
+                        deck.toStringWithCD() + "\n"
                     );
                     int input = scanner.nextInt();
                     if (input == 1) {
