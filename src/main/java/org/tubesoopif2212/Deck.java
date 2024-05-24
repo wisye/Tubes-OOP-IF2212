@@ -96,49 +96,105 @@ public class Deck<T> {
     }
 
     public static class LilypadFactory implements PlantFactory<Lilypad> {
-        public Lilypad create(int timeCreated) {
+        public int cooldown = new Lilypad(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Lilypad create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Lilypad(timeCreated);
         }
     }
-
+    
     public static class WallnutFactory implements PlantFactory<Wallnut> {
-        public Wallnut create(int timeCreated) {
+        public int cooldown = new Wallnut(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Wallnut create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Wallnut(timeCreated);
         }
     }
-
+    
     public static class SquashFactory implements PlantFactory<Squash> {
-        public Squash create(int timeCreated) {
+        public int cooldown = new Squash(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Squash create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Squash(timeCreated);
         }
     }
-
+    
     public static class SnowPeaFactory implements PlantFactory<Snowpea> {
-        public Snowpea create(int timeCreated) {
+        public int cooldown = new Snowpea(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Snowpea create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Snowpea(timeCreated);
         }
     }
-
+    
     public static class NahidaFactory implements PlantFactory<Nahida> {
-        public Nahida create(int timeCreated) {
+        public int cooldown = new Nahida(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Nahida create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Nahida(timeCreated);
         }
     }
-
+    
     public static class PlanterraFactory implements PlantFactory<Planterra> {
-        public Planterra create(int timeCreated) {
+        public int cooldown = new Planterra(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Planterra create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Planterra(timeCreated);
         }
     }
-
+    
     public static class CannabisFactory implements PlantFactory<Cannabis> {
-        public Cannabis create(int timeCreated) {
+        public int cooldown = new Cannabis(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public Cannabis create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new Cannabis(timeCreated);
         }
     }
-
+    
     public static class CeresFaunaFactory implements PlantFactory<CeresFauna> {
-        public CeresFauna create(int timeCreated) {
+        public int cooldown = new CeresFauna(0).getCooldown();
+        private int lastPlantedTime = -200;
+    
+        public CeresFauna create(int timeCreated) throws Exception {
+            if (timeCreated - lastPlantedTime < cooldown) {
+                throw new Exception("Cannot plant yet, cooldown has not passed");
+            }
+            lastPlantedTime = timeCreated;
             return new CeresFauna(timeCreated);
         }
     }
