@@ -196,6 +196,8 @@ class Water extends Tile{
 
 interface ZombieFactory{
     + spawnRandomZombies(Tile tile): void
+    + flag() : void
+    + spawnZombies() : void
 }
 
 enum zombieTypeLand{
@@ -328,6 +330,16 @@ class Sun << (S,#FF7700) Singleton >>{
     + {static} setSun(): void
 }
 
+class Print{
+    +{static} printMenu(): void
+    +{static} printLose(): void
+    +{static} printWin(): void
+    +{static} printHelp(): void
+    +{static} printMenu(): void
+    +{static} printExit(): void
+}
+
+gameLoop --> Print
 Sun --> Sun
 Map --> Map
 
@@ -342,6 +354,8 @@ SnowpeaFactory --> "0..*" Snowpea
 SquashFactory --> "0..*" Squash
 SunFlowerFactory --> "0..*" SunFlower
 WallnutFactory --> "0..*" Wallnut
+
+ZombieFactory --> "0..*" Tile
 
 ' Relationships between Tiles and Plants/Zombies
 Tile --> "0..*" Plants
