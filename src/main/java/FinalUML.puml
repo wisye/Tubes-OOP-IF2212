@@ -10,9 +10,10 @@ abstract class Zombies {
     - timeCreated: int
     - statusEffect: int = 0
     - ability: int = 0
-    - slowed: boolean = false
+    - slowedTime: boolean = false
     + {static} zoms =  List<Zombies>
     + {static} amount:  int = 0
+    + {static} maxamount:  int = 10
     + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic, int timeCreated) <<constructor>>
     + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic) <<constructor>>
     + setStatusEffect(int a): void
@@ -196,6 +197,8 @@ class Water extends Tile{
 
 interface ZombieFactory{
     + spawnRandomZombies(Tile tile): void
+    + flag() : void
+    + spawnZombies() : void
 }
 
 enum zombieTypeLand{
@@ -328,6 +331,16 @@ class Sun << (S,#FF7700) Singleton >>{
     + {static} setSun(): void
 }
 
+class Print{
+    +{static} printMenu(): void
+    +{static} printLose(): void
+    +{static} printWin(): void
+    +{static} printHelp(): void
+    +{static} printMenu(): void
+    +{static} printExit(): void
+}
+
+gameLoop --> Print
 Sun --> Sun
 Map --> Map
 
@@ -343,9 +356,13 @@ SquashFactory --> "0..*" Squash
 SunFlowerFactory --> "0..*" SunFlower
 WallnutFactory --> "0..*" Wallnut
 
+ZombieFactory --> "0..*" Tile
+
 ' Relationships between Tiles and Plants/Zombies
 Tile --> "0..*" Plants
 Tile --> "0..*" Zombies
+
+SunFlower --> "1..*" Sun
 
 Actions --> ZombieFactory
 Actions --> "1..*" Zombies
