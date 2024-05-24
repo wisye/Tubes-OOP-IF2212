@@ -10,9 +10,10 @@ abstract class Zombies {
     - timeCreated: int
     - statusEffect: int = 0
     - ability: int = 0
-    - slowed: boolean = false
+    - slowedTime: boolean = false
     + {static} zoms =  List<Zombies>
     + {static} amount:  int = 0
+    + {static} maxamount:  int = 10
     + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic, int timeCreated) <<constructor>>
     + Zombies(String name, Integer health, Integer attackDamage, Integer attackSpeed, Boolean isAquatic) <<constructor>>
     + setStatusEffect(int a): void
@@ -360,6 +361,8 @@ ZombieFactory --> "0..*" Tile
 ' Relationships between Tiles and Plants/Zombies
 Tile --> "0..*" Plants
 Tile --> "0..*" Zombies
+
+SunFlower --> "1..*" Sun
 
 Actions --> ZombieFactory
 Actions --> "1..*" Zombies
