@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 
 <VBox fx:id="rootVBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.tubesoopif2212.controllers.GameSceneController" fillWidth="true">
+    <HBox fx:id="plantDeckBox">
+    </HBox>
     <GridPane fx:id="gameGrid" VBox.vgrow="ALWAYS">
-        <!-- GridPane configuration can be added here if needed -->
     </GridPane>
 </VBox>

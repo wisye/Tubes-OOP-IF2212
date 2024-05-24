@@ -125,30 +125,27 @@ public class ChooseDeckController {
 
     @FXML
     private void handleSelectDeck() throws IOException {
-        // Simpan selectedDeck ke lastSelectedDeck sebelum beralih scene
+        if (selectedDeck.size() < 6) {
+            showAlert("Error", "Game cannot be started, deck size is less than 6");
+            return;
+        }
+
         Deck.setLastSelectedDeck(selectedDeck);
 
-        // Load the new FXML file for the game scene
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ingame/GameScene.fxml"));
         Parent gameSceneRoot = loader.load();
 
-        // Create a new scene with the loaded root
         Scene gameScene = new Scene(gameSceneRoot);
 
-        // Get the current stage (window) using any control (e.g., a button) from the current scene
         Stage stage = (Stage) selectDeckHBox.getScene().getWindow();
 
-        // Set the new scene on the current stage
         stage.setScene(gameScene);
 
-        // Optionally, set the title of the stage
         stage.setTitle("Plant vs Zombie Game");
 
-        // Show the stage
         stage.show();
     }
 
-    // Di dalam class ChooseDeckController
 
     private void setupRemoveButton() {
         removeButton.setOnAction(event -> {

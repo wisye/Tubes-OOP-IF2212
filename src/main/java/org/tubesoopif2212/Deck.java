@@ -333,7 +333,7 @@ public class Deck<T> {
         }
 
         public String getName(){
-            return "Ceres Fauna";
+            return "CeresFauna";
         }
     }
 
