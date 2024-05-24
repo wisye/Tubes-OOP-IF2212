@@ -103,6 +103,14 @@ public abstract class Zombies {
         return slowedTime;
     }
 
+    public void setX2Damage(boolean x2Damage){
+        statusEffect = x2Damage ? (statusEffect | 2) : (statusEffect & ~2);
+    }
+
+    public boolean getX2Damage(){
+        return ((statusEffect & 2) == 1);
+    }
+
 
     public void setNextHop(boolean hop){
         ability = hop ? (ability | 1) : (ability & ~1);
