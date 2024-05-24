@@ -41,54 +41,54 @@ public class Map {
     }
 
     public void printMap() {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 1; j < tiles[i].length - 1; j++) {
-                synchronized(tiles[i][j]){
-                    boolean isPlantPresent = tiles[i][j].getPlant() != null; // Cek apakah ada tanaman
-                    
-                    // Jika ada tanaman (Lilypad atau lainnya), warna hijau
-                    if(isPlantPresent) {
-                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
-                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
-                        System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
-                    } else {
-                        System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau untuk kondisi lain
-                    }
-                    
-                    // Menampilkan detail tanaman atau zombie jika ada
-                    if(tiles[i][j].getPlant() != null){
-                        System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
-                        if(!tiles[i][j].getZombies().isEmpty()){
-                            System.out.print("_");
-                            List<Zombies> zombies = tiles[i][j].getZombies();
-                            for (Zombies zombie : zombies) {
-                                System.out.print(zombie.getName() + "-" + zombie.getHealth() + ", ");
-                            }
-                        }
-                    } else if (!tiles[i][j].getZombies().isEmpty()){
+    for (int i = 0; i < tiles.length; i++) {
+        for (int j = 1; j < tiles[i].length - 1; j++) {
+            synchronized(tiles[i][j]){
+                boolean isPlantPresent = tiles[i][j].getPlant() != null; // Cek apakah ada tanaman
+                
+                // Jika ada tanaman (Lilypad atau lainnya), warna hijau
+                if(isPlantPresent) {
+                    System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau
+                } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
+                    System.out.print("\u001B[34m{"); // Kurung kurawal dengan warna biru
+                } else {
+                    System.out.print("\u001B[32m["); // Kurung siku dengan warna hijau untuk kondisi lain
+                }
+                
+                // Menampilkan detail tanaman atau zombie jika ada
+                if(tiles[i][j].getPlant() != null){
+                    System.out.print(tiles[i][j].getPlant().getName() + "-" + tiles[i][j].getPlant().getHealth());
+                    if(!tiles[i][j].getZombies().isEmpty()){
+                        System.out.print("_");
                         List<Zombies> zombies = tiles[i][j].getZombies();
                         for (Zombies zombie : zombies) {
                             System.out.print(zombie.getName() + "-" + zombie.getHealth() + ", ");
                         }
-                    } else {
-                        System.out.print(" "); // Print spasi jika tidak ada tanaman atau zombie
                     }
-    
-                    // Penutup kurung sesuai dengan kondisi tanaman
-                    if(isPlantPresent) {
-                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
-                    } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
-                        System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
-                    } else {
-                        System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau untuk kondisi lain
+                } else if (!tiles[i][j].getZombies().isEmpty()){
+                    List<Zombies> zombies = tiles[i][j].getZombies();
+                    for (Zombies zombie : zombies) {
+                        System.out.print(zombie.getName() + "-" + zombie.getHealth() + ", ");
                     }
-                    
-                    System.out.print("\u001B[0m"); // Reset warna ke default
+                } else {
+                    System.out.print(" "); // Print spasi jika tidak ada tanaman atau zombie
                 }
+
+                // Penutup kurung sesuai dengan kondisi tanaman
+                if(isPlantPresent) {
+                    System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau
+                } else if((i >= 2 && i <= 3) && (j >= 1 && j <= 9) && !isPlantPresent){
+                    System.out.print("\u001B[34m}"); // Kurung kurawal dengan warna biru
+                } else {
+                    System.out.print("\u001B[32m]"); // Kurung siku dengan warna hijau untuk kondisi lain
+                }
+                
+                System.out.print("\u001B[0m"); // Reset warna ke default
             }
-            System.out.println();
         }
+        System.out.println();
     }
+}
      
 
     public void plant(int row, int col, Plants plant) throws Exception{
