@@ -68,7 +68,7 @@ public class gameLoop {
         seconds = 0;
         Sun.getInstance();
         Sun.setSun(50);
-        Map map = new Map();
+        Maps map = new Maps();
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();
@@ -154,7 +154,7 @@ public class gameLoop {
                     }
 
                     for (int row = 0; row < 5; row++) {
-                        if (!Map.getTile(row, 0).getZombies().isEmpty()) {
+                        if (!Maps.getTile(row, 0).getZombies().isEmpty()) {
                             gameOver = true;
 
                             break;
@@ -193,7 +193,7 @@ public class gameLoop {
                     }
                     for (int i = 0; i < 11; i++) {
                         for (int j = 0; j < 6; j++) {
-                            Tile tile = Map.getTile(j, i);
+                            Tile tile = Maps.getTile(j, i);
                             synchronized (tile) {
                                 if (!(tile.getPlant() == null)) {
                                     action.attackPlant(i, j, tile.getPlant());

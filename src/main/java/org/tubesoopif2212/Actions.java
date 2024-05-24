@@ -5,7 +5,6 @@ import org.tubesoopif2212.Tile.*;
 import org.tubesoopif2212.Zombies.*;
 
 import java.util.List;
-import java.util.Random;
 
 public class Actions{
 
@@ -29,14 +28,14 @@ public class Actions{
             }
 
             for (int col = 0; col < 11; col++) {
-                Tile tile = Map.getTile(row, col);
+                Tile tile = Maps.getTile(row, col);
                 synchronized(tile){
                     if (!tile.getZombies().contains(zombie)) {
                         continue;
                     }
                     if (col > 0) {
-                        Tile leftTile = Map.getTile(row, col - 1);
-                        if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRider)){
+                        Tile leftTile = Maps.getTile(row, col - 1);
+                        if(leftTile.getPlant() != null && (zombie instanceof PoleVaulting || zombie instanceof DolphinRiderZombie)){
                             jump(row, col, zombie);
                         }
                         else{
@@ -65,7 +64,7 @@ public class Actions{
         Tile tile = null;
 
         for (int i = row; i <= max_range; i++) {
-            tile = Map.getTile(column, i);
+            tile = Maps.getTile(column, i);
             if (!tile.getZombies().isEmpty()) {
                 hasZombies = true;
                 break;
@@ -90,27 +89,27 @@ public class Actions{
         }
 
         if(plant.getInstant()){
-            Map.removePlant(row, column);
+            Maps.removePlant(row, column);
         }
 
         plant.setAttackCooldown(plant.getAttackSpeed() - 1);
     }
 
-    public void attackZombie(Tile tile, Map map, int row, int column){
+    public void attackZombie(Tile tile, Maps map, int row, int column){
         for (Zombies zombie : tile.getZombies()) {
             if(gameLoop.seconds > zombie.getTimeCreated() && (gameLoop.seconds - zombie.getTimeCreated()) % zombie.getAttackSpeed() == 0){
                 tile.getPlant().setHealth(tile.getPlant().getHealth() - zombie.getAttackDamage());
             }
             if(tile.getPlant().getHealth() <= 0){
-                Map.getTile(row, column).setPlant(null);
+                Maps.getTile(row, column).setPlant(null);
                 break;
             }
         }
     }
 
     public void jump(int row, int col, Zombies zombie){
-        Tile currentTile = Map.getTile(row, col);
-        Tile secondLeftTile = Map.getTile(row, col - 2);
+        Tile currentTile = Maps.getTile(row, col);
+        Tile secondLeftTile = Maps.getTile(row, col - 2);
 
         secondLeftTile.setPlant(null);
         secondLeftTile.addZombie(zombie);

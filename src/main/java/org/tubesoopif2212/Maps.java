@@ -6,10 +6,14 @@ import org.tubesoopif2212.Zombies.*;
 
 import java.util.List;
 
-public class Map {
+public class Maps {
     private static Tile[][] tiles;
 
-    public Map(){
+    public static boolean isInitialized() {
+        return tiles != null;
+    }
+
+    public Maps(){
         tiles = new Tile[6][11];
         for (int i = 0; i < 6; i++) {
             tiles[i][0] = new ProtectedArea();
@@ -37,6 +41,9 @@ public class Map {
     }
 
     public static Tile getTile(int row, int col) {
+        if (tiles == null) {
+            throw new IllegalStateException("Maps object has not been initialized");
+        }
         return tiles[row][col];
     }
 

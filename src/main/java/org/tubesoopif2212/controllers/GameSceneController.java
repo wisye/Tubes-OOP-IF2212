@@ -1,7 +1,6 @@
 package org.tubesoopif2212.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,10 +18,16 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.geometry.Pos;
 import org.tubesoopif2212.Inventory;
 import org.tubesoopif2212.Plants.Plants;
-
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
+import java.util.Random;
+import org.tubesoopif2212.Actions;
+import org.tubesoopif2212.Tile.Tile;
+import org.tubesoopif2212.ZombieFactory;
+import org.tubesoopif2212.Zombies.Zombies;
+import org.tubesoopif2212.Sun;
+import javafx.application.Platform;
+import org.tubesoopif2212.Maps;
+import java.io.File;
 import java.util.Map;
 import org.tubesoopif2212.Deck;
 import org.tubesoopif2212.PlantFactory;
@@ -35,7 +40,10 @@ import javafx.scene.Node;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.StackPane;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import java.util.Random;
 
 public class GameSceneController {
     @FXML
@@ -49,12 +57,16 @@ public class GameSceneController {
 
     private Map<Rectangle, ImageView> tileToPlantMap = new HashMap<>();
     private Map<ImageView, Plants> imageViewToPlantMap = new HashMap<>();
-
+    private Map<String, Image> zombieImages = new HashMap<>();
+    private int seconds = 0;
+    private boolean gameOver = false;
     private Label sunCountLabel = new Label("0");
 
     private final int cols = 9;
     private final int rows = 6;
     private final int tileSize = 51;
+    private Random random = new Random(); // Add this line
+    private String[] typesLand = {"BucketheadZombie", "ConeheadZombie", "DolphinRiderZombie", "DuckyTubeZombie", "NormalZombie", "KureijiOllie", "PoleVaultingZombie", "Qiqi", "ShrekbutZombie", };
 
 
     private void adjustBackgroundToFitGridPane() {
@@ -80,6 +92,14 @@ public class GameSceneController {
         gameGrid.setBackground(new Background(bgImage));
     }
 
+    public GameSceneController() {
+        new Maps();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> spawnZombies()));
+        Random random = new Random();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
     public void initialize() {
         tilesPane = new Pane();
         setupBackground();
@@ -100,7 +120,6 @@ public class GameSceneController {
             }
         }
 
-
         for (Node node : tilesPane.getChildren()) {
             if (node instanceof Rectangle) {
                 Rectangle tile = (Rectangle) node;
@@ -108,7 +127,46 @@ public class GameSceneController {
             }
         }
 
+        startGame();
 
+        loadZombieImage("BucketheadZombie", "/images/Zombie/Buckethead.gif");
+        loadZombieImage("ConeheadZombie", "/images/Zombie/Conehead.gif");
+        loadZombieImage("DolphinRiderZombie", "/images/Zombie/DolphinRider.gif");
+        loadZombieImage("DuckyTubeZombie", "/images/Zombie/DuckyTube.gif");
+        loadZombieImage("NormalZombie", "/images/Zombie/Normal.gif");
+        loadZombieImage("KureijiOllie", "/images/Zombie/KureijiOllie.gif");
+        loadZombieImage("PoleVaultingZombie", "/images/Zombie/PoleVaulting.gif");
+        loadZombieImage("Qiqi", "/images/Zombie/Qiqi.gif");
+        loadZombieImage("ShrekButZombie", "/images/Zombie/ShrekButZombie.gif");
+        loadZombieImage("EntireZom100Cast", "/images/Zombie/EntireZom100Cast.gif");
+
+    }
+
+    private void loadZombieImage(String zombieType, String imagePath) {
+        InputStream imageStream = getClass().getResourceAsStream(imagePath);
+        if (imageStream != null) {
+            zombieImages.put(zombieType, new Image(imageStream));
+        } else {
+            System.out.println("Image not found for " + zombieType);
+        }
+    }
+
+    public void spawnZombies() {
+        System.out.println("Spawning zombies...");
+        if (random.nextFloat() < 0.3 && Zombies.amount < 10) {
+            int row = random.nextInt(rows);
+            String zombieName = typesLand[random.nextInt(typesLand.length)];
+            addZombieToGrid(row, cols - 1, zombieName);
+
+            Image zombieImage = zombieImages.get(zombieName);
+            if (zombieImage == null) {
+                System.out.println("No image found for zombie type: " + zombieName);
+                return;
+            }
+
+            ImageView zombieView = new ImageView(zombieImage);
+            gameGrid.add(zombieView, cols - 1, row);
+        }
     }
 
     private void setupBackground() {
@@ -372,7 +430,18 @@ public class GameSceneController {
         zombieImageView.setFitHeight(50);
         zombieImageView.setFitWidth(50);
 
-        gameGrid.add(zombieImageView, col, row);
+        updateGUIWithNewZombie(row, col, zombieName);
+    }
+
+    public void updateGUIWithNewZombie(int row, int col, String zombieName) {
+        Image zombieImage = new Image(getImagePathForZombie(zombieName));
+
+        gameGrid.add(new ImageView(zombieImage), col, row);
+    }
+
+    public String getImagePathForZombie(String zombieName) {
+        String basePath = "src/main/resources/images/Zombie";
+        return basePath + zombieName + ".png";
     }
 
     public void removeZombieFromGrid(int row, int col) {
@@ -383,4 +452,81 @@ public class GameSceneController {
             }
         }
     }
+
+    private void startGame() {
+        Thread gameThread = new Thread(() -> {
+            int lastSunUpdate = 0;
+            Random random = new Random();
+            Actions action = new Actions();
+            ZombieFactory zf = new ZombieFactory();
+            Zombies.amount = 0;
+            Inventory inventory = new Inventory();
+            inventory.resetInventory();
+
+            while (!gameOver && seconds < 200) {
+                try {
+                    if (gameOver) {
+                        break;
+                    }
+
+                    if (seconds <= 100) {
+                        if (seconds - lastSunUpdate >= (random.nextInt(6) + 5)) {
+                            Sun.addSun(25);
+                            lastSunUpdate = seconds;
+                        }
+                    }
+
+                    if ((seconds >= 75 && seconds <= 78) ||
+                            (seconds >= 135 && seconds <= 138)) { // BONUS YANG FLAG
+                        Zombies.maxAmount = 25;
+                        zf.flag();
+                    }
+                    if ((seconds >= 20 && seconds <= 74) ||
+                            (seconds >= 79 && seconds <= 134) ||
+                            (seconds >= 139 && seconds <= 160)) {
+
+                        Zombies.maxAmount = 10;
+                        spawnRandomZombie();
+                    }
+
+                    for (int row = 0; row < 5; row++) {
+                        if (!Maps.getTile(row, 0).getZombies().isEmpty()) {
+                            int finalRow = row;
+                            Platform.runLater(() -> {
+                                removeZombieFromGrid(finalRow, 0);
+                            });
+                            gameOver = true;
+                            break;
+                        }
+                    }
+                    Thread.sleep(1000); // sleep for 1 second
+                    seconds++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        gameThread.start();
+    }
+
+    private void spawnRandomZombie() {
+        ZombieFactory zombieFactory = new ZombieFactory();
+
+        Random random = new Random();
+        int row = random.nextInt(rows);
+        int col = random.nextInt(cols);
+
+        Tile tile = Maps.getTile(row, col);
+
+        zombieFactory.spawnRandomZombies(tile);
+
+        String zombieName = tile.getZombies().get(tile.getZombies().size() - 1).getName();
+
+        final int finalRow = row;
+        final int finalCol = col;
+        Platform.runLater(() -> {
+            addZombieToGrid(finalRow, finalCol, zombieName);
+        });
+    }
 }
+

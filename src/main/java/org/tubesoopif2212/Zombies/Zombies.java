@@ -1,9 +1,6 @@
 package org.tubesoopif2212.Zombies;
 import java.util.List;
 
-import org.tubesoopif2212.Plants.Plants;
-
-import java.util.List;
 import java.util.ArrayList;
 
 public abstract class Zombies {
@@ -114,14 +111,14 @@ public abstract class Zombies {
 
     public static void addZombie(){
         zoms.add(new Normal());
-        zoms.add(new Conehead());
-        zoms.add(new Buckethead());
+        zoms.add(new ConeheadZombie());
+        zoms.add(new BucketheadZombie());
         zoms.add(new PoleVaulting());
         zoms.add(new KureijiOllie());
         zoms.add(new Qiqi());
         zoms.add(new ShrekButZombie());
         zoms.add(new EntireZom100Cast());
-        zoms.add(new DolphinRider());
+        zoms.add(new DolphinRiderZombie());
         zoms.add(new DuckyTube());
     }
 
