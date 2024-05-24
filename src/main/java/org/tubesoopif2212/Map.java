@@ -106,7 +106,7 @@ public class Map {
         if(tiles[col][row].getPlant() != null && (tiles[col][row].getPlant().getName().equals(plant.getName()))){
             throw new Exception("This plant cannot be planted on this tile");
         }
-        if(!(tiles[col][row] instanceof Water && (tiles[col][row].getPlant() == null || tiles[col][row].getPlant() instanceof Lilypad)) && !(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad))){
+        if(!(tiles[col][row] instanceof Water && (plant instanceof Lilypad || tiles[col][row].getPlant() instanceof Lilypad)) && !(tiles[col][row] instanceof Grass && !(plant instanceof Lilypad))){
             throw new Exception("This plant cannot be planted on this tile");
         }
     }
