@@ -68,7 +68,7 @@ public class gameLoop {
         seconds = 0;
         Sun.getInstance();
         Sun.setSun(50);
-        Map map = new Map();
+        Map map = Map.getInstance();
         Random random = new Random();
         Actions action = new Actions();
         Deck<Plants> deck = new Deck<Plants>();

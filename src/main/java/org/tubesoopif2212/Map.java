@@ -8,8 +8,9 @@ import java.util.List;
 
 public class Map {
     private static Tile[][] tiles;
+    private static Map map;
 
-    public Map(){
+    private Map(){
         tiles = new Tile[6][11];
         for (int i = 0; i < 6; i++) {
             tiles[i][0] = new ProtectedArea();
@@ -34,6 +35,15 @@ public class Map {
         }
         tiles[2][10].setWater(true);
         tiles[3][10].setWater(true);
+    }
+
+    public static Map getInstance(){
+        if(map == null){
+            return new Map(); 
+        }
+        else{
+            return map;
+        }
     }
 
     public static Tile getTile(int row, int col) {
