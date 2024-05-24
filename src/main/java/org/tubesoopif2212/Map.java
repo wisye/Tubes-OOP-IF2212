@@ -137,6 +137,10 @@ public class Map {
         }
     }
 
+    public static void deletePlant(int row, int col){
+        tiles[col][row].setPlant(null);
+    }
+
     public void addZombie(int row, Zombies zombie){
         synchronized(tiles[row][10]){
             tiles[row][10].addZombie(zombie);

@@ -102,7 +102,7 @@ public class Actions{
                 tile.getPlant().setHealth(tile.getPlant().getHealth() - zombie.getAttackDamage());
             }
             if(tile.getPlant().getHealth() <= 0){
-                Map.getTile(row, column).setPlant(null);
+                Map.deletePlant(row, column);
                 break;
             }
         }
