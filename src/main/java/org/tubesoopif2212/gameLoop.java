@@ -96,11 +96,17 @@ public class gameLoop {
                         "Waktu : " + seconds + "\n" +
                         "Zombie amount : " + Zombies.amount + "\n" + 
                         "\n" +
-                        deck.toString() + "\n"
+                        deck.toStringWithCD() + "\n"
                     );
                     int input = scanner.nextInt();
                     if (input == 1) {
-                        map.plant(scanner.nextInt(), scanner.nextInt() - 1, deck.create(scanner.nextInt() - 1, seconds));
+                        int row = scanner.nextInt();
+                        int col = scanner.nextInt() - 1;
+                        int plantIndex = scanner.nextInt() - 1;
+                        if(Map.getTile(col, row).getPlant() != null){
+                            throw new Exception("A plant has already existed on this tile");
+                        }
+                        map.plant(row, col, deck.create(plantIndex, seconds));
                     } else if (input == 2) {
                         map.dig(scanner.nextInt(), scanner.nextInt() - 1);
                     } else if (input == 0){
