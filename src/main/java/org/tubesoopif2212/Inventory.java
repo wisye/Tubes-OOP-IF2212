@@ -41,11 +41,18 @@ public class Inventory {
     // Memilih tanaman
     // Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan
     // tanaman yang dipilih tidak bisa dipilih kembali
+<<<<<<< Updated upstream
     public void choosePlant(int slot, Deck<?> deck) throws Exception {
         if(slot >= 10){
             throw new Exception("Plant does not exists");
         }
         Plants plants = get(slot);
+=======
+    public void choosePlant(Plants plants, Deck<?> deck) throws Exception {
+        if (plants == null || deck == null) {
+            throw new IllegalArgumentException("Plant or deck cannot be null");
+        }
+>>>>>>> Stashed changes
         for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
             if (entry.getKey().getName().equals(plants.getName())) {
                 if (entry.getValue()) {
@@ -79,7 +86,14 @@ public class Inventory {
     // Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong.
     // Pastikan slot yang dipilih untuk dihapus tidak kosong.
     public void removePlant(int slot, Deck<?> deck) throws Exception {
+<<<<<<< Updated upstream
         if (slot < deck.size()) {
+=======
+        if (slot < 0 || deck == null) {
+            throw new IllegalArgumentException("Invalid slot or deck is null");
+        }
+        if (deck.get(slot) != null) {
+>>>>>>> Stashed changes
             Plants plant = deck.get(slot).create(0);
             deck.remove(deck.get(slot));
             for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
@@ -116,6 +130,7 @@ public class Inventory {
         return ret;
     }
 
+
     public String toString(Plants tans) {
         String ret = new String();
         String separator = "--------------------------------------";
@@ -146,5 +161,29 @@ public class Inventory {
         for (Plants plants : inventory.keySet()) {
             inventory.put(plants, true);
         }
+    }
+    public Plants getPlantByName(String name) throws Exception {
+        for (Plants plant : inventory.keySet()) {
+            if (plant.getName().equals(name)) {
+                return plant;
+            }
+        }
+        throw new Exception("Plant not found: " + name);
+    }
+
+    public void updatePlantStatusToAvailable(String plantName) {
+        if (plantName == null || plantName.isEmpty()) {
+            throw new IllegalArgumentException("Plant name cannot be null or empty");
+        }
+        for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
+            if (entry.getKey().getName().equals(plantName)) {
+                entry.setValue(true);
+                return;
+            }
+        }
+    }
+
+    public Map<Plants, Boolean> getInventory() {
+        return this.inventory;
     }
 }

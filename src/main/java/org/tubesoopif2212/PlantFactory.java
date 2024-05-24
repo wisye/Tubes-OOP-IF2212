@@ -8,4 +8,5 @@ public interface PlantFactory<T extends Plants> {
     public int getLastPlantedTime();
 
     public int getCooldown();
+    String getName();
 }

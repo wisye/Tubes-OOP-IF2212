@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox fx:id="vbox" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.tubesoopif2212.controllers.ChooseDeckController">
-    <Label text="Inventory" />
-    <TilePane fx:id="inventoryTilePane" prefColumns="4" hgap="5" vgap="5"/>
-    <Label text="Choose Your Deck" />
-    <ListView fx:id="deckListView" />
-    <Button text="Select Deck" onAction="#handleSelectDeck"/>
-</VBox>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.tubesoopif2212.controllers.ChooseDeckController" stylesheets="@../styles.css">
+    <Label text="Inventory" AnchorPane.topAnchor="5" AnchorPane.leftAnchor="10"/>
+    <TilePane fx:id="inventoryTilePane" prefColumns="4" hgap="5" vgap="5" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="30" AnchorPane.rightAnchor="30"/>
+    <Button fx:id="removeButton" text="Remove" styleClass="btn" AnchorPane.rightAnchor="5" AnchorPane.topAnchor="30"/>
+    <Label text="Choose Your Deck" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="130"/>
+    <ListView fx:id="deckListView" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="150" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="100"/> <!-- Adjusted bottom anchor -->
+    <HBox fx:id="selectDeckHBox" alignment="CENTER" spacing="10" AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="10" AnchorPane.leftAnchor="10"> <!-- Adjusted bottom anchor -->
+        <Button text="Start Game" onAction="#handleSelectDeck" prefWidth="150" prefHeight="10" styleClass="btn, start-game-button"/>
+    </HBox>
+</AnchorPane>

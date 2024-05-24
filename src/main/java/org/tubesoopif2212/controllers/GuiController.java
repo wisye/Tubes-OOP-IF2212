@@ -29,7 +29,6 @@ public class GuiController {
 
     public void initialize() {
         loadImage();
-        fillChessBoard();
     }
 
     private void loadImage() {
@@ -52,24 +51,6 @@ public class GuiController {
         }
     }
 
-    private void fillChessBoard() {
-        if (chessBoard == null) {
-            System.err.println("Initialization failed or FXML file is not loaded properly.");
-            return;
-        }
-        int size = 15;
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                Rectangle square = new Rectangle(50, 50); // Assuming each square is 50x50 pixels
-                if ((row + col) % 2 == 0) {
-                    square.setFill(Color.LIGHTGREEN);
-                } else {
-                    square.setFill(Color.DARKGREEN);
-                }
-                chessBoard.add(square, col, row);
-            }
-        }
-    }
 
     @FXML
     private void handleNewGame() {
@@ -80,7 +61,10 @@ public class GuiController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load ChooseDeck.fxml");
+            System.err.println("Failed to load ChooseDeck.fxml: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("An unexpected error occurred: " + e.getMessage());
         }
     }
 
