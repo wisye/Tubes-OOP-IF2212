@@ -1,19 +1,5 @@
 package org.tubesoopif2212;
 
-/*Inventory merupakan container yang berisikan tanaman tanaman yang dapat diakses oleh pemain. Sebelum permainan dimulai, pemain akan diberikan pilihan untuk memilih tanaman yang akan digunakan dalam permainan tersebut. Pemain dapat memilih, menukar posisi, dan menghapus tanaman yang dipilih untuk digunakan dalam deck tanaman.
-                           
-+Aksi
--Deskripsi
-+Memilih tanaman
--Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan tanaman yang dipilih tidak bisa dipilih kembali
-+Menukar posisi tanaman
--Menukar posisi tanaman pada slot deck maupun inventory. Tidak akan ada penukaran antar slot deck dan inventory. Pastikan posisi tidak bisa ditukar dengan posisi sendiri ataupun posisi kosong.
-+Menghapus tanaman
--Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong. Pastikan slot yang dipilih untuk dihapus tidak kosong.
-
-
-Note: Urutan tanaman pada inventory hanya dapat diubah dengan aksi “menukar posisi tanaman”  */
-
 import org.tubesoopif2212.Plants.*;
 
 import java.util.ArrayList;
@@ -38,21 +24,14 @@ public class Inventory {
         this.inventory.put(new Planterra(0), true);
     }
 
-    // Memilih tanaman
-    // Mengubah slot pada deck tanaman menjadi tanaman yang dipilih. Dan memastikan
-    // tanaman yang dipilih tidak bisa dipilih kembali
-<<<<<<< Updated upstream
     public void choosePlant(int slot, Deck<?> deck) throws Exception {
         if(slot >= 10){
             throw new Exception("Plant does not exists");
         }
         Plants plants = get(slot);
-=======
-    public void choosePlant(Plants plants, Deck<?> deck) throws Exception {
         if (plants == null || deck == null) {
             throw new IllegalArgumentException("Plant or deck cannot be null");
         }
->>>>>>> Stashed changes
         for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
             if (entry.getKey().getName().equals(plants.getName())) {
                 if (entry.getValue()) {
@@ -66,10 +45,6 @@ public class Inventory {
         }
     }
 
-    // Menukar posisi tanaman
-    // Menukar posisi tanaman pada slot deck maupun inventory. Tidak akan ada
-    // penukaran antar slot deck dan inventory. Pastikan posisi tidak bisa ditukar
-    // dengan posisi sendiri ataupun posisi kosong.
     public void swapPlant(int slot1, int slot2, Deck<?> deck) throws Exception {
         if (slot1 == slot2) {
             throw new Exception("Cannot swap with the same slot");
@@ -82,18 +57,11 @@ public class Inventory {
         }
     }
 
-    // Menghapus tanaman
-    // Mengubah slot pada deck tanaman yang berisikan tanaman menjadi kosong.
-    // Pastikan slot yang dipilih untuk dihapus tidak kosong.
     public void removePlant(int slot, Deck<?> deck) throws Exception {
-<<<<<<< Updated upstream
-        if (slot < deck.size()) {
-=======
-        if (slot < 0 || deck == null) {
+        if (slot < 0 || slot >= deck.size() || deck == null) {
             throw new IllegalArgumentException("Invalid slot or deck is null");
         }
         if (deck.get(slot) != null) {
->>>>>>> Stashed changes
             Plants plant = deck.get(slot).create(0);
             deck.remove(deck.get(slot));
             for (Map.Entry<Plants, Boolean> entry : inventory.entrySet()) {
@@ -130,12 +98,11 @@ public class Inventory {
         return ret;
     }
 
-
     public String toString(Plants tans) {
         String ret = new String();
         String separator = "--------------------------------------";
         String format = "%-15s | %s\n";
-        
+
         ret += separator + "\n";
         ret += String.format(format, "Atribut", "Value");
         ret += separator + "\n";
@@ -153,9 +120,9 @@ public class Inventory {
         ret += separator + "\n";
         ret += String.format(format, "Cooldown", tans.getCooldown());
         ret += separator;
-        
+
         return ret;
-    }    
+    }
 
     public void resetInventory(){
         for (Plants plants : inventory.keySet()) {
@@ -185,5 +152,18 @@ public class Inventory {
 
     public Map<Plants, Boolean> getInventory() {
         return this.inventory;
+    }
+
+    public int getPlantIndex(Plants plant) {
+        if (plant == null) {
+            throw new IllegalArgumentException("Plant cannot be null");
+        }
+        List<Plants> plants = new ArrayList<>(inventory.keySet());
+        for (int i = 0; i < plants.size(); i++) {
+            if (plants.get(i).getName().equals(plant.getName())) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Plant not found: " + plant.getName());
     }
 }

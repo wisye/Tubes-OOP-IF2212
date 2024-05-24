@@ -101,7 +101,7 @@ public class ChooseDeckController {
                 try {
                     Plants plant = inventory.getPlantByName(plantName);
                     // This now only updates the status in inventory and adds the plant to the deck
-                    inventory.choosePlant(plant, selectedDeck);
+                    inventory.choosePlant(inventory.getPlantIndex(plant), selectedDeck);
                     deckListView.getItems().add(plantName); // Reflect addition in ListView
                     success = true;
                 } catch (IllegalStateException e) {
