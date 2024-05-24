@@ -64,7 +64,7 @@ public class Actions{
         boolean hasZombies = false;
         Tile tile = null;
 
-        for (int i = row; i < max_range; i++) {
+        for (int i = row; i <= max_range; i++) {
             tile = Map.getTile(column, i);
             if (!tile.getZombies().isEmpty()) {
                 hasZombies = true;
